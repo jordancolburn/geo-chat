@@ -5,12 +5,17 @@ module GeoChat {
 
     export class MapCtrl {
         private isMapReady = false;
+        private members = [];
         private map = { center: { latitude: 36.1749700, longitude: -115.1372200 }, zoom: 14 };
 
-        public static $inject = ['DataService'];
+        public static $inject = ['$scope', 'DataService'];
         
-        constructor(private DataService: DataService) {
-        }
+        constructor(private $scope: any, private DataService: DataService) {
+            this.members = DataService.members;
+            $scope.memberMarkers = DataService.members;
+            //Need this silliness so the map updates
+            $scope.$watch('DataService.members',() => {})
+        }      
 
     }
 

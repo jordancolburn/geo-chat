@@ -171,12 +171,18 @@ var GeoChat;
 var GeoChat;
 (function (GeoChat) {
     var MapCtrl = (function () {
-        function MapCtrl(DataService) {
+        function MapCtrl($scope, DataService) {
+            this.$scope = $scope;
             this.DataService = DataService;
             this.isMapReady = false;
+            this.members = [];
             this.map = { center: { latitude: 36.1749700, longitude: -115.1372200 }, zoom: 14 };
+            this.members = DataService.members;
+            $scope.memberMarkers = DataService.members;
+            $scope.$watch('DataService.members', function () {
+            });
         }
-        MapCtrl.$inject = ['DataService'];
+        MapCtrl.$inject = ['$scope', 'DataService'];
         return MapCtrl;
     }());
     GeoChat.MapCtrl = MapCtrl;
