@@ -1,7 +1,7 @@
 /// <reference path="..\..\node_modules\angular-typescript\ts\definitely-typed\angularjs\angular.d.ts" />
 var GeoChat;
 (function (GeoChat) {
-    GeoChat.geoChatApp = angular.module("geo.chat", ['ngRoute', 'uiGmapgoogle-maps']);
+    GeoChat.geoChatApp = angular.module("geo.chat", ['ngRoute', 'uiGmapgoogle-maps', 'angularfire']);
 })(GeoChat || (GeoChat = {}));
 /// <reference path="..\..\node_modules\angular-typescript\ts\definitely-typed\angularjs\angular.d.ts" />
 /// <reference path="app.ts" />
