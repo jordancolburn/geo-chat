@@ -175,7 +175,6 @@ var GeoChat;
             this.DataService = DataService;
             this.isMapReady = false;
             this.map = { center: { latitude: 36.1749700, longitude: -115.1372200 }, zoom: 14 };
-            this.map = { center: { latitude: 45, longitude: -73 }, zoom: 8 };
         }
         MapCtrl.$inject = ['DataService'];
         return MapCtrl;
