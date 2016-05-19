@@ -1,4 +1,5 @@
 ﻿/// <reference path="..\..\app.ts" />
+/// <reference path="..\services\data_service.ts" />
 
 module GeoChat {
 
@@ -6,10 +7,11 @@ module GeoChat {
 
         private map: any;
 
-        public static $inject = [];
+        public static $inject = ['DataService'];
         
-        constructor() {
+        constructor(private DataService: DataService) {
             this.map = { center: { latitude: 45, longitude: -73 }, zoom: 8 };
+            this.DataService.getRooms();
         }
 
     }
