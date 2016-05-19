@@ -4,9 +4,13 @@ module GeoChat {
 
     export class MapCtrl {
 
-        public static $inject = [];
+        private map: any;
 
-        constructor() {}
+        public static $inject = [];
+        
+        constructor() {
+            this.map = { center: { latitude: 45, longitude: -73 }, zoom: 8 };
+        }
 
     }
 

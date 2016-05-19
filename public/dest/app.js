@@ -1,7 +1,7 @@
 /// <reference path="..\..\node_modules\angular-typescript\ts\definitely-typed\angularjs\angular.d.ts" />
 var GeoChat;
 (function (GeoChat) {
-    GeoChat.geoChatApp = angular.module("geo.chat", ['ngRoute']);
+    GeoChat.geoChatApp = angular.module("geo.chat", ['ngRoute', 'uiGmapgoogle-maps']);
 })(GeoChat || (GeoChat = {}));
 /// <reference path="..\..\node_modules\angular-typescript\ts\definitely-typed\angularjs\angular.d.ts" />
 /// <reference path="app.ts" />
@@ -11,13 +11,13 @@ var GeoChat;
         function ($routeProvider, $locationProvider) {
             $routeProvider.
                 when("/", {
-                templateUrl: "app/components/home/home.tpl.html",
-                caseInsensitiveMatch: true
-            }).
-                when("/room/:roomId", {
                 templateUrl: "app/components/room/room.tpl.html",
                 caseInsensitiveMatch: true
             }).
+                /*when("/room/:roomId", {
+                    templateUrl: "app/components/room/room.tpl.html",
+                    caseInsensitiveMatch: true
+                }). */
                 otherwise({
                 redirectTo: "/"
             });
@@ -90,10 +90,22 @@ var GeoChat;
 (function (GeoChat) {
     var MapCtrl = (function () {
         function MapCtrl() {
+            this.map = { center: { latitude: 45, longitude: -73 }, zoom: 8 };
         }
         MapCtrl.$inject = [];
         return MapCtrl;
     }());
     GeoChat.MapCtrl = MapCtrl;
     GeoChat.geoChatApp.controller("MapCtrl", MapCtrl);
+})(GeoChat || (GeoChat = {}));
+/// <reference path="..\..\app.ts" />
+/// <reference path="map.controller.ts" />
+var GeoChat;
+(function (GeoChat) {
+    GeoChat.geoChatApp.directive("map", function () { return ({
+        restrict: "AE",
+        templateUrl: "app/components/map/map.tpl.html",
+        controller: GeoChat.MapCtrl,
+        controllerAs: "vm"
+    }); });
 })(GeoChat || (GeoChat = {}));
