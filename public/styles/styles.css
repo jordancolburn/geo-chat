@@ -1,0 +1,39 @@
+.clearfix {
+  *zoom: 1;
+}
+.clearfix:before,
+.clearfix:after {
+  display: table;
+  content: "";
+  line-height: 0;
+}
+.clearfix:after {
+  clear: both;
+}
+.fourfifth {
+     margin-left: 2.127659574468085%;
+    float: left;
+    min-height: 1px;
+    width: 79.57446808510639%;
+}
+.message-content {
+  word-wrap: break-word;
+  padding-right: 45px;
+  font-style: italic;
+}
+
+.message {
+  color: #333;
+  padding: 3px 5px;
+  border-bottom: 1px solid #ccc;
+}
+
+.message:nth-child(odd) {
+  background-color: #f9f9f9;
+}
+
+.gen-chat-height {
+    height: 300px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}

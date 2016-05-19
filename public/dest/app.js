@@ -100,9 +100,31 @@ var GeoChat;
             });
         };
         DataService.prototype.getMessages = function () {
-            this.ref.child('rooms/room_one_guid/messages').on('value', function (snapshot) {
-                console.log(snapshot.val());
-            });
+            // this.ref.child('rooms/room_one_guid/messages').on('value', function (snapshot) {
+            //     // snapshot.val()
+            // });
+            return [{
+                    "text": "This is my message 1",
+                    "timestamp": "timestamp",
+                    "userId": "id",
+                    "email": "email1@email.com"
+                }, {
+                    "text": "This is my message2",
+                    "timestamp": "timestamp",
+                    "userId": "id",
+                    "email": "email2@email.com"
+                },
+                {
+                    "text": "This is my message3",
+                    "timestamp": "timestamp",
+                    "userId": "id",
+                    "email": "email3@email.com"
+                }, {
+                    "text": "This is my message4",
+                    "timestamp": "timestamp",
+                    "userId": "id",
+                    "email": "email4@email.com"
+                }];
         };
         DataService.inject = [];
         return DataService;

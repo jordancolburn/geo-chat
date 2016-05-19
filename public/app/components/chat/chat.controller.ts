@@ -4,11 +4,11 @@ module GeoChat {
 
     export class ChatCtrl {
         private messages: [any];
-        public static $inject = ['DataService'];
+        public static $inject = [ 'DataService'];
 
         constructor(DataService)
         { 
-            this.messages = DataService.getMessages();
+             this.messages = DataService.getMessages();
         }
 
     }
