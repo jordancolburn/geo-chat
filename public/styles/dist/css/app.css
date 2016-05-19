@@ -1,3 +1,11 @@
+.full-height {
+    height: 100%;
+}
+
 .half-height {
     height: 50%;
 }
+
+.angular-google-map-container { height: 100%; }
+
+.angular-google-map { height: 100%; };

@@ -5,7 +5,7 @@ module GeoChat {
 
     export class MapCtrl {
 
-        private map: any;
+        private map: any = { center: { latitude: 45, longitude: -73 }, zoom: 8 };
 
         public static $inject = ['DataService'];
         

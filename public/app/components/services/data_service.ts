@@ -55,7 +55,6 @@ module GeoChat {
                 console.log(snapshot.val());
             });
         }
-        
     }
     
     geoChatApp.service('DataService', DataService);
