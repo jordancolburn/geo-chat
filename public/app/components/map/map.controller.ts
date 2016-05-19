@@ -10,7 +10,6 @@ module GeoChat {
         public static $inject = ['DataService'];
         
         constructor(private DataService: DataService) {
-            this.map = { center: { latitude: 45, longitude: -73 }, zoom: 8 };
         }
 
     }
