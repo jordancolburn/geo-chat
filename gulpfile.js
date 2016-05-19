@@ -25,7 +25,8 @@ gulp.task('copy-libs', function () {
             './node_modules/bootstrap/dist/js/bootstrap.min.js',
             './node_modules/jquery/dist/jquery.min.js',
             './node_modules/angular-google-maps/dist/angular-google-maps.min.js',
-            './node_modules/angularfire/dist/angularfire.min.js'
+            './node_modules/angularfire/dist/angularfire.min.js',
+            './node_modules/lodash/lodash.min.js'
         ]
     )
         .pipe(copy('./public/scripts', { prefix: 2 }));
