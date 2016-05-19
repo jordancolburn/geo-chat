@@ -3,6 +3,7 @@
 /// <reference path="..\..\..\..\typings\firebase\firebase.d.ts" />
 /// <reference path="..\..\models\user.ts" />
 /// <reference path="..\..\models\message.ts" />
+/// <reference path="..\..\models\location.ts" />
 
 module GeoChat {
 
@@ -71,6 +72,12 @@ module GeoChat {
                 timestamp: 'current_timestamp',
                 userId: 'current_user_id'
             });
+        }
+        
+                
+        updateLocation(cur_location: GeoChat.Location){
+            this.ref.child("members/"+"user_id"+"/currentLocation/latitude").set( cur_location.latitude);
+            this.ref.child("members/"+"user_id"+"/currentLocation/longitude").set(cur_location.longitude);
         }
 
         getMessages(): any {
