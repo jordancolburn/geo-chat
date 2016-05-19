@@ -19,9 +19,9 @@ module GeoChat {
             this.changeRoom('room_one_guid');
             this.members = [];
             this.messages = [];
-            this.getMessages();
-            this.getUsers();
-            this.getRoomName();
+            this.setupMessages();
+            this.setupUsers();
+            this.setupRoomName();
         }
         
         changeRoom(roomId: string){
@@ -29,21 +29,21 @@ module GeoChat {
             this.ref = new Firebase("https://geo-chat-fe90d.firebaseio.com/rooms/" + this.roomId);
         }
  
-         getRoomName(){
+         setupRoomName(){
             this.ref.child("name").on("child_added", (snapshot) => {
                 this.roomName = snapshot.val();
                 console.log(snapshot.val());
             });
         }
         
-        getMessages(){
+        setupMessages(){
             this.ref.child("members").on("child_added", (snapshot) => {
                 this.members.push(snapshot.val());
                 console.log(snapshot.val());
             });
         }
         
-        getUsers(){
+        setupUsers(){
             this.ref.child("messages").on("child_added", (snapshot) => {
                 this.messages.push(snapshot.val());
                 console.log(snapshot.val());
@@ -55,7 +55,35 @@ module GeoChat {
                 console.log(snapshot.val());
             });
         }
+
+        getMessages(): any {
+            // this.ref.child('rooms/room_one_guid/messages').on('value', function (snapshot) {
+            //     // snapshot.val()
+            // });
+            return [{
+                "text": "This is my message 1",
+                "timestamp": "timestamp",
+                "userId": "id",
+                "email": "email1@email.com"
+            }, {
+                "text": "This is my message2",
+                "timestamp": "timestamp",
+                "userId": "id",
+                "email": "email2@email.com"
+                },
+            {
+                "text": "This is my message3",
+                "timestamp": "timestamp",
+                "userId": "id",
+                "email": "email3@email.com"
+            },{
+                "text": "This is my message4",
+                "timestamp": "timestamp",
+                "userId": "id",
+                "email": "email4@email.com"
+            }]
+        }
     }
-    
+
     geoChatApp.service('DataService', DataService);
 }

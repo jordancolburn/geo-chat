@@ -115,6 +115,7 @@ var GeoChat;
             });
         };
         DataService.prototype.getMessages = function () {
+<<<<<<< HEAD
             var _this = this;
             this.ref.child("members").on("child_added", function (snapshot) {
                 _this.members.push(snapshot.val());
@@ -133,6 +134,33 @@ var GeoChat;
             this.ref.child("messages").on("child_removed", function (snapshot) {
                 console.log(snapshot.val());
             });
+=======
+            // this.ref.child('rooms/room_one_guid/messages').on('value', function (snapshot) {
+            //     // snapshot.val()
+            // });
+            return [{
+                    "text": "This is my message 1",
+                    "timestamp": "timestamp",
+                    "userId": "id",
+                    "email": "email1@email.com"
+                }, {
+                    "text": "This is my message2",
+                    "timestamp": "timestamp",
+                    "userId": "id",
+                    "email": "email2@email.com"
+                },
+                {
+                    "text": "This is my message3",
+                    "timestamp": "timestamp",
+                    "userId": "id",
+                    "email": "email3@email.com"
+                }, {
+                    "text": "This is my message4",
+                    "timestamp": "timestamp",
+                    "userId": "id",
+                    "email": "email4@email.com"
+                }];
+>>>>>>> 5192c5ff16efb740c1151381fa22ed2e6d2e400c
         };
         return DataService;
     }());
