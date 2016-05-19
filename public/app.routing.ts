@@ -6,12 +6,12 @@ module GeoChat {
     geoChatApp.config(["$routeProvider", "$locationProvider",
         ($routeProvider, $locationProvider) => {
             $routeProvider.
-                when("/home", {
+                when("/", {
                     templateUrl: "components/home/home.tpl.html",
                     caseInsensitiveMatch: true
                 }).
                 otherwise({
-                    redirectTo: "/home"
+                    redirectTo: "/"
                 });
             $locationProvider.html5Mode(true);
         }]);
