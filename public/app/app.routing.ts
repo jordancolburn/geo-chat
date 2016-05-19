@@ -1,4 +1,4 @@
-/// <reference path="..\node_modules\angular-typescript\ts\definitely-typed\angularjs\angular.d.ts" />
+/// <reference path="..\..\node_modules\angular-typescript\ts\definitely-typed\angularjs\angular.d.ts" />
 /// <reference path="app.ts" />
 
 module GeoChat {
@@ -7,7 +7,7 @@ module GeoChat {
         ($routeProvider, $locationProvider) => {
             $routeProvider.
                 when("/", {
-                    templateUrl: "components/home/home.tpl.html",
+                    templateUrl: "app/components/home/home.tpl.html",
                     caseInsensitiveMatch: true
                 }).
                 otherwise({
