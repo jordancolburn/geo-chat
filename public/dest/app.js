@@ -99,30 +99,29 @@ var GeoChat;
             this.changeRoom('room_one_guid');
             this.members = [];
             this.messages = [];
-            this.getMessages();
-            this.getUsers();
-            this.getRoomName();
+            this.setupMessages();
+            this.setupUsers();
+            this.setupRoomName();
         }
         DataService.prototype.changeRoom = function (roomId) {
             this.roomId = roomId;
             this.ref = new Firebase("https://geo-chat-fe90d.firebaseio.com/rooms/" + this.roomId);
         };
-        DataService.prototype.getRoomName = function () {
+        DataService.prototype.setupRoomName = function () {
             var _this = this;
             this.ref.child("name").on("child_added", function (snapshot) {
                 _this.roomName = snapshot.val();
                 console.log(snapshot.val());
             });
         };
-        DataService.prototype.getMessages = function () {
-<<<<<<< HEAD
+        DataService.prototype.setupMessages = function () {
             var _this = this;
             this.ref.child("members").on("child_added", function (snapshot) {
                 _this.members.push(snapshot.val());
                 console.log(snapshot.val());
             });
         };
-        DataService.prototype.getUsers = function () {
+        DataService.prototype.setupUsers = function () {
             var _this = this;
             this.ref.child("messages").on("child_added", function (snapshot) {
                 _this.messages.push(snapshot.val());
@@ -134,7 +133,8 @@ var GeoChat;
             this.ref.child("messages").on("child_removed", function (snapshot) {
                 console.log(snapshot.val());
             });
-=======
+        };
+        DataService.prototype.getMessages = function () {
             // this.ref.child('rooms/room_one_guid/messages').on('value', function (snapshot) {
             //     // snapshot.val()
             // });
@@ -160,7 +160,6 @@ var GeoChat;
                     "userId": "id",
                     "email": "email4@email.com"
                 }];
->>>>>>> 5192c5ff16efb740c1151381fa22ed2e6d2e400c
         };
         return DataService;
     }());
