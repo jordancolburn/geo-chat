@@ -1,9 +1,9 @@
-/// <reference path="..\node_modules\angular-typescript\ts\definitely-typed\angularjs\angular.d.ts" />
+/// <reference path="..\..\node_modules\angular-typescript\ts\definitely-typed\angularjs\angular.d.ts" />
 var GeoChat;
 (function (GeoChat) {
     GeoChat.geoChatApp = angular.module("geo.chat", ['ngRoute']);
 })(GeoChat || (GeoChat = {}));
-/// <reference path="..\node_modules\angular-typescript\ts\definitely-typed\angularjs\angular.d.ts" />
+/// <reference path="..\..\node_modules\angular-typescript\ts\definitely-typed\angularjs\angular.d.ts" />
 /// <reference path="app.ts" />
 var GeoChat;
 (function (GeoChat) {
