@@ -20,7 +20,8 @@ var tsSrcProject = ts.createProject({
 gulp.task('copy-libs', function () {
     return gulp.src(
         [
-            './node_modules/angular/angular.js'
+            './node_modules/angular/angular.min.js',
+            "./node_modules/angular-route/angular-route.min.js"
         ]
     )
         .pipe(copy('./public/scripts', { prefix: 2 }));
