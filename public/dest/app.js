@@ -11,13 +11,13 @@ var GeoChat;
         function ($routeProvider, $locationProvider) {
             $routeProvider.
                 when("/", {
-                templateUrl: "app/components/home/home.tpl.html",
-                caseInsensitiveMatch: true
-            }).
-                when("/room/:roomId", {
                 templateUrl: "app/components/room/room.tpl.html",
                 caseInsensitiveMatch: true
             }).
+                /*when("/room/:roomId", {
+                    templateUrl: "app/components/room/room.tpl.html",
+                    caseInsensitiveMatch: true
+                }). */
                 otherwise({
                 redirectTo: "/"
             });
