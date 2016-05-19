@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html class="full-height">
   <head>
     <meta charset="utf-8">
     <title>Geo Chat</title>
@@ -11,14 +11,15 @@
     <script src="scripts\dist\jquery.min.js"></script>
     <script src="scripts\dist\js\bootstrap.min.js"></script>
     <script src="scripts\dist\angularfire.min.js"></script>
+    <script src="scripts\lodash.min.js"></script>
+    <script src="scripts\dist\angular-simple-logger.min.js"></script>
     <script src="scripts\dist\angular-google-maps.min.js"></script>
-    <script src="scripts\dist\lodash.min.js"></script>
     <script src="dest/app.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js"></script>
     <script src="https://cdn.firebase.com/js/client/2.4.2/firebase.js"></script>
     <base href="/" />
   </head>
-  <body ng-app="geo.chat">
-    <div ng-view></div>
+  <body ng-app="geo.chat" class="full-height">
+    <div ng-view class="full-height"></div>
   </body>
 </html>

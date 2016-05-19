@@ -1,7 +1,7 @@
 /// <reference path="..\..\node_modules\angular-typescript\ts\definitely-typed\angularjs\angular.d.ts" />
 var GeoChat;
 (function (GeoChat) {
-    GeoChat.geoChatApp = angular.module("geo.chat", ['ngRoute', 'firebase']);
+    GeoChat.geoChatApp = angular.module("geo.chat", ['ngRoute', 'firebase', 'uiGmapgoogle-maps']);
 })(GeoChat || (GeoChat = {}));
 /// <reference path="..\..\node_modules\angular-typescript\ts\definitely-typed\angularjs\angular.d.ts" />
 /// <reference path="app.ts" />
@@ -112,7 +112,7 @@ var GeoChat;
         function MapCtrl(DataService) {
             this.DataService = DataService;
             this.map = { center: { latitude: 45, longitude: -73 }, zoom: 8 };
-            this.DataService.getRooms();
+            //this.DataService.getRooms();
         }
         MapCtrl.$inject = ['DataService'];
         return MapCtrl;

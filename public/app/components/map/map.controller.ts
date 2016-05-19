@@ -5,13 +5,12 @@ module GeoChat {
 
     export class MapCtrl {
 
-        private map: any;
+        private map: any = { center: { latitude: 45, longitude: -73 }, zoom: 8 };
 
         public static $inject = ['DataService'];
         
         constructor(private DataService: DataService) {
-            this.map = { center: { latitude: 45, longitude: -73 }, zoom: 8 };
-            this.DataService.getRooms();
+            //this.DataService.getRooms();
         }
 
     }
