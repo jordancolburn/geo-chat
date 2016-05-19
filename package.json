@@ -30,6 +30,7 @@
     "angular-typescript": "0.0.8",
     "bootstrap": "^3.3.6",
     "gulp-typescript": "^2.13.4",
+    "jquery": "^2.2.3",
     "typescript": "^1.8.10"
   }
 }
