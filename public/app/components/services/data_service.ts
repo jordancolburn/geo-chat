@@ -1,30 +1,89 @@
 /// <reference path="..\..\app.ts" />
 /// <reference path="..\..\..\..\typings\firebase\firebase.d.ts" />
+/// <reference path="..\..\..\..\typings\firebase\firebase.d.ts" />
+/// <reference path="..\..\models\user.ts" />
+/// <reference path="..\..\models\message.ts" />
 
 module GeoChat {
 
     export class DataService {
         private ref: any;
-        
-        public static inject = [];
+        public roomId: string;
+        public members: User[];
+        public messages: Message[];
+        public roomName: string;
+
         
         constructor(){
-            this.ref = new Firebase("https://geo-chat-fe90d.firebaseio.com/");
+            console.log('starting data service constructor');
+            this.changeRoom('room_one_guid');
+            this.members = [];
+            this.messages = [];
+            this.setupMessages();
+            this.setupUsers();
+            this.setupRoomName();
         }
         
-        getRooms(){
-            this.ref.child("rooms").on("value", function(snapshot) {
+        changeRoom(roomId: string){
+            this.roomId = roomId;
+            this.ref = new Firebase("https://geo-chat-fe90d.firebaseio.com/rooms/" + this.roomId);
+        }
+ 
+         setupRoomName(){
+            this.ref.child("name").on("child_added", (snapshot) => {
+                this.roomName = snapshot.val();
+                console.log(snapshot.val());
+            });
+        }
+        
+        setupMessages(){
+            this.ref.child("members").on("child_added", (snapshot) => {
+                this.members.push(snapshot.val());
+                console.log(snapshot.val());
+            });
+        }
+        
+        setupUsers(){
+            this.ref.child("messages").on("child_added", (snapshot) => {
+                this.messages.push(snapshot.val());
+                console.log(snapshot.val());
+            });
+            this.ref.child("messages").on("child_changed", (snapshot) => {
+                console.log(snapshot.val());
+            });
+            this.ref.child("messages").on("child_removed", (snapshot) => {
                 console.log(snapshot.val());
             });
         }
 
         getMessages(): any {
-            this.ref.child('rooms/room_one_guid/messages').on('value', function (snapshot) {
-                console.log(snapshot.val());
-            });
+            // this.ref.child('rooms/room_one_guid/messages').on('value', function (snapshot) {
+            //     // snapshot.val()
+            // });
+            return [{
+                "text": "This is my message 1",
+                "timestamp": "timestamp",
+                "userId": "id",
+                "email": "email1@email.com"
+            }, {
+                "text": "This is my message2",
+                "timestamp": "timestamp",
+                "userId": "id",
+                "email": "email2@email.com"
+                },
+            {
+                "text": "This is my message3",
+                "timestamp": "timestamp",
+                "userId": "id",
+                "email": "email3@email.com"
+            },{
+                "text": "This is my message4",
+                "timestamp": "timestamp",
+                "userId": "id",
+                "email": "email4@email.com"
+            }]
         }
-        
     }
-    
+
     geoChatApp.service('DataService', DataService);
 }

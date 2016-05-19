@@ -88,23 +88,79 @@ var GeoChat;
 })(GeoChat || (GeoChat = {}));
 /// <reference path="..\..\app.ts" />
 /// <reference path="..\..\..\..\typings\firebase\firebase.d.ts" />
+/// <reference path="..\..\..\..\typings\firebase\firebase.d.ts" />
+/// <reference path="..\..\models\user.ts" />
+/// <reference path="..\..\models\message.ts" />
 var GeoChat;
 (function (GeoChat) {
     var DataService = (function () {
         function DataService() {
-            this.ref = new Firebase("https://geo-chat-fe90d.firebaseio.com/");
+            console.log('starting data service constructor');
+            this.changeRoom('room_one_guid');
+            this.members = [];
+            this.messages = [];
+            this.setupMessages();
+            this.setupUsers();
+            this.setupRoomName();
         }
-        DataService.prototype.getRooms = function () {
-            this.ref.child("rooms").on("value", function (snapshot) {
+        DataService.prototype.changeRoom = function (roomId) {
+            this.roomId = roomId;
+            this.ref = new Firebase("https://geo-chat-fe90d.firebaseio.com/rooms/" + this.roomId);
+        };
+        DataService.prototype.setupRoomName = function () {
+            var _this = this;
+            this.ref.child("name").on("child_added", function (snapshot) {
+                _this.roomName = snapshot.val();
+                console.log(snapshot.val());
+            });
+        };
+        DataService.prototype.setupMessages = function () {
+            var _this = this;
+            this.ref.child("members").on("child_added", function (snapshot) {
+                _this.members.push(snapshot.val());
+                console.log(snapshot.val());
+            });
+        };
+        DataService.prototype.setupUsers = function () {
+            var _this = this;
+            this.ref.child("messages").on("child_added", function (snapshot) {
+                _this.messages.push(snapshot.val());
+                console.log(snapshot.val());
+            });
+            this.ref.child("messages").on("child_changed", function (snapshot) {
+                console.log(snapshot.val());
+            });
+            this.ref.child("messages").on("child_removed", function (snapshot) {
                 console.log(snapshot.val());
             });
         };
         DataService.prototype.getMessages = function () {
-            this.ref.child('rooms/room_one_guid/messages').on('value', function (snapshot) {
-                console.log(snapshot.val());
-            });
+            // this.ref.child('rooms/room_one_guid/messages').on('value', function (snapshot) {
+            //     // snapshot.val()
+            // });
+            return [{
+                    "text": "This is my message 1",
+                    "timestamp": "timestamp",
+                    "userId": "id",
+                    "email": "email1@email.com"
+                }, {
+                    "text": "This is my message2",
+                    "timestamp": "timestamp",
+                    "userId": "id",
+                    "email": "email2@email.com"
+                },
+                {
+                    "text": "This is my message3",
+                    "timestamp": "timestamp",
+                    "userId": "id",
+                    "email": "email3@email.com"
+                }, {
+                    "text": "This is my message4",
+                    "timestamp": "timestamp",
+                    "userId": "id",
+                    "email": "email4@email.com"
+                }];
         };
-        DataService.inject = [];
         return DataService;
     }());
     GeoChat.DataService = DataService;
@@ -119,7 +175,7 @@ var GeoChat;
             this.DataService = DataService;
             this.isMapReady = false;
             this.map = { center: { latitude: 36.1749700, longitude: -115.1372200 }, zoom: 14 };
-            //this.DataService.getRooms();
+            this.map = { center: { latitude: 45, longitude: -73 }, zoom: 8 };
         }
         MapCtrl.$inject = ['DataService'];
         return MapCtrl;

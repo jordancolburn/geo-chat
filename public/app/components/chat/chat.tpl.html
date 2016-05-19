@@ -1,1 +1,27 @@
-CHAT
+<div class="container">
+    <div class="gen-chat-height">
+<div ng-repeat="message in vm.messages" class="message message-default">
+    <div class='clearfix'>
+        <label class='fourfifth'>
+      <strong class='name'>{{ message.email }}</strong>
+      ({{ message.timestamp}}):
+    </label>
+
+    </div>
+    <div class='clearfix message-content'>
+        {{ message.text }}
+    </div>
+</div>
+</div>
+<div class="row">
+    <label> Message: </label>
+</div>
+<div class="row">
+    <div class="col-sm-11">
+        <textarea class="form-control" rows="2" placeholder="Enter your message..."></textarea>
+    </div>
+    <div class="col-sm-1">
+        <button type="button" class="btn btn-success">Send</button>
+    </div>
+</div>
+</div>
