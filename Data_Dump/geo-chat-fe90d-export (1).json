@@ -1,0 +1,582 @@
+{
+  "rooms": {
+    "room2": "here is value",
+    "room3": "vaaaaaaalue",
+    "room_one_guid": {
+      "members": {
+        "user_id": {
+          "currentLocation": {
+            "lat": 36.1699,
+            "long": 115.1398
+          },
+          "email": "john@smith.com"
+        }
+      },
+      "messages": {
+        "message_id": {
+          "email": "john@smith.com",
+          "text": "This is my message",
+          "timestamp": "timestamp",
+          "userId": "id"
+        }
+      },
+      "name": "Cool People"
+    }
+  },
+
+  "users": {
+    "PcrJLIyD72Q1ILfSBLg8hD3yYVZ2": {
+      "Email": "abakharevski@genscape.com",
+      "FirstName": "Anton ",
+      "LastName": "Bakharevski",
+      "Group": "Maritime",
+      "Location": "London"
+    },
+    "1xvSiBgBXDTRXSBU1M4LLTj7TSt1": {
+      "Email": "achoobbari@genscape.com",
+      "FirstName": "Azim ",
+      "LastName": "Choobbari",
+      "Group": "Power",
+      "Location": "Boston"
+    },
+    "GNyrk8eC1YPz9rzRwXGAJ6BBRFH2": {
+      "Email": "agiuliano@genscape.com",
+      "FirstName": "Alex ",
+      "LastName": "Giuliano",
+      "Group": "Power",
+      "Location": "Boston"
+    },
+    "BVEABtAryIXwUD8PZEOL0XNj09s2": {
+      "Email": "agodfrey@genscape.com",
+      "FirstName": "Andrew",
+      "LastName": "Godfrey",
+      "Group": "Devops",
+      "Location": "Boston"
+    },
+    "7P3TKTRvXkS2RzoUfHtRhkt50Bp2": {
+      "Email": "ahart@genscape.com",
+      "FirstName": "Aaron",
+      "LastName": "Hart",
+      "Group": "Power",
+      "Location": "Boulder"
+    },
+    "m3j8T842FAUkMzhuATVQOngUeHM2": {
+      "Email": "ahofeldt @genscape.com",
+      "FirstName": "Albert ",
+      "LastName": "Hofeldt ",
+      "Group": "Platform",
+      "Location": "Boston"
+    },
+    "lQ1Xx3DTyEguGfeX9YbT3y8AahP2": {
+      "Email": "akarki@genscape.com",
+      "FirstName": "Ashish ",
+      "LastName": "Karki",
+      "Group": "Power",
+      "Location": "Boston"
+    },
+    "6DC4P7q1vGe3dmTEtJmqQbevkTc2": {
+      "Email": "alex.thornton@locusenergy.com",
+      "FirstName": "Alex ",
+      "LastName": "Thorton",
+      "Group": "Locus",
+      "Location": "San Francisco"
+    },
+    "CBAHktjtAjeNjExKRK4sIUaNxQI2": {
+      "Email": "apasca@pentalog.fr",
+      "FirstName": "Alex ",
+      "LastName": "Pasca",
+      "Group": "Pentalog",
+      "Location": "Romania"
+    },
+    "Dcd2ODC3dpYRgA23xVSrIEXjRWH2": {
+      "Email": "asaf@locusenergy.com",
+      "FirstName": "Asaf ",
+      "LastName": "Peleg",
+      "Group": "Locus",
+      "Location": "San Fran"
+    },
+    "vzU1cczHHsPRo6UlQtkwLnWRVFh1": {
+      "Email": "ashetty@genscape.com",
+      "FirstName": "Ashith ",
+      "LastName": "Shetty",
+      "Group": "Platform",
+      "Location": "Mangalore"
+    },
+    "mup03RnpRZQ9LhLfuzMFqV4yAvg2": {
+      "Email": "cmajors@genscape.com",
+      "FirstName": "Clint",
+      "LastName": "Majors",
+      "Group": "CRM",
+      "Location": "Louisville"
+    },
+    "UBTDx72HnRR0tF9wpIZbJaHreNV2": {
+      "Email": "ddeutsch@genscape.com",
+      "FirstName": "David ",
+      "LastName": "Deutsch",
+      "Group": "Platform ",
+      "Location": "Boston"
+    },
+    "70Cd3zA9cOPpIblEKuULaliFXRE3": {
+      "Email": "dgolubets@genscape.com",
+      "FirstName": "Dmitry ",
+      "LastName": "Golubets",
+      "Group": "Maritime",
+      "Location": "Dublin"
+    },
+    "KQEt0M0TzjVjOxa5Qs1QiLEP6ZB2": {
+      "Email": "dluca@genscape.com",
+      "FirstName": "Delia",
+      "LastName": "Luca",
+      "Group": "Pentalog",
+      "Location": "Romania"
+    },
+    "ZwdtC0ZQnzVpUR4nTUmtJIm7xi33": {
+      "Email": "dsimpson@genscape.com",
+      "FirstName": "Derrick ",
+      "LastName": "Simpson",
+      "Group": "Platform",
+      "Location": "Louisville"
+    },
+    "vcXjcHEmeAeek8NAH7eXtGiuU3y2": {
+      "Email": "dsysko@genscape.com",
+      "FirstName": "Dustin",
+      "LastName": "Sysko",
+      "Group": "Content Collection",
+      "Location": "Boston"
+    },
+    "YPNzcdOhF5cizdCdk5h00wEwnZT2": {
+      "Email": "dwilliams@genscape.com",
+      "FirstName": "Derek",
+      "LastName": "Williams",
+      "Group": "Devops",
+      "Location": "Louisville"
+    },
+    "84nvkwFUzSefXVr3wNCu2ao4jCf1": {
+      "Email": "dxie@genscape.com",
+      "FirstName": "David ",
+      "LastName": "Xie",
+      "Group": "Platform ",
+      "Location": "New York"
+    },
+    "vQF84NFjMhO51hZEp0Y2hFvj80M2": {
+      "Email": "esuarez@genscape.com",
+      "FirstName": "Emilio",
+      "LastName": "Suarez",
+      "Group": "Nat Gas",
+      "Location": "Boulder"
+    },
+    "lk5wQpjE73OkYl5ttK7JVYkDZcT2": {
+      "Email": "fsoares@genscape.com",
+      "FirstName": "Fabio ",
+      "LastName": "Soares",
+      "Group": "Maritime",
+      "Location": "Hamburg"
+    },
+    "3TdexAihMSM3qLMaiAlX3u0mVRv2": {
+      "Email": "gelliott@genscape.com",
+      "FirstName": "Gordon ",
+      "LastName": "Elliott",
+      "Group": "Platform ",
+      "Location": "New Jersey"
+    },
+    "oBtPCMao2OUhil17duntHeaCfs93": {
+      "Email": "givanov@genscape.com",
+      "FirstName": "Georgi",
+      "LastName": "Ivanov",
+      "Group": "Maritime",
+      "Location": "Hamburg"
+    },
+    "N9nfIgraWcawekGAX3tKIxm0rEt1": {
+      "Email": "gorlov@genscape.com",
+      "FirstName": "George ",
+      "LastName": "Orlov ",
+      "Group": "DMGT",
+      "Location": "Connecticut"
+    },
+    "WNjXOo2muTYYDvoHzcpXKkVQYbO2": {
+      "Email": "hbarnett@genscape.com",
+      "FirstName": "Houston ",
+      "LastName": "Barnett",
+      "Group": "CRM",
+      "Location": "Louisville"
+    },
+    "iDkAi3CzYGXTMQB6j0tbgyyNG8F2": {
+      "Email": "isozinov@genscape.com",
+      "FirstName": "Igor ",
+      "LastName": "Sozinov",
+      "Group": "Power",
+      "Location": "Boston"
+    },
+    "7Bvyl8GfxHWLSCFzLgo6TVfeBzl2": {
+      "Email": "jbasset@genscape.com",
+      "FirstName": "Jason",
+      "LastName": "Basset",
+      "Group": "Platform",
+      "Location": "Boston"
+    },
+    "TF3Np6Psu2Sfmh6K8ix3hDBpj8I3": {
+      "Email": "jcapone@genscape.com",
+      "FirstName": "Joe ",
+      "LastName": "Capone",
+      "Group": "Power",
+      "Location": "Boston"
+    },
+    "vYkwbdvwzvQVronFVChMMASazf62": {
+      "Email": "jcolburn@genscape.com",
+      "FirstName": "Jordan",
+      "LastName": "Colburn",
+      "Group": "OilAg",
+      "Location": "Louisville"
+    },
+    "mc3xOApih9ZfcIR5hpgiHtpvULQ2": {
+      "Email": "JPaulBonnet@genscape.com",
+      "FirstName": "Jean ",
+      "LastName": "Paul Bonnet",
+      "Group": "Maritime",
+      "Location": "Dublin"
+    },
+    "H9fG4Exc8TZ5yNuehffmhHIiGSs2": {
+      "Email": "jsostek@genscape.com",
+      "FirstName": "Josh",
+      "LastName": "Sostek",
+      "Group": "Content Collection",
+      "Location": "Boston"
+    },
+    "1wwc4geXkecivhmF7QlpHUYgbfE2": {
+      "Email": "jsousa@genscape.com",
+      "FirstName": "Jessica ",
+      "LastName": "Sousa",
+      "Group": "HR",
+      "Location": "Boston"
+    },
+    "7n5UKavzm8crRsDoZLlrVDFVeNN2": {
+      "Email": "jspalenka@genscape.com",
+      "FirstName": "Josef",
+      "LastName": "Spalenka",
+      "Group": "R&D",
+      "Location": "Louisville"
+    },
+    "lOcJkxXQ57c96Pc0aNHSHYB3k6y2": {
+      "Email": "jstanfield@genscape.com",
+      "FirstName": "Jim ",
+      "LastName": "Stanfield",
+      "Group": "OilAg",
+      "Location": "Boulder"
+    },
+    "Q6SevmnjTBWPYwIvOADPDZVs5jq2": {
+      "Email": "jturner@genscape.com",
+      "FirstName": "Jason",
+      "LastName": "turner",
+      "Group": "Oil ",
+      "Location": "Calgary"
+    },
+    "p4R1n1sLNiO6BH7i8phkdxdrNEz2": {
+      "Email": "krasimir.kostadinov@scalefocus.com",
+      "FirstName": "Krasimir",
+      "LastName": "Kostadinov",
+      "Group": "ScaleFocus",
+      "Location": "Bulgaria"
+    },
+    "E1GiCebsOsWDjST8DkJdJT8E4rF3": {
+      "Email": "kristiyan.nikolov@scalefocus.com",
+      "FirstName": "Kristiyan",
+      "LastName": "Nikolov",
+      "Group": "ScaleFocus",
+      "Location": "Bulgaria"
+    },
+    "DzD5FKpkkyY5fxYDpeuuPKcT23r1": {
+      "Email": "lgarabedian@genscape.com",
+      "FirstName": "Leonard",
+      "LastName": "Garabedian",
+      "Group": "Power",
+      "Location": "Boston"
+    },
+    "V8e19Rm3tce0jGzktGGjDRaZoql2": {
+      "Email": "matthew@commodityvectors.com",
+      "FirstName": "Matthew",
+      "LastName": "McDwyer",
+      "Group": "Maritime",
+      "Location": "London"
+    },
+    "gwm1DmyVM2hWmtFv4ymgT8VczUB2": {
+      "Email": "mbader@genscape.com",
+      "FirstName": "Matthew ",
+      "LastName": "Bader",
+      "Group": "OilAg",
+      "Location": "Louisville"
+    },
+    "CjyaPuAmm3at2jTq34SMjVJ8qW92": {
+      "Email": "mbhandari@genscape.com",
+      "FirstName": "Manish ",
+      "LastName": "Bhandari",
+      "Group": "Power",
+      "Location": "Boston"
+    },
+    "aGM61Yn0GTNKJ4NTzvOrb8zGht33": {
+      "Email": "mboyda@genscape.com",
+      "FirstName": "Matthew",
+      "LastName": "Boyda",
+      "Group": "Power",
+      "Location": "Austin"
+    },
+    "YFWJWQ5uqMVHesRVOb7G17vhxI03": {
+      "Email": "mburkley@genscape.com",
+      "FirstName": "Matthew ",
+      "LastName": "Burkley",
+      "Group": "CEO",
+      "Location": "Louisville"
+    },
+    "cOd86Kj4ZfNXJHkuuEDOFFyWoZv1": {
+      "Email": "mfrohme@genscape.com",
+      "FirstName": "Mike ",
+      "LastName": "Frohme",
+      "Group": "Infrastructure",
+      "Location": "Louisville"
+    },
+    "NLhkpQfjmEdjOSN5dDd9krswgHM2": {
+      "Email": "mgiliver@genscape.com",
+      "FirstName": "Marina",
+      "LastName": "Giliver ",
+      "Group": "Power",
+      "Location": "Boston"
+    },
+    "ZFtoewqvtDfvHmYr6HouveGy84Q2": {
+      "Email": "mgroenewegen@genscape.com",
+      "FirstName": "Martin ",
+      "LastName": "Groenewegen",
+      "Group": "Power",
+      "Location": "Amsterdam"
+    },
+    "AXLhAz8TIaVObjEeE8R5ij061nD3": {
+      "Email": "mleuschner@genscape.com",
+      "FirstName": "Martin ",
+      "LastName": "Leuschner",
+      "Group": "Maritime",
+      "Location": "Hamburg"
+    },
+    "nY3vKVsImeNFra3emIomqFGLx9k2": {
+      "Email": "mluites@genscape.com",
+      "FirstName": "Marjon",
+      "LastName": "Luites",
+      "Group": "power",
+      "Location": "Amsterdam"
+    },
+    "41qpMy9UGeYTLKUyDcmI9ixDJuQ2": {
+      "Email": "ncole@genscape.com",
+      "FirstName": "Nathan",
+      "LastName": "Cole",
+      "Group": "OilAg",
+      "Location": "Louisville"
+    },
+    "sc3YmwjNqMZsEpOq0IG6wrmhemC3": {
+      "Email": "nlowe@genscape.com",
+      "FirstName": "nick ",
+      "LastName": "lowe",
+      "Group": "Content Collection",
+      "Location": "Louisville"
+    },
+    "ntN7kBxTF7cG7IFGthzOqq9bnT23": {
+      "Email": "nsykes@genscape.com",
+      "FirstName": "Nick ",
+      "LastName": "Sykes",
+      "Group": "Power",
+      "Location": "Boston"
+    },
+    "qEoeGP4DEZOmhDdTkyAZdaZdnL72": {
+      "Email": "nthorell@genscape.com",
+      "FirstName": "Nathan ",
+      "LastName": "Thorell",
+      "Group": "Nat Gas",
+      "Location": "Boulder"
+    },
+    "2QsFDOxMEhVjPWiDmtII6jQzjYo2": {
+      "Email": "oalvarez@genscape.com",
+      "FirstName": "Omar ",
+      "LastName": "Alvarez",
+      "Group": "OilAg",
+      "Location": "Louisville"
+    },
+    "6Twjen0AjxSlSjwlNMcMZhGZDQQ2": {
+      "Email": "pmouat@genscape.com",
+      "FirstName": "Paulo ",
+      "LastName": "Mouat",
+      "Group": "Platform",
+      "Location": "Boston"
+    },
+    "2QqYHf8pp0cYe91EL4LY7k2Nupd2": {
+      "Email": "psteele@genscape.com",
+      "FirstName": "PJ ",
+      "LastName": "Steele",
+      "Group": "OilAg",
+      "Location": "Louisville"
+    },
+    "PyZZhHwGo9TfX8aVSsmUszBvPgC2": {
+      "Email": "rafael@commodityvectors.com",
+      "FirstName": "Rafael ",
+      "LastName": "Grilloabreu",
+      "Group": "Maritime",
+      "Location": "Dublin"
+    },
+    "L4UBXzayjROnhYUalTDpgn4DE2L2": {
+      "Email": "rbedwell@genscape.com",
+      "FirstName": "Richard",
+      "LastName": "Bedwell",
+      "Group": "Maritime",
+      "Location": "Hamburg"
+    },
+    "zQJzEVF0gfN6cDaV3LuEGKxDzkn2": {
+      "Email": "rbhatt@genscape.com",
+      "FirstName": "Rishee",
+      "LastName": "Bhatt",
+      "Group": "Power",
+      "Location": "Austin"
+    },
+    "5PKOkgTuthVQCsR9w7CkVBG5wlY2": {
+      "Email": "rkrupnik@genscape.com",
+      "FirstName": "Ross ",
+      "LastName": "Krupnik",
+      "Group": "Platform",
+      "Location": "Boston"
+    },
+    "hc7ziucg7wTkotbdDupGeFSE9Q02": {
+      "Email": "rkumar@genscape.com",
+      "FirstName": "Revathy",
+      "LastName": "Kumar",
+      "Group": "Infrastructure",
+      "Location": "Louisville"
+    },
+    "L7c3vrV1VUgxXoBVCYDl9gi0pRm2": {
+      "Email": "rnadar@genscape.com",
+      "FirstName": "Raja ",
+      "LastName": "Nadar",
+      "Group": "Spring Rock",
+      "Location": "Houston"
+    },
+    "7lEFs7Q3sFdjLKShsCxTPYUfpy53": {
+      "Email": "rransford@genscape.com",
+      "FirstName": "Ryan",
+      "LastName": "Ransford",
+      "Group": "Power",
+      "Location": "Louisville"
+    },
+    "bA2uETQmhuhlAKTmRqiDojiLIqB3": {
+      "Email": "salekha@genscape.com",
+      "FirstName": "Shruthi ",
+      "LastName": "Alekha",
+      "Group": "Power",
+      "Location": "Boston"
+    },
+    "TWiQg2wk29htVbC1CcKSmCeiQwS2": {
+      "Email": "sdegenhardt@genscape.com",
+      "FirstName": "Stephen",
+      "LastName": "Degenhardt",
+      "Group": "Platform",
+      "Location": "Boston"
+    },
+    "n1WQdCwKnKUsUTcro7zP4EPqEG83": {
+      "Email": "sergio@commodityvectors.com",
+      "FirstName": "Sergio",
+      "LastName": "Pelin Veloc",
+      "Group": "Maritime ",
+      "Location": "EU"
+    },
+    "OuY9HrcwsPP4XSC7275uLEGi5O63": {
+      "Email": "shawn@locusenergy.com",
+      "FirstName": "Shawn ",
+      "LastName": "Kerrigan",
+      "Group": "Locus",
+      "Location": "San Francisco"
+    },
+    "lif8DaN7OxQiU2brTa1zyRSVf9x2": {
+      "Email": "shill@genscape.com",
+      "FirstName": "Scott",
+      "LastName": "Hill",
+      "Group": "Infrastructure",
+      "Location": "Louisville"
+    },
+    "8GJ3gvD0KGQEhEYebVht8Ifv3t13": {
+      "Email": "smahendran@genscape.com",
+      "FirstName": "Sandeep ",
+      "LastName": "Mahendran",
+      "Group": "Platform",
+      "Location": "Boston"
+    },
+    "ymneVty9neMBakCY9IJJPfXmO742": {
+      "Email": "smoole@genscape.com",
+      "FirstName": "Siva ",
+      "LastName": "Moole",
+      "Group": "Power",
+      "Location": "Boston"
+    },
+    "rKITJB87cHg7ZjusT4rYC5M4Iyr2": {
+      "Email": "snarella@genscape.com",
+      "FirstName": "Sai ",
+      "LastName": "Narella",
+      "Group": "Platform",
+      "Location": "Louisville"
+    },
+    "BGICjBpKjAO8uWQUbJn7QqPehoa2": {
+      "Email": "srieder@genscape.com",
+      "FirstName": "Susann",
+      "LastName": "Rieder",
+      "Group": "Maritime",
+      "Location": "Hamburg"
+    },
+    "oMyM22xCdQVWcJ4MorJjYiZpTEv1": {
+      "Email": "ssanchez@genscape.com",
+      "FirstName": "Salas ",
+      "LastName": "Sanchez-Bennasar",
+      "Group": "NatGas",
+      "Location": "Boulder"
+    },
+    "FRf35IerkxQ4OiUn0bMVOVp27ZH2": {
+      "Email": "sstocki@genscape.com",
+      "FirstName": "Sylwester ",
+      "LastName": "Stocki",
+      "Group": "Maritime",
+      "Location": "Dublin"
+    },
+    "hw2C0tt6dXbgysLoLCJgsIJdicn1": {
+      "Email": "stoyan.stoyanov@scalefocus.com",
+      "FirstName": "Stoyan",
+      "LastName": "Stoyanov",
+      "Group": "ScaleFocus",
+      "Location": "Bulgaria"
+    },
+    "JhrrGYrsK3V4XYn2DlyRGKERdEs2": {
+      "Email": "sweigel@genscape.com",
+      "FirstName": "Sergio Daniel ",
+      "LastName": "Weigel",
+      "Group": "Maritime",
+      "Location": "Hamburg"
+    },
+    "z83PpAlwczZXxYPMbR4TIxW6GQJ3": {
+      "Email": "swilson@genscape.com",
+      "FirstName": "Scott ",
+      "LastName": "Wilson",
+      "Group": "Oil",
+      "Location": "Calgary"
+    },
+    "1v8ReeSQVPfu6Q0uJp3zCfbI37n1": {
+      "Email": "tcarr@genscape.com",
+      "FirstName": "Timothy",
+      "LastName": "Carr",
+      "Group": "NatGas",
+      "Location": "Boulder"
+    },
+    "1Xlm57PqIfgOm778AKgZ6vmMxnh2": {
+      "Email": "vneghina@genscape.com",
+      "FirstName": "Viorica",
+      "LastName": "Neghina",
+      "Group": "Pentalog",
+      "Location": "Romania"
+    },
+    "Q2qGUiawugc2sBkj9NpfPnfAX0G3": {
+      "Email": "wrobinson@genscape.com",
+      "FirstName": "Will ",
+      "LastName": "Robinson",
+      "Group": "OilAg",
+      "Location": "Louisville"
+    }
+  }
+}
