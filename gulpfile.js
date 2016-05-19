@@ -1,6 +1,7 @@
 var gulp = require('gulp');
 var typescript = require('typescript');
 var ts = require('gulp-typescript');
+var copy = require('gulp-copy');
 
 var tsSrcProject = ts.createProject({
     typescript: typescript,
@@ -16,10 +17,21 @@ var tsSrcProject = ts.createProject({
     stripInternal: true
 });
 
-gulp.task('build', function () {
+gulp.task('copy-libs', function () {
+    return gulp.src(
+        [
+            './node_modules/angular/angular.js'
+        ]
+    )
+        .pipe(copy('./public/scripts', { prefix: 2 }));
+});
+
+gulp.task('build', ['copy-libs'], function () {
        var tsResult = gulp
-        .src('./public/**/*.ts')
-        .pipe(ts(tsSrcProject));
+           .src([
+               './public/**/*.ts'
+           ])
+           .pipe(ts(tsSrcProject));
 
            tsResult.js
                .pipe(gulp.dest('./'))
