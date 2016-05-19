@@ -67,7 +67,7 @@ var GeoChat;
 (function (GeoChat) {
     var ChatCtrl = (function () {
         function ChatCtrl(DataService) {
-            this.messages = DataService.getMessages();
+            this.messages = DataService.messages;
         }
         ChatCtrl.$inject = ['DataService'];
         return ChatCtrl;
@@ -91,6 +91,7 @@ var GeoChat;
 /// <reference path="..\..\..\..\typings\firebase\firebase.d.ts" />
 /// <reference path="..\..\models\user.ts" />
 /// <reference path="..\..\models\message.ts" />
+/// <reference path="..\..\models\location.ts" />
 var GeoChat;
 (function (GeoChat) {
     var DataService = (function () {
@@ -116,23 +117,35 @@ var GeoChat;
         };
         DataService.prototype.setupMessages = function () {
             var _this = this;
-            this.ref.child("members").on("child_added", function (snapshot) {
-                _this.members.push(snapshot.val());
+            this.ref.child("messages").on("child_added", function (snapshot) {
+                _this.messages.push(snapshot.val());
                 console.log(snapshot.val());
             });
         };
         DataService.prototype.setupUsers = function () {
             var _this = this;
-            this.ref.child("messages").on("child_added", function (snapshot) {
-                _this.messages.push(snapshot.val());
+            this.ref.child("members").on("child_added", function (snapshot) {
+                _this.members.push(snapshot.val());
                 console.log(snapshot.val());
             });
-            this.ref.child("messages").on("child_changed", function (snapshot) {
+            this.ref.child("members").on("child_changed", function (snapshot) {
                 console.log(snapshot.val());
             });
-            this.ref.child("messages").on("child_removed", function (snapshot) {
+            this.ref.child("members").on("child_removed", function (snapshot) {
                 console.log(snapshot.val());
             });
+        };
+        DataService.prototype.addMessage = function (messageText) {
+            this.ref.child("messages").push().set({
+                email: 'user_email@test.com',
+                text: messageText,
+                timestamp: 'current_timestamp',
+                userId: 'current_user_id'
+            });
+        };
+        DataService.prototype.updateLocation = function (cur_location) {
+            this.ref.child("members/" + "user_id" + "/currentLocation/latitude").set(cur_location.latitude);
+            this.ref.child("members/" + "user_id" + "/currentLocation/longitude").set(cur_location.longitude);
         };
         DataService.prototype.getMessages = function () {
             // this.ref.child('rooms/room_one_guid/messages').on('value', function (snapshot) {

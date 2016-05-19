@@ -3,6 +3,7 @@
 /// <reference path="..\..\..\..\typings\firebase\firebase.d.ts" />
 /// <reference path="..\..\models\user.ts" />
 /// <reference path="..\..\models\message.ts" />
+/// <reference path="..\..\models\location.ts" />
 
 module GeoChat {
 
@@ -12,7 +13,7 @@ module GeoChat {
         public members: User[];
         public messages: Message[];
         public roomName: string;
-
+        
         
         constructor(){
             console.log('starting data service constructor');
@@ -37,23 +38,46 @@ module GeoChat {
         }
         
         setupMessages(){
-            this.ref.child("members").on("child_added", (snapshot) => {
-                this.members.push(snapshot.val());
+            this.ref.child("messages").on("child_added", (snapshot) => {
+                this.messages.push(snapshot.val());
                 console.log(snapshot.val());
             });
         }
         
         setupUsers(){
-            this.ref.child("messages").on("child_added", (snapshot) => {
-                this.messages.push(snapshot.val());
+            this.ref.child("members").on("child_added", (snapshot) => {
+                this.members.push(snapshot.val());
                 console.log(snapshot.val());
             });
-            this.ref.child("messages").on("child_changed", (snapshot) => {
+            this.ref.child("members").on("child_changed", (snapshot) => {
                 console.log(snapshot.val());
             });
-            this.ref.child("messages").on("child_removed", (snapshot) => {
+            this.ref.child("members").on("child_removed", (snapshot) => {
                 console.log(snapshot.val());
             });
+        }
+
+        addMessageAndTime(messageText: string, timespan: string){
+            this.ref.child("messages").push().set({
+                email: 'user_email@test.com',
+                text: messageText,
+                timestamp: timespan,
+                userId: 'current_user_id'
+            });
+        }
+        addMessage(messageText: string){
+            this.ref.child("messages").push().set({
+                email: 'user_email@test.com',
+                text: messageText,
+                timestamp: 'current_timestamp',
+                userId: 'current_user_id'
+            });
+        }
+        
+                
+        updateLocation(cur_location: GeoChat.Location){
+            this.ref.child("members/"+"user_id"+"/currentLocation/latitude").set( cur_location.latitude);
+            this.ref.child("members/"+"user_id"+"/currentLocation/longitude").set(cur_location.longitude);
         }
 
         getMessages(): any {
