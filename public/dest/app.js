@@ -67,7 +67,7 @@ var GeoChat;
 (function (GeoChat) {
     var ChatCtrl = (function () {
         function ChatCtrl(DataService) {
-            this.messages = DataService.getMessages();
+            this.messages = DataService.messages;
         }
         ChatCtrl.$inject = ['DataService'];
         return ChatCtrl;
@@ -117,21 +117,21 @@ var GeoChat;
         };
         DataService.prototype.setupMessages = function () {
             var _this = this;
-            this.ref.child("members").on("child_added", function (snapshot) {
-                _this.members.push(snapshot.val());
+            this.ref.child("messages").on("child_added", function (snapshot) {
+                _this.messages.push(snapshot.val());
                 console.log(snapshot.val());
             });
         };
         DataService.prototype.setupUsers = function () {
             var _this = this;
-            this.ref.child("messages").on("child_added", function (snapshot) {
-                _this.messages.push(snapshot.val());
+            this.ref.child("members").on("child_added", function (snapshot) {
+                _this.members.push(snapshot.val());
                 console.log(snapshot.val());
             });
-            this.ref.child("messages").on("child_changed", function (snapshot) {
+            this.ref.child("members").on("child_changed", function (snapshot) {
                 console.log(snapshot.val());
             });
-            this.ref.child("messages").on("child_removed", function (snapshot) {
+            this.ref.child("members").on("child_removed", function (snapshot) {
                 console.log(snapshot.val());
             });
         };
@@ -188,7 +188,6 @@ var GeoChat;
             this.DataService = DataService;
             this.isMapReady = false;
             this.map = { center: { latitude: 36.1749700, longitude: -115.1372200 }, zoom: 14 };
-            this.DataService.updateLocation({ latitude: 36.1749700, longitude: -115.1372200 });
         }
         MapCtrl.$inject = ['DataService'];
         return MapCtrl;
