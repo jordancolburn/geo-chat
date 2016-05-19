@@ -1,0 +1,30 @@
+{
+  "name": "GeoChat",
+  "version": "1.0.0",
+  "description": "\"# geo-chat\"",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jordancolburn/geo-chat.git"
+  },
+  "keywords": [
+    "geo",
+    "chat"
+  ],
+  "author": "Gencscape Team 8",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jordancolburn/geo-chat/issues"
+  },
+  "homepage": "https://github.com/jordancolburn/geo-chat",
+  "devDependencies": {
+    "gulp": "^3.9.1"
+  },
+  "dependencies": {
+    "gulp-typescript": "^2.13.4",
+    "typescript": "^1.8.10"
+  }
+}
