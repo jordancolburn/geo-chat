@@ -91,6 +91,7 @@ var GeoChat;
 /// <reference path="..\..\..\..\typings\firebase\firebase.d.ts" />
 /// <reference path="..\..\models\user.ts" />
 /// <reference path="..\..\models\message.ts" />
+/// <reference path="..\..\models\location.ts" />
 var GeoChat;
 (function (GeoChat) {
     var DataService = (function () {
@@ -142,6 +143,10 @@ var GeoChat;
                 userId: 'current_user_id'
             });
         };
+        DataService.prototype.updateLocation = function (cur_location) {
+            this.ref.child("members/" + "user_id" + "/currentLocation/latitude").set(cur_location.latitude);
+            this.ref.child("members/" + "user_id" + "/currentLocation/longitude").set(cur_location.longitude);
+        };
         DataService.prototype.getMessages = function () {
             // this.ref.child('rooms/room_one_guid/messages').on('value', function (snapshot) {
             //     // snapshot.val()
@@ -183,7 +188,7 @@ var GeoChat;
             this.DataService = DataService;
             this.isMapReady = false;
             this.map = { center: { latitude: 36.1749700, longitude: -115.1372200 }, zoom: 14 };
-            this.DataService.addMessage('This is my test message');
+            this.DataService.updateLocation({ latitude: 36.1749700, longitude: -115.1372200 });
         }
         MapCtrl.$inject = ['DataService'];
         return MapCtrl;

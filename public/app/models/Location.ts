@@ -1,8 +1,8 @@
 module GeoChat {
 
     export class Location {
-        lat: number;
-        long: number;
+        latitude: number;
+        longitude: number;
     }
 
 }
