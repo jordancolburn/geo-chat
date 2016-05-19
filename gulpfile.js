@@ -21,13 +21,32 @@ gulp.task('copy-libs', function () {
     return gulp.src(
         [
             './node_modules/angular/angular.min.js',
-            "./node_modules/angular-route/angular-route.min.js"
+            './node_modules/angular-route/angular-route.min.js',
+            './node_modules/bootstrap/dist/js/bootstrap.min.js',
+            './node_modules/jquery/dist/jquery.min.js'
         ]
     )
         .pipe(copy('./public/scripts', { prefix: 2 }));
 });
+gulp.task('copy-styles', function () {
+    return gulp.src(
+        [
+            './node_modules/bootstrap/dist/css/bootstrap.min.css'
+        ]
+    )
+        .pipe(copy('./public/styles', { prefix: 2 }));
+});
 
-gulp.task('build', ['copy-libs'], function () {
+gulp.task('copy-fonts', function () {
+    return gulp.src(
+        [
+            './node_modules/bootstrap/dist/fonts/**/'
+        ]
+    )
+        .pipe(copy('./public/fonts', { prefix: 2 }));
+});
+
+gulp.task('build', ['copy-libs', 'copy-styles', 'copy-fonts'], function () {
        var tsResult = gulp
            .src([
                './public/**/*.ts'
