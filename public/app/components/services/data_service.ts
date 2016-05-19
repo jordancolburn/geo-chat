@@ -37,21 +37,21 @@ module GeoChat {
         }
         
         setupMessages(){
-            this.ref.child("members").on("child_added", (snapshot) => {
-                this.members.push(snapshot.val());
+            this.ref.child("messages").on("child_added", (snapshot) => {
+                this.messages.push(snapshot.val());
                 console.log(snapshot.val());
             });
         }
         
         setupUsers(){
-            this.ref.child("messages").on("child_added", (snapshot) => {
-                this.messages.push(snapshot.val());
+            this.ref.child("members").on("child_added", (snapshot) => {
+                this.members.push(snapshot.val());
                 console.log(snapshot.val());
             });
-            this.ref.child("messages").on("child_changed", (snapshot) => {
+            this.ref.child("members").on("child_changed", (snapshot) => {
                 console.log(snapshot.val());
             });
-            this.ref.child("messages").on("child_removed", (snapshot) => {
+            this.ref.child("members").on("child_removed", (snapshot) => {
                 console.log(snapshot.val());
             });
         }

@@ -8,7 +8,7 @@ module GeoChat {
 
         constructor(DataService)
         { 
-             this.messages = DataService.getMessages();
+             this.messages = DataService.messages;
         }
 
     }
