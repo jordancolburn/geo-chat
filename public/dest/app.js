@@ -109,12 +109,22 @@ var GeoChat;
         controllerAs: "vm"
     }); });
 })(GeoChat || (GeoChat = {}));
+/// <reference path="..\..\app.ts" />
 var GeoChat;
 (function (GeoChat) {
     var DataService = (function () {
-        function DataService() {
+        function DataService(firebaseArray) {
+            this.firebaseArray = firebaseArray;
+            this.ref = new Firebase("https://geo-chat-fe90d.firebaseio.com/");
         }
+        DataService.prototype.getRooms = function () {
+            this.ref.child("rooms").on("value", function (snapshot) {
+                alert(snapshot.val());
+            });
+        };
+        DataService.inject = ['$firebaseArray'];
         return DataService;
     }());
     GeoChat.DataService = DataService;
+    GeoChat.geoChatApp.service('DataService', DataService);
 })(GeoChat || (GeoChat = {}));
