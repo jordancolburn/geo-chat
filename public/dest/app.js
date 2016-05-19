@@ -134,6 +134,14 @@ var GeoChat;
                 console.log(snapshot.val());
             });
         };
+        DataService.prototype.addMessage = function (messageText) {
+            this.ref.child("messages").push().set({
+                email: 'user_email@test.com',
+                text: messageText,
+                timestamp: 'current_timestamp',
+                userId: 'current_user_id'
+            });
+        };
         DataService.prototype.getMessages = function () {
             // this.ref.child('rooms/room_one_guid/messages').on('value', function (snapshot) {
             //     // snapshot.val()
@@ -175,6 +183,7 @@ var GeoChat;
             this.DataService = DataService;
             this.isMapReady = false;
             this.map = { center: { latitude: 36.1749700, longitude: -115.1372200 }, zoom: 14 };
+            this.DataService.addMessage('This is my test message');
         }
         MapCtrl.$inject = ['DataService'];
         return MapCtrl;

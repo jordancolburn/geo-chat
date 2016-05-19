@@ -12,7 +12,7 @@ module GeoChat {
         public members: User[];
         public messages: Message[];
         public roomName: string;
-
+        
         
         constructor(){
             console.log('starting data service constructor');
@@ -53,6 +53,15 @@ module GeoChat {
             });
             this.ref.child("messages").on("child_removed", (snapshot) => {
                 console.log(snapshot.val());
+            });
+        }
+        
+        addMessage(messageText: string){
+            this.ref.child("messages").push().set({
+                email: 'user_email@test.com',
+                text: messageText,
+                timestamp: 'current_timestamp',
+                userId: 'current_user_id'
             });
         }
 
