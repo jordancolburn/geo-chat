@@ -86,13 +86,35 @@ var GeoChat;
     }); });
 })(GeoChat || (GeoChat = {}));
 /// <reference path="..\..\app.ts" />
+/// <reference path="..\..\..\..\typings\firebase\firebase.d.ts" />
+var GeoChat;
+(function (GeoChat) {
+    var DataService = (function () {
+        function DataService() {
+            this.ref = new Firebase("https://geo-chat-fe90d.firebaseio.com/");
+        }
+        DataService.prototype.getRooms = function () {
+            this.ref.child("rooms").on("value", function (snapshot) {
+                console.log(snapshot.val());
+            });
+        };
+        DataService.inject = [];
+        return DataService;
+    }());
+    GeoChat.DataService = DataService;
+    GeoChat.geoChatApp.service('DataService', DataService);
+})(GeoChat || (GeoChat = {}));
+/// <reference path="..\..\app.ts" />
+/// <reference path="..\services\data_service.ts" />
 var GeoChat;
 (function (GeoChat) {
     var MapCtrl = (function () {
-        function MapCtrl() {
+        function MapCtrl(DataService) {
+            this.DataService = DataService;
             this.map = { center: { latitude: 45, longitude: -73 }, zoom: 8 };
+            this.DataService.getRooms();
         }
-        MapCtrl.$inject = [];
+        MapCtrl.$inject = ['DataService'];
         return MapCtrl;
     }());
     GeoChat.MapCtrl = MapCtrl;
@@ -108,13 +130,4 @@ var GeoChat;
         controller: GeoChat.MapCtrl,
         controllerAs: "vm"
     }); });
-})(GeoChat || (GeoChat = {}));
-var GeoChat;
-(function (GeoChat) {
-    var DataService = (function () {
-        function DataService() {
-        }
-        return DataService;
-    }());
-    GeoChat.DataService = DataService;
 })(GeoChat || (GeoChat = {}));
