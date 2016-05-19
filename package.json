@@ -24,6 +24,8 @@
     "gulp": "^3.9.1"
   },
   "dependencies": {
+    "angular": "^1.5.5",
+    "angular-typescript": "0.0.8",
     "gulp-typescript": "^2.13.4",
     "typescript": "^1.8.10"
   }
