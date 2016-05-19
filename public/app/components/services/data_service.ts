@@ -55,7 +55,15 @@ module GeoChat {
                 console.log(snapshot.val());
             });
         }
-        
+
+        addMessageAndTime(messageText: string, timespan: string){
+            this.ref.child("messages").push().set({
+                email: 'user_email@test.com',
+                text: messageText,
+                timestamp: timespan,
+                userId: 'current_user_id'
+            });
+        }
         addMessage(messageText: string){
             this.ref.child("messages").push().set({
                 email: 'user_email@test.com',
