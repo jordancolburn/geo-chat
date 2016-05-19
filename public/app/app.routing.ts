@@ -1,4 +1,4 @@
-/// <reference path="..\node_modules\angular-typescript\ts\definitely-typed\angularjs\angular.d.ts" />
+/// <reference path="..\..\node_modules\angular-typescript\ts\definitely-typed\angularjs\angular.d.ts" />
 /// <reference path="app.ts" />
 
 module GeoChat {
