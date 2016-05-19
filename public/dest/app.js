@@ -1,7 +1,7 @@
 /// <reference path="..\..\node_modules\angular-typescript\ts\definitely-typed\angularjs\angular.d.ts" />
 var GeoChat;
 (function (GeoChat) {
-    GeoChat.geoChatApp = angular.module("geo.chat", ['ngRoute', 'uiGmapgoogle-maps', 'angularfire']);
+    GeoChat.geoChatApp = angular.module("geo.chat", ['ngRoute', 'firebase']);
 })(GeoChat || (GeoChat = {}));
 /// <reference path="..\..\node_modules\angular-typescript\ts\definitely-typed\angularjs\angular.d.ts" />
 /// <reference path="app.ts" />
@@ -108,4 +108,13 @@ var GeoChat;
         controller: GeoChat.MapCtrl,
         controllerAs: "vm"
     }); });
+})(GeoChat || (GeoChat = {}));
+var GeoChat;
+(function (GeoChat) {
+    var DataService = (function () {
+        function DataService() {
+        }
+        return DataService;
+    }());
+    GeoChat.DataService = DataService;
 })(GeoChat || (GeoChat = {}));
