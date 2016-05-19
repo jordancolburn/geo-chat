@@ -66,9 +66,10 @@ var GeoChat;
 var GeoChat;
 (function (GeoChat) {
     var ChatCtrl = (function () {
-        function ChatCtrl() {
+        function ChatCtrl(DataService) {
+            this.messages = DataService.getMessages();
         }
-        ChatCtrl.$inject = [];
+        ChatCtrl.$inject = ['DataService'];
         return ChatCtrl;
     }());
     GeoChat.ChatCtrl = ChatCtrl;
@@ -95,6 +96,11 @@ var GeoChat;
         }
         DataService.prototype.getRooms = function () {
             this.ref.child("rooms").on("value", function (snapshot) {
+                console.log(snapshot.val());
+            });
+        };
+        DataService.prototype.getMessages = function () {
+            this.ref.child('rooms/room_one_guid/messages').on('value', function (snapshot) {
                 console.log(snapshot.val());
             });
         };
