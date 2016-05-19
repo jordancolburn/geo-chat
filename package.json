@@ -21,7 +21,8 @@
   },
   "homepage": "https://github.com/jordancolburn/geo-chat",
   "devDependencies": {
-    "gulp": "^3.9.1"
+    "gulp": "^3.9.1",
+    "gulp-copy": "0.0.2"
   },
   "dependencies": {
     "angular": "^1.5.5",
