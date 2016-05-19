@@ -6,7 +6,7 @@ var copy = require('gulp-copy');
 var tsSrcProject = ts.createProject({
     typescript: typescript,
     out: './public/dest/app.js',
-    noImplicitAny: true,
+    noImplicitAny: false,
     sortOutput: true,
     removeComments: false,
     target: 'es5',

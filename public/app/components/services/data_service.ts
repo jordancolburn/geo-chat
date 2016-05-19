@@ -17,6 +17,12 @@ module GeoChat {
                 console.log(snapshot.val());
             });
         }
+
+        getMessages(): any {
+            this.ref.child('rooms/room_one_guid/messages').on('value', function (snapshot) {
+                console.log(snapshot.val());
+            });
+        }
         
     }
     
