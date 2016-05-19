@@ -87,18 +87,52 @@ var GeoChat;
 })(GeoChat || (GeoChat = {}));
 /// <reference path="..\..\app.ts" />
 /// <reference path="..\..\..\..\typings\firebase\firebase.d.ts" />
+/// <reference path="..\..\..\..\typings\firebase\firebase.d.ts" />
+/// <reference path="..\..\models\user.ts" />
+/// <reference path="..\..\models\message.ts" />
 var GeoChat;
 (function (GeoChat) {
     var DataService = (function () {
         function DataService() {
-            this.ref = new Firebase("https://geo-chat-fe90d.firebaseio.com/");
+            console.log('starting data service constructor');
+            this.changeRoom('room_one_guid');
+            this.members = [];
+            this.messages = [];
+            this.getMessages();
+            this.getUsers();
+            this.getRoomName();
         }
-        DataService.prototype.getRooms = function () {
-            this.ref.child("rooms").on("value", function (snapshot) {
+        DataService.prototype.changeRoom = function (roomId) {
+            this.roomId = roomId;
+            this.ref = new Firebase("https://geo-chat-fe90d.firebaseio.com/rooms/" + this.roomId);
+        };
+        DataService.prototype.getRoomName = function () {
+            var _this = this;
+            this.ref.child("name").on("child_added", function (snapshot) {
+                _this.roomName = snapshot.val();
                 console.log(snapshot.val());
             });
         };
-        DataService.inject = [];
+        DataService.prototype.getMessages = function () {
+            var _this = this;
+            this.ref.child("members").on("child_added", function (snapshot) {
+                _this.members.push(snapshot.val());
+                console.log(snapshot.val());
+            });
+        };
+        DataService.prototype.getUsers = function () {
+            var _this = this;
+            this.ref.child("messages").on("child_added", function (snapshot) {
+                _this.messages.push(snapshot.val());
+                console.log(snapshot.val());
+            });
+            this.ref.child("messages").on("child_changed", function (snapshot) {
+                console.log(snapshot.val());
+            });
+            this.ref.child("messages").on("child_removed", function (snapshot) {
+                console.log(snapshot.val());
+            });
+        };
         return DataService;
     }());
     GeoChat.DataService = DataService;
@@ -112,7 +146,6 @@ var GeoChat;
         function MapCtrl(DataService) {
             this.DataService = DataService;
             this.map = { center: { latitude: 45, longitude: -73 }, zoom: 8 };
-            this.DataService.getRooms();
         }
         MapCtrl.$inject = ['DataService'];
         return MapCtrl;

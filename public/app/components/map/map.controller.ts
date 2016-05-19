@@ -11,7 +11,6 @@ module GeoChat {
         
         constructor(private DataService: DataService) {
             this.map = { center: { latitude: 45, longitude: -73 }, zoom: 8 };
-            this.DataService.getRooms();
         }
 
     }
