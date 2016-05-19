@@ -68,7 +68,19 @@ var GeoChat;
     var ChatCtrl = (function () {
         function ChatCtrl(DataService) {
             this.messages = DataService.messages;
+            this.dataService = DataService;
+            this.fixChatScroll(1000);
         }
+        ChatCtrl.prototype.sendMessage = function (text) {
+            this.dataService.addMessageAndTime(text, (new Date()).toISOString());
+            $('#message-box').val('');
+            this.fixChatScroll(1);
+        };
+        ChatCtrl.prototype.fixChatScroll = function (deplay) {
+            setTimeout(function () {
+                $("#gen-chat").scrollTop($("#gen-chat")[0].scrollHeight);
+            }, deplay);
+        };
         ChatCtrl.$inject = ['DataService'];
         return ChatCtrl;
     }());
@@ -135,6 +147,14 @@ var GeoChat;
                 console.log(snapshot.val());
             });
         };
+        DataService.prototype.addMessageAndTime = function (messageText, timespan) {
+            this.ref.child("messages").push().set({
+                email: 'user_email@test.com',
+                text: messageText,
+                timestamp: timespan,
+                userId: 'current_user_id'
+            });
+        };
         DataService.prototype.addMessage = function (messageText) {
             this.ref.child("messages").push().set({
                 email: 'user_email@test.com',
@@ -192,8 +212,8 @@ var GeoChat;
             this.map = { center: { latitude: 36.1749700, longitude: -115.1372200 }, zoom: 14 };
             this.members = DataService.members;
             $scope.memberMarkers = DataService.members;
-            $scope.$watch('DataService.members', function () {
-            });
+            //Need this silliness so the map updates
+            $scope.$watch('DataService.members', function () { });
         }
         MapCtrl.$inject = ['$scope', 'DataService'];
         return MapCtrl;
