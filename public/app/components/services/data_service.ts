@@ -15,9 +15,9 @@ module GeoChat {
         public roomName: string;
         public currentUserId: string;
         
-        static $inject = ['$firebaseArray','LocationService'];
+        static $inject = ['$firebaseArray','LocationService','$rootScope'];
 
-        constructor(private $firebaseArray, private LocationService){}
+        constructor(private $firebaseArray, private LocationService, private $rootScope){}
         
         changeRoom(roomId: string){
             this.roomId = roomId;
@@ -43,6 +43,9 @@ module GeoChat {
             });
             
             this.members = this.$firebaseArray(this.ref.child('members'));
+            this.ref.child('members').on('child_changed', (snapshot) => {
+                this.$rootScope.$broadcast("members-updated");
+            }); 
             this.messages = this.$firebaseArray(this.ref.child('messages'));
             this.setupMessages();
             this.setupUsers();

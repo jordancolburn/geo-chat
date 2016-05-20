@@ -9,11 +9,12 @@ module GeoChat {
         private icons = [];
         private map = { center: { latitude: 36.103, longitude: -115.1745 }, zoom: 18, control: {} };
 
-        public static $inject = ['$scope', 'DataService', 'uiGmapIsReady', 'LocationService'];
+        public static $inject = ['$scope', 'DataService', 'uiGmapIsReady', 'LocationService', '$rootScope'];
         
-        constructor(private $scope: any, private DataService: DataService, private IsReady: any, private LocationService: LocationService) {
+        constructor(private $scope: any, private DataService: DataService, private IsReady: any, private LocationService: LocationService, private $rootScope: any) {
             $scope.memberMarkers = DataService.members;
             $scope.$watch('memberMarkers',() => {});
+            console.log(DataService.members);
             IsReady.promise().then((maps) => {
                 var map = this.map.control.getGMap();
                 var GeoMarker = new GeolocationMarker(map);
@@ -23,6 +24,11 @@ module GeoChat {
                         this.map.center.longitude = position.coords.longitude;
                     });
                 }
+                this.$rootScope.$on("members-updated", () => {
+                    console.log('members-updated');
+                    $scope.memberMarkers = [];
+                    $scope.memberMarkers = DataService.members;
+                });
                 setInterval(() => {
                     DataService.updateLocation(LocationService.getLocation());
                 }, 15000);

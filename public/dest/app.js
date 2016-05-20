@@ -79,9 +79,10 @@ var GeoChat;
 var GeoChat;
 (function (GeoChat) {
     var DataService = (function () {
-        function DataService($firebaseArray, LocationService) {
+        function DataService($firebaseArray, LocationService, $rootScope) {
             this.$firebaseArray = $firebaseArray;
             this.LocationService = LocationService;
+            this.$rootScope = $rootScope;
         }
         DataService.prototype.changeRoom = function (roomId) {
             var _this = this;
@@ -106,6 +107,9 @@ var GeoChat;
                 }
             });
             this.members = this.$firebaseArray(this.ref.child('members'));
+            this.ref.child('members').on('child_changed', function (snapshot) {
+                _this.$rootScope.$broadcast("members-updated");
+            });
             this.messages = this.$firebaseArray(this.ref.child('messages'));
             this.setupMessages();
             this.setupUsers();
@@ -166,7 +170,7 @@ var GeoChat;
         DataService.prototype.updateLocation = function (cur_location) {
             this.ref.child("members/" + this.currentUserId + "/currentLocation").update(cur_location);
         };
-        DataService.$inject = ['$firebaseArray', 'LocationService'];
+        DataService.$inject = ['$firebaseArray', 'LocationService', '$rootScope'];
         return DataService;
     }());
     GeoChat.DataService = DataService;
@@ -368,17 +372,19 @@ var GeoChat;
 var GeoChat;
 (function (GeoChat) {
     var MapCtrl = (function () {
-        function MapCtrl($scope, DataService, IsReady, LocationService) {
+        function MapCtrl($scope, DataService, IsReady, LocationService, $rootScope) {
             var _this = this;
             this.$scope = $scope;
             this.DataService = DataService;
             this.IsReady = IsReady;
             this.LocationService = LocationService;
+            this.$rootScope = $rootScope;
             this.isMapReady = false;
             this.icons = [];
             this.map = { center: { latitude: 36.103, longitude: -115.1745 }, zoom: 18, control: {} };
             $scope.memberMarkers = DataService.members;
             $scope.$watch('memberMarkers', function () { });
+            console.log(DataService.members);
             IsReady.promise().then(function (maps) {
                 var map = _this.map.control.getGMap();
                 var GeoMarker = new GeolocationMarker(map);
@@ -388,6 +394,11 @@ var GeoChat;
                         _this.map.center.longitude = position.coords.longitude;
                     });
                 }
+                _this.$rootScope.$on("members-updated", function () {
+                    console.log('members-updated');
+                    $scope.memberMarkers = [];
+                    $scope.memberMarkers = DataService.members;
+                });
                 setInterval(function () {
                     DataService.updateLocation(LocationService.getLocation());
                 }, 15000);
@@ -419,7 +430,7 @@ var GeoChat;
             console.log(icons);
             console.log(this.DataService.members);
         };
-        MapCtrl.$inject = ['$scope', 'DataService', 'uiGmapIsReady', 'LocationService'];
+        MapCtrl.$inject = ['$scope', 'DataService', 'uiGmapIsReady', 'LocationService', '$rootScope'];
         return MapCtrl;
     }());
     GeoChat.MapCtrl = MapCtrl;
