@@ -126,7 +126,7 @@ var GeoChat;
             var _this = this;
             this.ref.child("name").on("child_added", function (snapshot) {
                 _this.roomName = snapshot.val();
-                console.log(snapshot.val());
+                //console.log(snapshot.val());
             });
         };
         DataService.prototype.setupMessages = function () {
@@ -134,20 +134,20 @@ var GeoChat;
             this.ref.child("messages").on("child_added", function (snapshot) {
                 _this.messages.push(snapshot.val());
                 $('#gen-chat').trigger('newMessageAdded');
-                console.log(snapshot.val());
+                //console.log(snapshot.val());
             });
         };
         DataService.prototype.setupUsers = function () {
             var _this = this;
             this.ref.child("members").on("child_added", function (snapshot) {
                 _this.members.push(snapshot.val());
-                console.log(snapshot.val());
+                //console.log(snapshot.val());
             });
             this.ref.child("members").on("child_changed", function (snapshot) {
-                console.log(snapshot.val());
+                //console.log(snapshot.val());
             });
             this.ref.child("members").on("child_removed", function (snapshot) {
-                console.log(snapshot.val());
+                //console.log(snapshot.val());
             });
         };
         DataService.prototype.addMessageAndTime = function (messageText, timespan, location) {
@@ -316,17 +316,6 @@ var GeoChat;
     }); });
 })(GeoChat || (GeoChat = {}));
 /// <reference path="..\..\app.ts" />
-/// <reference path="login.controller.ts" />
-var GeoChat;
-(function (GeoChat) {
-    GeoChat.geoChatApp.directive("login", function () { return ({
-        restrict: "AE",
-        templateUrl: "app/components/login/login.tpl.html",
-        controller: GeoChat.LoginCtrl,
-        controllerAs: "vm"
-    }); });
-})(GeoChat || (GeoChat = {}));
-/// <reference path="..\..\app.ts" />
 /// <reference path="..\..\..\..\typings\firebase\firebase.d.ts" />
 /// <reference path="..\..\..\..\typings\firebase\firebase.d.ts" />
 /// <reference path="..\..\models\user.ts" />
@@ -384,6 +373,7 @@ var GeoChat;
             this.icons = [];
             this.map = { center: { latitude: 36.1749700, longitude: -115.1372200 }, zoom: 14, control: {} };
             $scope.memberMarkers = DataService.members;
+            console.log(DataService.members);
             $scope.$watch('memberMarkers', function () {
                 //this.updateIcons();
             });
@@ -442,6 +432,17 @@ var GeoChat;
         restrict: "AE",
         templateUrl: "app/components/profile/profile.tpl.html",
         controller: GeoChat.ProfileCtrl,
+        controllerAs: "vm"
+    }); });
+})(GeoChat || (GeoChat = {}));
+/// <reference path="..\..\app.ts" />
+/// <reference path="login.controller.ts" />
+var GeoChat;
+(function (GeoChat) {
+    GeoChat.geoChatApp.directive("login", function () { return ({
+        restrict: "AE",
+        templateUrl: "app/components/login/login.tpl.html",
+        controller: GeoChat.LoginCtrl,
         controllerAs: "vm"
     }); });
 })(GeoChat || (GeoChat = {}));
