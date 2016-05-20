@@ -93,7 +93,10 @@ var GeoChat;
                 var hasUser = snapshot.hasChild(_this.currentUserId);
                 if (!hasUser) {
                     var users_ref = new Firebase("https://geo-chat-fe90d.firebaseio.com/users");
-                    var colors = ['red', 'green', 'blue', 'orange', 'DarkBlue', 'Navy', 'Indigo', 'OliveDrab', 'DarkRed', 'Sienna'];
+                    var colors = ['red', 'green', 'blue', 'orange', 'DarkBlue', 'Navy',
+                        'Indigo', 'OliveDrab', 'DarkRed', 'Sienna', 'Chocolate',
+                        'Orchid'
+                    ];
                     users_ref.child(_this.currentUserId).once("value", function (snapshot) {
                         _this.ref.child('members' + '/' + _this.currentUserId).set({
                             id: _this.currentUserId,
