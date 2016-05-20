@@ -28,6 +28,7 @@ module GeoChat {
                 var hasUser = snapshot.hasChild(this.currentUserId);
                 if (!hasUser){
                     var users_ref = new Firebase("https://geo-chat-fe90d.firebaseio.com/users");
+                    var colors = ['red', 'green', 'blue', 'orange', 'DarkBlue', 'Navy', 'Indigo', 'OliveDrab', 'DarkRed', 'Sienna'];
                     users_ref.child(this.currentUserId).once("value", (snapshot) => {
                         this.ref.child('members' + '/' + this.currentUserId).set({
                             id: this.currentUserId,
@@ -36,7 +37,8 @@ module GeoChat {
                             lastName: snapshot.val().LastName,
                             group: snapshot.val().Group,
                             textLocation: snapshot.val().Location,
-                            currentLocation: this.LocationService.getLocation()
+                            currentLocation: this.LocationService.getLocation(),
+                            color: colors[Math.floor(Math.random() * colors.length)]
                         });           
                     });
                 }

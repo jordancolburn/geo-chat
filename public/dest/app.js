@@ -93,6 +93,7 @@ var GeoChat;
                 var hasUser = snapshot.hasChild(_this.currentUserId);
                 if (!hasUser) {
                     var users_ref = new Firebase("https://geo-chat-fe90d.firebaseio.com/users");
+                    var colors = ['red', 'green', 'blue', 'orange', 'DarkBlue', 'Navy', 'Indigo', 'OliveDrab', 'DarkRed', 'Sienna'];
                     users_ref.child(_this.currentUserId).once("value", function (snapshot) {
                         _this.ref.child('members' + '/' + _this.currentUserId).set({
                             id: _this.currentUserId,
@@ -101,7 +102,8 @@ var GeoChat;
                             lastName: snapshot.val().LastName,
                             group: snapshot.val().Group,
                             textLocation: snapshot.val().Location,
-                            currentLocation: _this.LocationService.getLocation()
+                            currentLocation: _this.LocationService.getLocation(),
+                            color: colors[Math.floor(Math.random() * colors.length)]
                         });
                     });
                 }
@@ -266,11 +268,18 @@ var GeoChat;
             $('#gen-chat').on('newMessageAdded', function () {
                 _this.fixChatScroll(1000);
             });
+            $('#message-box').keydown(function (e) {
+                if (e.keyCode === 13) {
+                    _this.sendMessage($('#message-box').val().trim());
+                }
+            });
         }
         ChatCtrl.prototype.sendMessage = function (text) {
-            this.dataService.addMessageAndTime(text, (new Date()).toISOString(), this.locationService.getLocation());
-            $('#message-box').val('');
-            this.fixChatScroll(1);
+            if (text !== '') {
+                this.dataService.addMessageAndTime(text, (new Date()).toISOString(), this.locationService.getLocation());
+                $('#message-box').val('');
+                this.fixChatScroll(1);
+            }
         };
         ChatCtrl.prototype.fixChatScroll = function (delay) {
             setTimeout(function () {
