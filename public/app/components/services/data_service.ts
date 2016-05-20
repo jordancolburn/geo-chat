@@ -25,7 +25,7 @@ module GeoChat {
             this.currentUserId = window.localStorage.getItem('userId');
     
             this.ref.child('members').once("value", (snapshot) => {
-                var hasUser = snapshot.hasChild(this.currentUserId);
+                var hasUser = snapshot.hasChild(this.currentUserId + '/color');
                 if (!hasUser){
                     var users_ref = new Firebase("https://geo-chat-fe90d.firebaseio.com/users");
                     var colors = ['red', 'green', 'blue', 'orange', 'DarkBlue', 'Navy',
