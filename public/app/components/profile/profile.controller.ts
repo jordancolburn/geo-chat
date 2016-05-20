@@ -7,7 +7,7 @@
 /// <reference path="..\..\models\location.ts" />
 module GeoChat {
 
-    export class LoginCtrl {
+    export class ProfileCtrl {
         //public static $inject = [ 'DataService'];
         private ref: Firebase;
 
@@ -20,21 +20,27 @@ module GeoChat {
                 storageBucket: "geo-chat-fe90d.appspot.com",
             };
             firebase.initializeApp(config);
+            alert(firebase.auth().currentUser.uid);
         }
         
-        login(email:string,password:string)
+        load()
+        {
+            
+        }
+        
+        /*login(email:string,password:string)
         {   
-            firebase.auth().signInWithEmailAndPassword(email, password).then(function(authData) {
-                alert('Logged in!' + authData.uid);
-                window.localStorage.setItem('userId', authData.uid);
+            firebase.auth().signInWithEmailAndPassword(email, password).then(function() {
+                alert('Logged in!');
                 window.location = '/';
+                alert(firebase.auth().currentUser.uid)
             }).catch(function(error){
                alert(error); 
             });
-        }
+        }*/
 
     }
 
-    geoChatApp.controller("LoginCtrl", LoginCtrl);
+    geoChatApp.controller("ProfileCtrl", ProfileCtrl);
 
 }

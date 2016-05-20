@@ -2,6 +2,8 @@
 /// <reference path="app.ts" />
 /// <reference path="components\login\login.controller.ts" />
 /// <reference path="components\room\room.controller.ts" />
+/// <reference path="components\profile\profile.controller.ts" />
+
 
 module GeoChat {
 
@@ -19,10 +21,16 @@ module GeoChat {
                     caseInsensitiveMatch: true
                 }).
                 when("/room/:roomId", {
-                    templateUrl: "app/components/room/room.tpl.html",
+                     templateUrl: "app/components/room/room.tpl.html",
                     controller: RoomCtrl,
                     caseInsensitiveMatch: true
                 }).               
+                  when("/profile", {
+                    templateUrl: "app/components/profile/profile.tpl.html",
+                    controller: ProfileCtrl,
+                    controllerAs: "vm",
+                    caseInsensitiveMatch: true
+                }).
                 otherwise({
                     redirectTo: "/room/room_one_guid"
                 });

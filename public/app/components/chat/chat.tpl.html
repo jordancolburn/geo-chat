@@ -3,8 +3,8 @@
 <div  ng-repeat="message in vm.messages" class="message message-default">
     <div class='clearfix'>
         <label class='fourfifth'>
-      <strong class='name'>{{ message.email }}</strong>
-      ({{ message.timestamp}}):
+      <strong class='name'>{{ message.email.substr(0, message.email.indexOf('@'))}}</strong>
+      ({{ message.timestamp | date:'short'}}):
     </label>
 
     </div>
