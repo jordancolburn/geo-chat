@@ -32,7 +32,10 @@ module GeoChat {
 
                     this.lat = position.coords.latitude;
                     this.lon = position.coords.longitude;
-                });
+                }, (e) => {
+                    console.log(e);
+                    clearTimeout(this.timeoutId);
+                }, { timeout: 3000, maximumAge: 0 });
             } else {
                 console.log("Browser doesn't support Geolocation");
                 return null;
