@@ -27,7 +27,8 @@ gulp.task('copy-libs', function () {
             './node_modules/angular-google-maps/dist/angular-google-maps.min.js',
             './node_modules/angularfire/dist/angularfire.min.js',
             './node_modules/lodash/lodash.min.js',
-            './node_modules/angular-simple-logger/dist/angular-simple-logger.min.js'
+            './node_modules/angular-simple-logger/dist/angular-simple-logger.min.js',
+            './node_modules/geolocation-marker/geolocation-marker.js'
         ]
     )
         .pipe(copy('./public/scripts', { prefix: 2 }));
