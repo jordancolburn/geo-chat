@@ -256,10 +256,13 @@ var GeoChat;
         function ChatCtrl($scope, DataService, LocationService, AuthService) {
             var _this = this;
             this.messages = DataService.messages;
+            console.log(DataService.messages);
             this.dataService = DataService;
             this.locationService = LocationService;
             this.authService = AuthService;
-            $scope.$watch('DataService.messages', function () { });
+            $scope.$watch('DataService.messages', function () {
+                _this.messages = DataService.messages;
+            });
             this.fixChatScroll(1000);
             $('#gen-chat').on('newMessageAdded', function () {
                 _this.fixChatScroll(1000);
@@ -324,8 +327,8 @@ var GeoChat;
     var LocationService = (function () {
         function LocationService() {
             var _this = this;
-            this.lat = 36.1749700;
-            this.lon = -115.1372200;
+            this.lat = 36.102844;
+            this.lon = -115.173756;
             this.updateLocation();
             this.timeoutId = setInterval(function () {
                 _this.updateLocation();
@@ -372,7 +375,7 @@ var GeoChat;
             this.isMapReady = false;
             this.icons = {};
             this.infowindow = new google.maps.InfoWindow();
-            this.map = { center: { latitude: 36.103, longitude: -115.1745 }, zoom: 18, control: {} };
+            this.map = { center: { latitude: 36.102844, longitude: -115.173756 }, zoom: 19, control: {} };
             //$scope.memberMarkers = DataService.members;
             //console.log(DataService.members);
             IsReady.promise().then(function (maps) {
@@ -426,7 +429,7 @@ var GeoChat;
                     this.icons[member.id] = marker;
                     google.maps.event.addListener(marker, 'click', (function (marker, infowindow, map) {
                         return function () {
-                            infowindow.setContent(name);
+                            infowindow.setContent(marker.title);
                             infowindow.open(map, marker);
                         };
                     })(marker, this.infowindow, this.googleMap));

@@ -10,7 +10,7 @@ module GeoChat {
         private icons = {};
         private infowindow = new google.maps.InfoWindow();
         
-        private map = { center: { latitude: 36.103, longitude: -115.1745 }, zoom: 18, control: {} };
+        private map = { center: { latitude: 36.102844, longitude: -115.173756 }, zoom: 19, control: {} };
 
         public static $inject = ['$scope', 'DataService', 'uiGmapIsReady', 'LocationService', '$rootScope'];
         
@@ -70,7 +70,7 @@ module GeoChat {
                     this.icons[member.id] = marker; 
                     google.maps.event.addListener(marker, 'click', ((marker, infowindow, map) => {
                         return () => {
-                            infowindow.setContent(name);
+                            infowindow.setContent(marker.title);
                             infowindow.open(map, marker);
                         }
                     })(marker, this.infowindow, this.googleMap));            
