@@ -24,17 +24,11 @@ module GeoChat {
         
         login(email:string,password:string)
         {   
-            function authHandler(error, authData) {
-                if (error) {
-                    console.log("Login Failed!", error);
-                } else {
-                    console.log("Authenticated successfully with payload:", authData);
-                    window.location('/');
-                }
-            }
-            
-            firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
-                alert(error);
+            firebase.auth().signInWithEmailAndPassword(email, password).then(function() {
+                alert('Logged in!');
+                window.location = '/';
+            }).catch(function(error){
+               alert(error); 
             });
         }
 
