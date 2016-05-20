@@ -58,24 +58,13 @@ var GeoChat;
 var GeoChat;
 (function (GeoChat) {
     var LoginCtrl = (function () {
-        function LoginCtrl() {
-            var config = {
-                apiKey: "AIzaSyDrcYVv2z1J8txJ0NSUJ3tbG3YQ172gf-c",
-                authDomain: "geo-chat-fe90d.firebaseapp.com",
-                databaseURL: "https://geo-chat-fe90d.firebaseio.com",
-                storageBucket: "geo-chat-fe90d.appspot.com",
-            };
-            firebase.initializeApp(config);
+        function LoginCtrl(AuthService) {
+            this.authService = AuthService;
         }
         LoginCtrl.prototype.login = function (email, password) {
-            firebase.auth().signInWithEmailAndPassword(email, password).then(function (authData) {
-                alert('Logged in!' + authData.uid);
-                window.localStorage.setItem('userId', authData.uid);
-                window.location = '/';
-            }).catch(function (error) {
-                alert(error);
-            });
+            this.authService.login(email, password);
         };
+        LoginCtrl.$inject = ['AuthService'];
         return LoginCtrl;
     }());
     GeoChat.LoginCtrl = LoginCtrl;
@@ -117,7 +106,7 @@ var GeoChat;
                 }
             });
             this.members = this.$firebaseArray(this.ref.child('members'));
-            this.messages = this.$firebaseArray(this.ref);
+            this.messages = this.$firebaseArray(this.ref.child('messages'));
             this.setupMessages();
             this.setupUsers();
             this.setupRoomName();
@@ -139,7 +128,7 @@ var GeoChat;
         };
         DataService.prototype.setupUsers = function () {
             var _this = this;
-            this.ref.child("members").on("child_added", function (snapshot) {
+            this.ref.child("members").limitToLast(50).on("child_added", function (snapshot) {
                 _this.members.push(snapshot.val());
                 //console.log(snapshot.val());
             });
@@ -175,8 +164,7 @@ var GeoChat;
             });
         };
         DataService.prototype.updateLocation = function (cur_location) {
-            this.ref.child("members/" + this.currentUserId + "/currentLocation/latitude").set(cur_location.latitude);
-            this.ref.child("members/" + this.currentUserId + "/currentLocation/longitude").set(cur_location.longitude);
+            this.ref.child("members/" + this.currentUserId + "/currentLocation").update(cur_location);
         };
         DataService.$inject = ['$firebaseArray', 'LocationService'];
         return DataService;
@@ -278,11 +266,13 @@ var GeoChat;
 var GeoChat;
 (function (GeoChat) {
     var ChatCtrl = (function () {
-        function ChatCtrl(DataService, LocationService) {
+        function ChatCtrl($scope, DataService, LocationService, AuthService) {
             var _this = this;
             this.messages = DataService.messages;
             this.dataService = DataService;
             this.locationService = LocationService;
+            this.authService = AuthService;
+            $scope.$watch('DataService.messages', function () { });
             this.fixChatScroll(1000);
             $('#gen-chat').on('newMessageAdded', function () {
                 _this.fixChatScroll(1000);
@@ -298,7 +288,10 @@ var GeoChat;
                 $("#gen-chat").scrollTop($("#gen-chat")[0].scrollHeight);
             }, delay);
         };
-        ChatCtrl.$inject = ['DataService', 'LocationService'];
+        ChatCtrl.prototype.logout = function () {
+            this.authService.logout();
+        };
+        ChatCtrl.$inject = ['$scope', 'DataService', 'LocationService', 'AuthService'];
         return ChatCtrl;
     }());
     GeoChat.ChatCtrl = ChatCtrl;
@@ -383,14 +376,21 @@ var GeoChat;
             this.LocationService = LocationService;
             this.isMapReady = false;
             this.icons = [];
-            this.map = { center: { latitude: 36.1749700, longitude: -115.1372200 }, zoom: 17, control: {} };
+            this.map = { center: { latitude: 36.103, longitude: -115.1745 }, zoom: 18, control: {} };
             $scope.memberMarkers = DataService.members;
-            $scope.$watch('memberMarkers', function () {
-            });
+            $scope.$watch('memberMarkers', function () { });
             IsReady.promise().then(function (maps) {
                 var map = _this.map.control.getGMap();
                 var GeoMarker = new GeolocationMarker(map);
-                _this.map.center = LocationService.getLocation();
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(function (position) {
+                        _this.map.center.latitude = position.coords.latitude;
+                        _this.map.center.longitude = position.coords.longitude;
+                    });
+                }
+                setInterval(function () {
+                    DataService.updateLocation(LocationService.getLocation());
+                }, 15000);
             });
         }
         MapCtrl.prototype.updateIcons = function () {
@@ -446,4 +446,40 @@ var GeoChat;
         controller: GeoChat.ProfileCtrl,
         controllerAs: "vm"
     }); });
+})(GeoChat || (GeoChat = {}));
+/// <reference path="..\..\app.ts" />
+/// <reference path="..\..\..\..\typings\firebase\firebase.d.ts" />
+/// <reference path="..\..\..\..\typings\firebase\firebase.d.ts" />
+/// <reference path="..\..\models\user.ts" />
+/// <reference path="..\..\models\message.ts" />
+/// <reference path="..\..\models\location.ts" />
+var GeoChat;
+(function (GeoChat) {
+    var AuthService = (function () {
+        function AuthService() {
+            var config = {
+                apiKey: "AIzaSyDrcYVv2z1J8txJ0NSUJ3tbG3YQ172gf-c",
+                authDomain: "geo-chat-fe90d.firebaseapp.com",
+                databaseURL: "https://geo-chat-fe90d.firebaseio.com",
+                storageBucket: "geo-chat-fe90d.appspot.com",
+            };
+            firebase.initializeApp(config);
+        }
+        AuthService.prototype.login = function (email, password) {
+            firebase.auth().signInWithEmailAndPassword(email, password).then(function (authData) {
+                window.localStorage.setItem('userId', authData.uid);
+                window.location = '/';
+            }).catch(function (error) {
+                alert(error);
+            });
+        };
+        AuthService.prototype.logout = function () {
+            firebase.auth().signOut();
+            window.localStorage.clear();
+            window.location = '/';
+        };
+        return AuthService;
+    }());
+    GeoChat.AuthService = AuthService;
+    GeoChat.geoChatApp.service('AuthService', AuthService);
 })(GeoChat || (GeoChat = {}));

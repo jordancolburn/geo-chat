@@ -36,3 +36,5 @@
     overflow-y: auto;
     overflow-x: hidden;
 }
+
+textarea { resize:none ; }

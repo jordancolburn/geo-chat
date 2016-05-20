@@ -1,24 +1,33 @@
-<div class="container-fluid">
+<div class="container">
     <div id="gen-chat" class="gen-chat-height">
-        <div ng-repeat="message in vm.messages" class="message message-default">
-            <div class='clearfix'>
-                <label class='fourfifth'>
+<div  ng-repeat="message in vm.messages" class="message message-default">
+    <div class='clearfix'>
+        <label class='fourfifth'>
       <strong class='name'>{{ message.email.substr(0, message.email.indexOf('@'))}}</strong>
       ({{ message.timestamp | date:'short'}}):
     </label>
-            </div>
-            <div class='clearfix message-content'>
-                {{ message.text }}
-            </div>
-        </div>
+
     </div>
-    <div class="form-group">
-        <label> Message: </label>
-        <div class="input-group">
-            <textarea id="message-box" maxlength="150" ng-model="messageBox" class="form-control" rows="2" placeholder="Enter your message..."></textarea>&nbsp;
-            <span class="input-group-btn">
-            <button type="button" class="btn btn-success" ng-click="vm.sendMessage(messageBox)">Send</button>
-              </span>
-        </div>
+    <div class='clearfix message-content'>
+        {{ message.text }}
     </div>
+</div>
+</div>
+<div class="row">
+    <label> Message: </label>
+</div>
+<div class="row">
+    <div class = "input-group">
+        <textarea id="message-box" maxlength="150" ng-model="messageBox" class="form-control" rows="3" placeholder="Enter your message..."></textarea>
+
+        <span class = "input-group-btn">
+        <button type="button" class="btn btn-default" ng-click="vm.sendMessage(messageBox)">Send</button>
+        </span>
+    </div><!-- /input-group -->
+    </div>
+    
+    <div class="row">
+        <button type="button" class="btn btn-error" ng-click="vm.logout()">Logout</button>
+    </div>
+</div>
 </div>
