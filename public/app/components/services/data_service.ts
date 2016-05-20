@@ -104,8 +104,7 @@ module GeoChat {
         }
 
         updateLocation(cur_location: GeoChat.Location){
-            this.ref.child("members/" + this.currentUserId + "/currentLocation/latitude").set(cur_location.latitude);
-            this.ref.child("members/"+ this.currentUserId + "/currentLocation/longitude").set(cur_location.longitude);
+            this.ref.child("members/" + this.currentUserId + "/currentLocation").update(cur_location);
         }
     }
 

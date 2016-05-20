@@ -69,7 +69,6 @@ var GeoChat;
         }
         LoginCtrl.prototype.login = function (email, password) {
             firebase.auth().signInWithEmailAndPassword(email, password).then(function (authData) {
-                alert('Logged in!' + authData.uid);
                 window.localStorage.setItem('userId', authData.uid);
                 window.location = '/';
             }).catch(function (error) {
@@ -175,8 +174,7 @@ var GeoChat;
             });
         };
         DataService.prototype.updateLocation = function (cur_location) {
-            this.ref.child("members/" + this.currentUserId + "/currentLocation/latitude").set(cur_location.latitude);
-            this.ref.child("members/" + this.currentUserId + "/currentLocation/longitude").set(cur_location.longitude);
+            this.ref.child("members/" + this.currentUserId + "/currentLocation").update(cur_location);
         };
         DataService.$inject = ['$firebaseArray', 'LocationService'];
         return DataService;
@@ -355,11 +353,13 @@ var GeoChat;
             var _this = this;
             // Try HTML5 geolocation.
             if (navigator.geolocation) {
-                console.log('test!11');
                 navigator.geolocation.getCurrentPosition(function (position) {
                     _this.lat = position.coords.latitude;
                     _this.lon = position.coords.longitude;
-                });
+                }, function (e) {
+                    console.log(e);
+                    clearTimeout(_this.timeoutId);
+                }, { timeout: 3000, maximumAge: 0 });
             }
             else {
                 console.log("Browser doesn't support Geolocation");
@@ -385,14 +385,18 @@ var GeoChat;
             this.LocationService = LocationService;
             this.isMapReady = false;
             this.icons = [];
-            this.map = { center: { latitude: 36.1749700, longitude: -115.1372200 }, zoom: 17, control: {} };
+            this.map = { center: { latitude: 36.103, longitude: -115.1745 }, zoom: 18, control: {} };
             $scope.memberMarkers = DataService.members;
-            $scope.$watch('memberMarkers', function () {
-            });
+            $scope.$watch('memberMarkers', function () { });
             IsReady.promise().then(function (maps) {
                 var map = _this.map.control.getGMap();
                 var GeoMarker = new GeolocationMarker(map);
-                _this.map.center = LocationService.getLocation();
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(function (position) {
+                        _this.map.center.latitude = position.coords.latitude;
+                        _this.map.center.longitude = position.coords.longitude;
+                    });
+                }
                 setInterval(function () {
                     DataService.updateLocation(LocationService.getLocation());
                 }, 15000);

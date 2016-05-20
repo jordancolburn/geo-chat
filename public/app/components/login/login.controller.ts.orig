@@ -18,8 +18,16 @@ module GeoChat {
         
         login(email:string,password:string)
         {   
-
+<<<<<<< HEAD
             this.authService.login(email,password);
+=======
+            firebase.auth().signInWithEmailAndPassword(email, password).then(function(authData) {
+                window.localStorage.setItem('userId', authData.uid);
+                window.location = '/';
+            }).catch(function(error){
+               alert(error); 
+            });
+>>>>>>> f74470a6a8fbc71f47ffff86a874d228b6c727c3
         }
     }
 
