@@ -90,7 +90,7 @@ var GeoChat;
             this.ref = new Firebase("https://geo-chat-fe90d.firebaseio.com/rooms/" + this.roomId);
             this.currentUserId = window.localStorage.getItem('userId');
             this.ref.child('members').once("value", function (snapshot) {
-                var hasUser = snapshot.hasChild(_this.currentUserId);
+                var hasUser = snapshot.hasChild(_this.currentUserId + '/color');
                 if (!hasUser) {
                     var users_ref = new Firebase("https://geo-chat-fe90d.firebaseio.com/users");
                     var colors = ['red', 'green', 'blue', 'orange', 'DarkBlue', 'Navy',
