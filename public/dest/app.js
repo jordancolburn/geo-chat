@@ -3,35 +3,14 @@ var GeoChat;
 (function (GeoChat) {
     GeoChat.geoChatApp = angular.module("geo.chat", ['ngRoute', 'firebase', 'uiGmapgoogle-maps']);
 })(GeoChat || (GeoChat = {}));
-/// <reference path="..\..\node_modules\angular-typescript\ts\definitely-typed\angularjs\angular.d.ts" />
-/// <reference path="app.ts" />
 var GeoChat;
 (function (GeoChat) {
-    GeoChat.geoChatApp.config(["$routeProvider", "$locationProvider",
-        function ($routeProvider, $locationProvider) {
-            $routeProvider.
-                when("/", {
-                templateUrl: "app/components/room/room.tpl.html",
-                caseInsensitiveMatch: true
-            }).
-                /*when("/room/:roomId", {
-                    templateUrl: "app/components/room/room.tpl.html",
-                    caseInsensitiveMatch: true
-                }). */
-                otherwise({
-                redirectTo: "/"
-            });
-            $locationProvider.html5Mode(true);
-        }]);
-})(GeoChat || (GeoChat = {}));
-var GeoChat;
-(function (GeoChat) {
-    var Location = (function () {
-        function Location() {
+    var User = (function () {
+        function User() {
         }
-        return Location;
+        return User;
     }());
-    GeoChat.Location = Location;
+    GeoChat.User = User;
 })(GeoChat || (GeoChat = {}));
 var GeoChat;
 (function (GeoChat) {
@@ -44,12 +23,77 @@ var GeoChat;
 })(GeoChat || (GeoChat = {}));
 var GeoChat;
 (function (GeoChat) {
-    var User = (function () {
-        function User() {
+    var Location = (function () {
+        function Location() {
         }
-        return User;
+        return Location;
     }());
-    GeoChat.User = User;
+    GeoChat.Location = Location;
+})(GeoChat || (GeoChat = {}));
+/// <reference path="..\..\app.ts" />
+/// <reference path="..\..\..\..\typings\firebase\firebase.d.ts" />
+/// <reference path="..\..\..\..\typings\firebase\firebase.d.ts" />
+/// <reference path="..\..\models\user.ts" />
+/// <reference path="..\..\models\message.ts" />
+/// <reference path="..\..\models\location.ts" />
+var GeoChat;
+(function (GeoChat) {
+    var LoginCtrl = (function () {
+        function LoginCtrl() {
+            var config = {
+                apiKey: "AIzaSyDrcYVv2z1J8txJ0NSUJ3tbG3YQ172gf-c",
+                authDomain: "geo-chat-fe90d.firebaseapp.com",
+                databaseURL: "https://geo-chat-fe90d.firebaseio.com",
+                storageBucket: "geo-chat-fe90d.appspot.com",
+            };
+            firebase.initializeApp(config);
+        }
+        LoginCtrl.prototype.login = function (email, password) {
+            function authHandler(error, authData) {
+                if (error) {
+                    console.log("Login Failed!", error);
+                }
+                else {
+                    console.log("Authenticated successfully with payload:", authData);
+                    window.location('/');
+                }
+            }
+            firebase.auth().signInWithEmailAndPassword(email, password).catch(function (error) {
+                alert(error);
+            });
+        };
+        return LoginCtrl;
+    }());
+    GeoChat.LoginCtrl = LoginCtrl;
+    GeoChat.geoChatApp.controller("LoginCtrl", LoginCtrl);
+})(GeoChat || (GeoChat = {}));
+/// <reference path="..\..\node_modules\angular-typescript\ts\definitely-typed\angularjs\angular.d.ts" />
+/// <reference path="app.ts" />
+/// <reference path="components\login\login.controller.ts" />
+var GeoChat;
+(function (GeoChat) {
+    GeoChat.geoChatApp.config(["$routeProvider", "$locationProvider",
+        function ($routeProvider, $locationProvider) {
+            $routeProvider.
+                when("/", {
+                templateUrl: "app/components/room/room.tpl.html",
+                caseInsensitiveMatch: true
+            }).
+                when("/login", {
+                templateUrl: "app/components/login/login.tpl.html",
+                controller: GeoChat.LoginCtrl,
+                controllerAs: "vm",
+                caseInsensitiveMatch: true
+            }).
+                /*when("/room/:roomId", {
+                    templateUrl: "app/components/room/room.tpl.html",
+                    caseInsensitiveMatch: true
+                }). */
+                otherwise({
+                redirectTo: "/"
+            });
+            $locationProvider.html5Mode(true);
+        }]);
 })(GeoChat || (GeoChat = {}));
 /// <reference path="User.ts" />
 /// <reference path="Message.ts" />
@@ -67,19 +111,23 @@ var GeoChat;
 (function (GeoChat) {
     var ChatCtrl = (function () {
         function ChatCtrl(DataService) {
+            var _this = this;
             this.messages = DataService.messages;
             this.dataService = DataService;
             this.fixChatScroll(1000);
+            $('#gen-chat').on('newMessageAdded', function () {
+                _this.fixChatScroll(1000);
+            });
         }
         ChatCtrl.prototype.sendMessage = function (text) {
             this.dataService.addMessageAndTime(text, (new Date()).toISOString());
             $('#message-box').val('');
             this.fixChatScroll(1);
         };
-        ChatCtrl.prototype.fixChatScroll = function (deplay) {
+        ChatCtrl.prototype.fixChatScroll = function (delay) {
             setTimeout(function () {
                 $("#gen-chat").scrollTop($("#gen-chat")[0].scrollHeight);
-            }, deplay);
+            }, delay);
         };
         ChatCtrl.$inject = ['DataService'];
         return ChatCtrl;
@@ -99,6 +147,17 @@ var GeoChat;
     }); });
 })(GeoChat || (GeoChat = {}));
 /// <reference path="..\..\app.ts" />
+/// <reference path="login.controller.ts" />
+var GeoChat;
+(function (GeoChat) {
+    GeoChat.geoChatApp.directive("login", function () { return ({
+        restrict: "AE",
+        templateUrl: "app/components/login/login.tpl.html",
+        controller: GeoChat.LoginCtrl,
+        controllerAs: "vm"
+    }); });
+})(GeoChat || (GeoChat = {}));
+/// <reference path="..\..\app.ts" />
 /// <reference path="..\..\..\..\typings\firebase\firebase.d.ts" />
 /// <reference path="..\..\..\..\typings\firebase\firebase.d.ts" />
 /// <reference path="..\..\models\user.ts" />
@@ -107,11 +166,11 @@ var GeoChat;
 var GeoChat;
 (function (GeoChat) {
     var DataService = (function () {
-        function DataService() {
+        function DataService($firebaseArray) {
             console.log('starting data service constructor');
             this.changeRoom('room_one_guid');
-            this.members = [];
-            this.messages = [];
+            this.members = $firebaseArray(this.ref);
+            this.messages = $firebaseArray(this.ref);
             this.setupMessages();
             this.setupUsers();
             this.setupRoomName();
@@ -131,6 +190,7 @@ var GeoChat;
             var _this = this;
             this.ref.child("messages").on("child_added", function (snapshot) {
                 _this.messages.push(snapshot.val());
+                $('#gen-chat').trigger('newMessageAdded');
                 console.log(snapshot.val());
             });
         };
@@ -194,6 +254,7 @@ var GeoChat;
                     "email": "email4@email.com"
                 }];
         };
+        DataService.$inject = ['$firebaseArray'];
         return DataService;
     }());
     GeoChat.DataService = DataService;
@@ -214,12 +275,9 @@ var GeoChat;
             // Try HTML5 geolocation.
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(function (position) {
-                    console.log('test');
                     var loc = new GeoChat.Location();
                     loc.latitude = position.coords.latitude;
                     loc.longitude = position.coords.longitude;
-                    console.log('!!!!!!!!!!!!!!!!!!!!!!!!!');
-                    console.log(loc);
                     return loc;
                 });
             }
@@ -250,8 +308,6 @@ var GeoChat;
             $scope.memberMarkers = DataService.members;
             //Need this silliness so the map updates
             $scope.$watch('DataService.members', function () { });
-            var test = LocationService.getLocation();
-            console.log(test);
         }
         MapCtrl.$inject = ['$scope', 'DataService', 'LocationService'];
         return MapCtrl;
