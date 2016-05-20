@@ -8,8 +8,8 @@
 module GeoChat {
 
     export class LocationService {
-        private lat: number;
-        private lon: number;
+        private lat: number = 36.1749700;
+        private lon: number = -115.1372200;
         private timeoutId: number;
 
         constructor() {
