@@ -33,7 +33,6 @@ module GeoChat {
             var newRef = new Firebase("https://geo-chat-fe90d.firebaseio.com/");
             var authData = newRef.getAuth();
             this.currentUserId = 'new_user_id';
-            alert(this.currentUserId);
             this.ref.child('members').once("value", (snapshot) => {
                 var hasUser = snapshot.hasChild(this.currentUserId);
                 if (!hasUser){
