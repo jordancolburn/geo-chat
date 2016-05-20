@@ -49,8 +49,9 @@ var GeoChat;
             firebase.initializeApp(config);
         }
         LoginCtrl.prototype.login = function (email, password) {
-            firebase.auth().signInWithEmailAndPassword(email, password).then(function () {
-                alert('Logged in!');
+            firebase.auth().signInWithEmailAndPassword(email, password).then(function (authData) {
+                alert('Logged in!' + authData.uid);
+                window.localStorage.setItem('userId', authData.uid);
                 window.location = '/';
             }).catch(function (error) {
                 alert(error);
@@ -74,8 +75,26 @@ var GeoChat;
             this.$firebaseArray = $firebaseArray;
         }
         DataService.prototype.changeRoom = function (roomId) {
+            var _this = this;
             this.roomId = roomId;
             this.ref = new Firebase("https://geo-chat-fe90d.firebaseio.com/rooms/" + this.roomId);
+            this.currentUserId = window.localStorage.getItem('userId');
+            this.ref.child('members').once("value", function (snapshot) {
+                var hasUser = snapshot.hasChild(_this.currentUserId);
+                if (!hasUser) {
+                    var users_ref = new Firebase("https://geo-chat-fe90d.firebaseio.com/users");
+                    users_ref.child(_this.currentUserId).once("value", function (snapshot) {
+                        console.log(snapshot.val());
+                        _this.ref.child('members' + '/' + _this.currentUserId).set({
+                            email: snapshot.val().Email,
+                            firstName: snapshot.val().FirstName,
+                            lastName: snapshot.val().LastName,
+                            group: snapshot.val().Group,
+                            textLocation: snapshot.val().Location
+                        });
+                    });
+                }
+            });
             this.members = this.$firebaseArray(this.ref.child('members'));
             this.messages = this.$firebaseArray(this.ref);
             this.setupMessages();
