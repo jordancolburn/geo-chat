@@ -171,8 +171,18 @@ var GeoChat;
             this.setupRoomName();
         }
         DataService.prototype.changeRoom = function (roomId) {
+            var _this = this;
             this.roomId = roomId;
             this.ref = new Firebase("https://geo-chat-fe90d.firebaseio.com/rooms/" + this.roomId);
+            var newRef = new Firebase("https://geo-chat-fe90d.firebaseio.com/");
+            var authData = newRef.getAuth();
+            this.currentUserId = 'new_user_id';
+            this.ref.child('members').once("value", function (snapshot) {
+                var hasUser = snapshot.hasChild(_this.currentUserId);
+                if (!hasUser) {
+                    _this.ref.child('members' + '/' + _this.currentUserId).set('USER IS ADDED');
+                }
+            });
         };
         DataService.prototype.setupRoomName = function () {
             var _this = this;

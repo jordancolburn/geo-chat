@@ -13,6 +13,7 @@ module GeoChat {
         public members: User[];
         public messages: Message[];
         public roomName: string;
+        public currentUserId: string;
         
         static $inject = ['$firebaseArray'];
 
@@ -29,6 +30,17 @@ module GeoChat {
         changeRoom(roomId: string){
             this.roomId = roomId;
             this.ref = new Firebase("https://geo-chat-fe90d.firebaseio.com/rooms/" + this.roomId);
+            var newRef = new Firebase("https://geo-chat-fe90d.firebaseio.com/");
+            var authData = newRef.getAuth();
+            this.currentUserId = 'new_user_id';
+            this.ref.child('members').once("value", (snapshot) => {
+                var hasUser = snapshot.hasChild(this.currentUserId);
+                if (!hasUser){
+                    this.ref.child('members' + '/' + this.currentUserId).set('USER IS ADDED');
+                }
+            });
+            
+            
         }
  
          setupRoomName(){
