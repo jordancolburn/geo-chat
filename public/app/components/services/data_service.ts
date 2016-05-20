@@ -75,39 +75,10 @@ module GeoChat {
                 userId: 'current_user_id'
             });
         }
-        
-                
+
         updateLocation(cur_location: GeoChat.Location){
             this.ref.child("members/"+"user_id"+"/currentLocation/latitude").set( cur_location.latitude);
             this.ref.child("members/"+"user_id"+"/currentLocation/longitude").set(cur_location.longitude);
-        }
-
-        getMessages(): any {
-            // this.ref.child('rooms/room_one_guid/messages').on('value', function (snapshot) {
-            //     // snapshot.val()
-            // });
-            return [{
-                "text": "This is my message 1",
-                "timestamp": "timestamp",
-                "userId": "id",
-                "email": "email1@email.com"
-            }, {
-                "text": "This is my message2",
-                "timestamp": "timestamp",
-                "userId": "id",
-                "email": "email2@email.com"
-                },
-            {
-                "text": "This is my message3",
-                "timestamp": "timestamp",
-                "userId": "id",
-                "email": "email3@email.com"
-            },{
-                "text": "This is my message4",
-                "timestamp": "timestamp",
-                "userId": "id",
-                "email": "email4@email.com"
-            }]
         }
     }
 
