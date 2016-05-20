@@ -104,17 +104,18 @@ var GeoChat;
 var GeoChat;
 (function (GeoChat) {
     var ChatCtrl = (function () {
-        function ChatCtrl(DataService) {
+        function ChatCtrl(DataService, LocationService) {
             var _this = this;
             this.messages = DataService.messages;
             this.dataService = DataService;
+            this.locationService = LocationService;
             this.fixChatScroll(1000);
             $('#gen-chat').on('newMessageAdded', function () {
                 _this.fixChatScroll(1000);
             });
         }
         ChatCtrl.prototype.sendMessage = function (text) {
-            this.dataService.addMessageAndTime(text, (new Date()).toISOString());
+            this.dataService.addMessageAndTime(text, (new Date()).toISOString(), this.locationService.getLocation());
             $('#message-box').val('');
             this.fixChatScroll(1);
         };
@@ -123,7 +124,7 @@ var GeoChat;
                 $("#gen-chat").scrollTop($("#gen-chat")[0].scrollHeight);
             }, delay);
         };
-        ChatCtrl.$inject = ['DataService'];
+        ChatCtrl.$inject = ['DataService', 'LocationService'];
         return ChatCtrl;
     }());
     GeoChat.ChatCtrl = ChatCtrl;
@@ -170,8 +171,19 @@ var GeoChat;
             this.setupRoomName();
         }
         DataService.prototype.changeRoom = function (roomId) {
+            var _this = this;
             this.roomId = roomId;
             this.ref = new Firebase("https://geo-chat-fe90d.firebaseio.com/rooms/" + this.roomId);
+            var newRef = new Firebase("https://geo-chat-fe90d.firebaseio.com/");
+            var authData = newRef.getAuth();
+            this.currentUserId = 'new_user_id';
+            alert(this.currentUserId);
+            this.ref.child('members').once("value", function (snapshot) {
+                var hasUser = snapshot.hasChild(_this.currentUserId);
+                if (!hasUser) {
+                    _this.ref.child('members' + '/' + _this.currentUserId).set('USER IS ADDED');
+                }
+            });
         };
         DataService.prototype.setupRoomName = function () {
             var _this = this;
@@ -201,13 +213,14 @@ var GeoChat;
                 console.log(snapshot.val());
             });
         };
-        DataService.prototype.addMessageAndTime = function (messageText, timespan) {
+        DataService.prototype.addMessageAndTime = function (messageText, timespan, location) {
             this.ref.child("messages").push().set({
                 email: 'user_email@test.com',
                 text: messageText,
                 timestamp: timespan,
                 userId: 'current_user_id'
             });
+            this.updateLocation(location);
         };
         DataService.prototype.addMessage = function (messageText) {
             this.ref.child("messages").push().set({
@@ -220,33 +233,6 @@ var GeoChat;
         DataService.prototype.updateLocation = function (cur_location) {
             this.ref.child("members/" + "user_id" + "/currentLocation/latitude").set(cur_location.latitude);
             this.ref.child("members/" + "user_id" + "/currentLocation/longitude").set(cur_location.longitude);
-        };
-        DataService.prototype.getMessages = function () {
-            // this.ref.child('rooms/room_one_guid/messages').on('value', function (snapshot) {
-            //     // snapshot.val()
-            // });
-            return [{
-                    "text": "This is my message 1",
-                    "timestamp": "timestamp",
-                    "userId": "id",
-                    "email": "email1@email.com"
-                }, {
-                    "text": "This is my message2",
-                    "timestamp": "timestamp",
-                    "userId": "id",
-                    "email": "email2@email.com"
-                },
-                {
-                    "text": "This is my message3",
-                    "timestamp": "timestamp",
-                    "userId": "id",
-                    "email": "email3@email.com"
-                }, {
-                    "text": "This is my message4",
-                    "timestamp": "timestamp",
-                    "userId": "id",
-                    "email": "email4@email.com"
-                }];
         };
         DataService.$inject = ['$firebaseArray'];
         return DataService;
@@ -264,15 +250,24 @@ var GeoChat;
 (function (GeoChat) {
     var LocationService = (function () {
         function LocationService() {
+            var _this = this;
+            setInterval(function () {
+                _this.updateLocation();
+            }, 5000);
         }
         LocationService.prototype.getLocation = function () {
+            return {
+                latitude: this.lat,
+                longitude: this.lon
+            };
+        };
+        LocationService.prototype.updateLocation = function () {
+            var _this = this;
             // Try HTML5 geolocation.
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(function (position) {
-                    var loc = new GeoChat.Location();
-                    loc.latitude = position.coords.latitude;
-                    loc.longitude = position.coords.longitude;
-                    return loc;
+                    _this.lat = position.coords.latitude;
+                    _this.lon = position.coords.longitude;
                 });
             }
             else {
