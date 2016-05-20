@@ -6,12 +6,13 @@ module GeoChat {
         private messages: [any];
         private dataService: any;
         private locationService: any;
-        public static $inject = ['DataService', 'LocationService'];
+        public static $inject = ['$scope', 'DataService', 'LocationService'];
 
-        constructor(DataService, LocationService) {
+        constructor($scope, DataService, LocationService) {
             this.messages = DataService.messages;
             this.dataService = DataService;
             this.locationService = LocationService;
+            $scope.$watch('DataService.messages',() => {});
             this.fixChatScroll(1000);
             $('#gen-chat').on('newMessageAdded', () => {
                 this.fixChatScroll(1000);

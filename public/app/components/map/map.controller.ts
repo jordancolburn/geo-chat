@@ -19,6 +19,9 @@ module GeoChat {
                 var map = this.map.control.getGMap();
                 var GeoMarker = new GeolocationMarker(map);
                 this.map.center = LocationService.getLocation();
+                setInterval(() => {
+                    DataService.updateLocation(LocationService.getLocation());
+                }, 15000);
             });
         }      
         

@@ -276,11 +276,12 @@ var GeoChat;
 var GeoChat;
 (function (GeoChat) {
     var ChatCtrl = (function () {
-        function ChatCtrl(DataService, LocationService) {
+        function ChatCtrl($scope, DataService, LocationService) {
             var _this = this;
             this.messages = DataService.messages;
             this.dataService = DataService;
             this.locationService = LocationService;
+            $scope.$watch('DataService.messages', function () { });
             this.fixChatScroll(1000);
             $('#gen-chat').on('newMessageAdded', function () {
                 _this.fixChatScroll(1000);
@@ -296,7 +297,7 @@ var GeoChat;
                 $("#gen-chat").scrollTop($("#gen-chat")[0].scrollHeight);
             }, delay);
         };
-        ChatCtrl.$inject = ['DataService', 'LocationService'];
+        ChatCtrl.$inject = ['$scope', 'DataService', 'LocationService'];
         return ChatCtrl;
     }());
     GeoChat.ChatCtrl = ChatCtrl;
@@ -352,6 +353,7 @@ var GeoChat;
             var _this = this;
             // Try HTML5 geolocation.
             if (navigator.geolocation) {
+                console.log('test!11');
                 navigator.geolocation.getCurrentPosition(function (position) {
                     _this.lat = position.coords.latitude;
                     _this.lon = position.coords.longitude;
@@ -392,6 +394,9 @@ var GeoChat;
                 var map = _this.map.control.getGMap();
                 var GeoMarker = new GeolocationMarker(map);
                 _this.map.center = LocationService.getLocation();
+                setInterval(function () {
+                    DataService.updateLocation(LocationService.getLocation());
+                }, 15000);
             });
         }
         MapCtrl.prototype.updateIcons = function () {
