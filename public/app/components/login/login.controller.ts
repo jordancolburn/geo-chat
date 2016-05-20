@@ -8,31 +8,18 @@
 module GeoChat {
 
     export class LoginCtrl {
-        //public static $inject = [ 'DataService'];
+        public static $inject = [ 'AuthService'];
         private ref: Firebase;
-
-        constructor()
+        private authService: any
+        constructor(AuthService)
         { 
-            var config = {
-                apiKey: "AIzaSyDrcYVv2z1J8txJ0NSUJ3tbG3YQ172gf-c",
-                authDomain: "geo-chat-fe90d.firebaseapp.com",
-                databaseURL: "https://geo-chat-fe90d.firebaseio.com",
-                storageBucket: "geo-chat-fe90d.appspot.com",
-            };
-            firebase.initializeApp(config);
+            this.authService = AuthService;
         }
         
         login(email:string,password:string)
         {   
-            firebase.auth().signInWithEmailAndPassword(email, password).then(function(authData) {
-                alert('Logged in!' + authData.uid);
-                window.localStorage.setItem('userId', authData.uid);
-                window.location = '/';
-            }).catch(function(error){
-               alert(error); 
-            });
+            this.authService.login(email,password);
         }
-
     }
 
     geoChatApp.controller("LoginCtrl", LoginCtrl);
