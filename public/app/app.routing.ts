@@ -1,5 +1,6 @@
 /// <reference path="..\..\node_modules\angular-typescript\ts\definitely-typed\angularjs\angular.d.ts" />
 /// <reference path="app.ts" />
+/// <reference path="components\login\login.controller.ts" />
 
 module GeoChat {
 
@@ -8,6 +9,12 @@ module GeoChat {
             $routeProvider.
                 when("/", {
                     templateUrl: "app/components/room/room.tpl.html",
+                    caseInsensitiveMatch: true
+                }).
+                  when("/login", {
+                    templateUrl: "app/components/login/login.tpl.html",
+                    controller: LoginCtrl,
+                    controllerAs: "vm",
                     caseInsensitiveMatch: true
                 }).
                 /*when("/room/:roomId", {
