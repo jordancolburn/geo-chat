@@ -15,9 +15,9 @@ module GeoChat {
         public roomName: string;
         public currentUserId: string;
         
-        static $inject = ['$firebaseArray'];
+        static $inject = ['$firebaseArray','LocationService'];
 
-        constructor(private $firebaseArray){}
+        constructor(private $firebaseArray, private LocationService){}
         
         changeRoom(roomId: string){
             this.roomId = roomId;
@@ -30,11 +30,13 @@ module GeoChat {
                     var users_ref = new Firebase("https://geo-chat-fe90d.firebaseio.com/users");
                     users_ref.child(this.currentUserId).once("value", (snapshot) => {
                         this.ref.child('members' + '/' + this.currentUserId).set({
+                            id: this.currentUserId,
                             email: snapshot.val().Email,
                             firstName: snapshot.val().FirstName,
                             lastName: snapshot.val().LastName,
                             group: snapshot.val().Group,
-                            textLocation: snapshot.val().Location
+                            textLocation: snapshot.val().Location,
+                            currentLocation: this.LocationService.getLocation()
                         });           
                     });
                 }
@@ -77,11 +79,12 @@ module GeoChat {
 
         addMessageAndTime(messageText: string, timespan: string, location: GeoChat.Location){
             var user = null;
-            angular.forEach(this.members, function(value, key) {
-                if (value.id == this.currentUserId){
-                    user = value;
+            for (var index = 0; index < this.members.length; index++) {
+                var element = this.members[index];
+                if (element.hasOwnProperty('id') && (element.id === this.currentUserId)){
+                    user = element;
                 }
-            });
+            }
             this.ref.child("messages").push().set({
                 email: user.email,
                 text: messageText,
@@ -101,8 +104,8 @@ module GeoChat {
         }
 
         updateLocation(cur_location: GeoChat.Location){
-            this.ref.child("members/"+"user_id"+"/currentLocation/latitude").set( cur_location.latitude);
-            this.ref.child("members/"+"user_id"+"/currentLocation/longitude").set(cur_location.longitude);
+            this.ref.child("members/" + this.currentUserId + "/currentLocation/latitude").set(cur_location.latitude);
+            this.ref.child("members/"+ this.currentUserId + "/currentLocation/longitude").set(cur_location.longitude);
         }
     }
 
