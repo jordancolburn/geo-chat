@@ -8,22 +8,32 @@
 module GeoChat {
 
     export class LocationService {
+        private lat: number;
+        private lon: number;
+
+        constructor() {
+            setInterval(() => {
+                this.updateLocation();
+             }, 5000);
+        }
         
-        constructor() {}
-        
-        getLocation() : GeoChat.Location {
+        getLocation(): GeoChat.Location {
+            return {
+                latitude: this.lat,
+                longitude: this.lon
+            }
+        }
+        updateLocation() : void {
             // Try HTML5 geolocation.
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition( (position) => {
-                    var loc = new Location();
-                    loc.latitude = position.coords.latitude;
-                    loc.longitude = position.coords.longitude;
-                    return loc;
+                    this.lat = position.coords.latitude;
+                    this.lon = position.coords.longitude;
                 });
             } else {
                 console.log("Browser doesn't support Geolocation");
                 return null;
-            }            
+            }
         }
         
     }
