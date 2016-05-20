@@ -355,7 +355,6 @@ var GeoChat;
             var _this = this;
             // Try HTML5 geolocation.
             if (navigator.geolocation) {
-                console.log('test!11');
                 navigator.geolocation.getCurrentPosition(function (position) {
                     _this.lat = position.coords.latitude;
                     _this.lon = position.coords.longitude;
@@ -385,14 +384,18 @@ var GeoChat;
             this.LocationService = LocationService;
             this.isMapReady = false;
             this.icons = [];
-            this.map = { center: { latitude: 36.1749700, longitude: -115.1372200 }, zoom: 17, control: {} };
+            this.map = { center: { latitude: 36.103, longitude: -115.1745 }, zoom: 18, control: {} };
             $scope.memberMarkers = DataService.members;
-            $scope.$watch('memberMarkers', function () {
-            });
+            $scope.$watch('memberMarkers', function () { });
             IsReady.promise().then(function (maps) {
                 var map = _this.map.control.getGMap();
                 var GeoMarker = new GeolocationMarker(map);
-                _this.map.center = LocationService.getLocation();
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(function (position) {
+                        _this.map.center.latitude = position.coords.latitude;
+                        _this.map.center.longitude = position.coords.longitude;
+                    });
+                }
                 setInterval(function () {
                     DataService.updateLocation(LocationService.getLocation());
                 }, 15000);
