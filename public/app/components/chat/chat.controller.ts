@@ -11,10 +11,13 @@ module GeoChat {
 
         constructor($scope, DataService, LocationService, AuthService) {
             this.messages = DataService.messages;
+            console.log(DataService.messages);
             this.dataService = DataService;
             this.locationService = LocationService;
             this.authService = AuthService;
-            $scope.$watch('DataService.messages',() => {});
+            $scope.$watch('DataService.messages',() => {
+                this.messages = DataService.messages;
+            });
             this.fixChatScroll(1000);
             
             $('#gen-chat').on('newMessageAdded', () => {
