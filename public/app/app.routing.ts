@@ -1,6 +1,8 @@
 /// <reference path="..\..\node_modules\angular-typescript\ts\definitely-typed\angularjs\angular.d.ts" />
 /// <reference path="app.ts" />
 /// <reference path="components\login\login.controller.ts" />
+/// <reference path="components\profile\profile.controller.ts" />
+
 
 module GeoChat {
 
@@ -14,6 +16,12 @@ module GeoChat {
                   when("/login", {
                     templateUrl: "app/components/login/login.tpl.html",
                     controller: LoginCtrl,
+                    controllerAs: "vm",
+                    caseInsensitiveMatch: true
+                }).
+                  when("/profile", {
+                    templateUrl: "app/components/profile/profile.tpl.html",
+                    controller: ProfileCtrl,
                     controllerAs: "vm",
                     caseInsensitiveMatch: true
                 }).
