@@ -25,10 +25,10 @@ module GeoChat {
                 longitude: this.lon
             }
         }
+        
         updateLocation(): void {
             // Try HTML5 geolocation.
             if (navigator.geolocation) {
-                console.log('test!11');
                 navigator.geolocation.getCurrentPosition((position) => {
                     this.lat = position.coords.latitude;
                     this.lon = position.coords.longitude;
