@@ -62,30 +62,175 @@ var GeoChat;
     GeoChat.LoginCtrl = LoginCtrl;
     GeoChat.geoChatApp.controller("LoginCtrl", LoginCtrl);
 })(GeoChat || (GeoChat = {}));
+/// <reference path="..\..\app.ts" />
+/// <reference path="..\..\..\..\typings\firebase\firebase.d.ts" />
+/// <reference path="..\..\..\..\typings\firebase\firebase.d.ts" />
+/// <reference path="..\..\models\user.ts" />
+/// <reference path="..\..\models\message.ts" />
+/// <reference path="..\..\models\location.ts" />
+var GeoChat;
+(function (GeoChat) {
+    var DataService = (function () {
+        function DataService($firebaseArray) {
+            this.$firebaseArray = $firebaseArray;
+        }
+        DataService.prototype.changeRoom = function (roomId) {
+            var _this = this;
+            this.roomId = roomId;
+            this.ref = new Firebase("https://geo-chat-fe90d.firebaseio.com/rooms/" + this.roomId);
+            this.currentUserId = window.localStorage.getItem('userId');
+            this.ref.child('members').once("value", function (snapshot) {
+                var hasUser = snapshot.hasChild(_this.currentUserId);
+                if (!hasUser) {
+                    var users_ref = new Firebase("https://geo-chat-fe90d.firebaseio.com/users");
+                    users_ref.child(_this.currentUserId).once("value", function (snapshot) {
+                        console.log(snapshot.val());
+                        _this.ref.child('members' + '/' + _this.currentUserId).set({
+                            email: snapshot.val().Email,
+                            firstName: snapshot.val().FirstName,
+                            lastName: snapshot.val().LastName,
+                            group: snapshot.val().Group,
+                            textLocation: snapshot.val().Location
+                        });
+                    });
+                }
+            });
+            this.members = this.$firebaseArray(this.ref.child('members'));
+            this.messages = this.$firebaseArray(this.ref);
+            this.setupMessages();
+            this.setupUsers();
+            this.setupRoomName();
+        };
+        DataService.prototype.setupRoomName = function () {
+            var _this = this;
+            this.ref.child("name").on("child_added", function (snapshot) {
+                _this.roomName = snapshot.val();
+                console.log(snapshot.val());
+            });
+        };
+        DataService.prototype.setupMessages = function () {
+            var _this = this;
+            this.ref.child("messages").on("child_added", function (snapshot) {
+                _this.messages.push(snapshot.val());
+                $('#gen-chat').trigger('newMessageAdded');
+                console.log(snapshot.val());
+            });
+        };
+        DataService.prototype.setupUsers = function () {
+            var _this = this;
+            this.ref.child("members").on("child_added", function (snapshot) {
+                _this.members.push(snapshot.val());
+                console.log(snapshot.val());
+            });
+            this.ref.child("members").on("child_changed", function (snapshot) {
+                console.log(snapshot.val());
+            });
+            this.ref.child("members").on("child_removed", function (snapshot) {
+                console.log(snapshot.val());
+            });
+        };
+        DataService.prototype.addMessageAndTime = function (messageText, timespan, location) {
+            this.ref.child("messages").push().set({
+                email: 'user_email@test.com',
+                text: messageText,
+                timestamp: timespan,
+                userId: 'current_user_id'
+            });
+            this.updateLocation(location);
+        };
+        DataService.prototype.addMessage = function (messageText) {
+            this.ref.child("messages").push().set({
+                email: 'user_email@test.com',
+                text: messageText,
+                timestamp: 'current_timestamp',
+                userId: 'current_user_id'
+            });
+        };
+        DataService.prototype.updateLocation = function (cur_location) {
+            this.ref.child("members/" + "user_id" + "/currentLocation/latitude").set(cur_location.latitude);
+            this.ref.child("members/" + "user_id" + "/currentLocation/longitude").set(cur_location.longitude);
+        };
+        DataService.$inject = ['$firebaseArray'];
+        return DataService;
+    }());
+    GeoChat.DataService = DataService;
+    GeoChat.geoChatApp.service('DataService', DataService);
+})(GeoChat || (GeoChat = {}));
+/// <reference path="..\..\app.ts" />
+/// <reference path="..\services\data_service.ts" />
+var GeoChat;
+(function (GeoChat) {
+    var RoomCtrl = (function () {
+        function RoomCtrl(DataService, $routeParams) {
+            this.DataService = DataService;
+            this.$routeParams = $routeParams;
+            this.DataService.changeRoom($routeParams["roomId"]);
+        }
+        RoomCtrl.$inject = ['DataService', '$routeParams'];
+        return RoomCtrl;
+    }());
+    GeoChat.RoomCtrl = RoomCtrl;
+    GeoChat.geoChatApp.controller("RoomCtrl", RoomCtrl);
+})(GeoChat || (GeoChat = {}));
+/// <reference path="..\..\app.ts" />
+/// <reference path="..\..\..\..\typings\firebase\firebase.d.ts" />
+/// <reference path="..\..\..\..\typings\firebase\firebase.d.ts" />
+/// <reference path="..\..\models\user.ts" />
+/// <reference path="..\..\models\message.ts" />
+/// <reference path="..\..\models\location.ts" />
+var GeoChat;
+(function (GeoChat) {
+    var ProfileCtrl = (function () {
+        function ProfileCtrl() {
+            var config = {
+                apiKey: "AIzaSyDrcYVv2z1J8txJ0NSUJ3tbG3YQ172gf-c",
+                authDomain: "geo-chat-fe90d.firebaseapp.com",
+                databaseURL: "https://geo-chat-fe90d.firebaseio.com",
+                storageBucket: "geo-chat-fe90d.appspot.com",
+            };
+            firebase.initializeApp(config);
+            alert(firebase.auth().currentUser.uid);
+        }
+        ProfileCtrl.prototype.load = function () {
+        };
+        return ProfileCtrl;
+    }());
+    GeoChat.ProfileCtrl = ProfileCtrl;
+    GeoChat.geoChatApp.controller("ProfileCtrl", ProfileCtrl);
+})(GeoChat || (GeoChat = {}));
 /// <reference path="..\..\node_modules\angular-typescript\ts\definitely-typed\angularjs\angular.d.ts" />
 /// <reference path="app.ts" />
 /// <reference path="components\login\login.controller.ts" />
+/// <reference path="components\room\room.controller.ts" />
+/// <reference path="components\profile\profile.controller.ts" />
 var GeoChat;
 (function (GeoChat) {
     GeoChat.geoChatApp.config(["$routeProvider", "$locationProvider",
         function ($routeProvider, $locationProvider) {
             $routeProvider.
-                when("/", {
-                templateUrl: "app/components/room/room.tpl.html",
-                caseInsensitiveMatch: true
-            }).
+                /*when("/", {
+                    templateUrl: "app/components/room/room.tpl.html",
+                    caseInsensitiveMatch: true
+                }).*/
                 when("/login", {
                 templateUrl: "app/components/login/login.tpl.html",
                 controller: GeoChat.LoginCtrl,
                 controllerAs: "vm",
                 caseInsensitiveMatch: true
             }).
-                /*when("/room/:roomId", {
-                    templateUrl: "app/components/room/room.tpl.html",
-                    caseInsensitiveMatch: true
-                }). */
+                when("/room/:roomId", {
+                templateUrl: "app/components/room/room.tpl.html",
+                controller: GeoChat.RoomCtrl,
+                caseInsensitiveMatch: true
+            }).
+                when("/profile", {
+                templateUrl: "app/components/profile/profile.tpl.html",
+                controller: GeoChat.ProfileCtrl,
+                controllerAs: "vm",
+                caseInsensitiveMatch: true
+            }).
                 otherwise({
-                redirectTo: "/"
+                redirectTo: "/room/room_one_guid"
             });
             $locationProvider.html5Mode(true);
         }]);
@@ -161,104 +306,11 @@ var GeoChat;
 /// <reference path="..\..\models\location.ts" />
 var GeoChat;
 (function (GeoChat) {
-    var DataService = (function () {
-        function DataService($firebaseArray) {
-            console.log('starting data service constructor');
-            this.changeRoom('room_one_guid');
-            this.members = $firebaseArray(this.ref.child('members'));
-            this.messages = $firebaseArray(this.ref.child('messages'));
-            this.setupMessages();
-            this.setupUsers();
-            this.setupRoomName();
-        }
-        DataService.prototype.changeRoom = function (roomId) {
-            var _this = this;
-            this.roomId = roomId;
-            this.ref = new Firebase("https://geo-chat-fe90d.firebaseio.com/rooms/" + this.roomId);
-            this.currentUserId = window.localStorage.getItem('userId');
-            this.ref.child('members').once("value", function (snapshot) {
-                var hasUser = snapshot.hasChild(_this.currentUserId);
-                if (!hasUser) {
-                    var users_ref = new Firebase("https://geo-chat-fe90d.firebaseio.com/users");
-                    users_ref.child(_this.currentUserId).once("value", function (snapshot) {
-                        console.log(snapshot.val());
-                        _this.ref.child('members' + '/' + _this.currentUserId).set({
-                            email: snapshot.val().Email,
-                            firstName: snapshot.val().FirstName,
-                            lastName: snapshot.val().LastName,
-                            group: snapshot.val().Group,
-                            textLocation: snapshot.val().Location
-                        });
-                    });
-                }
-            });
-        };
-        DataService.prototype.setupRoomName = function () {
-            var _this = this;
-            this.ref.child("name").on("child_added", function (snapshot) {
-                _this.roomName = snapshot.val();
-                console.log(snapshot.val());
-            });
-        };
-        DataService.prototype.setupMessages = function () {
-            var _this = this;
-            this.ref.child("messages").on("child_added", function (snapshot) {
-                _this.messages.push(snapshot.val());
-                $('#gen-chat').trigger('newMessageAdded');
-                console.log(snapshot.val());
-            });
-        };
-        DataService.prototype.setupUsers = function () {
-            var _this = this;
-            this.ref.child("members").on("child_added", function (snapshot) {
-                _this.members.push(snapshot.val());
-                console.log(snapshot.val());
-            });
-            this.ref.child("members").on("child_changed", function (snapshot) {
-                console.log(snapshot.val());
-            });
-            this.ref.child("members").on("child_removed", function (snapshot) {
-                console.log(snapshot.val());
-            });
-        };
-        DataService.prototype.addMessageAndTime = function (messageText, timespan, location) {
-            this.ref.child("messages").push().set({
-                email: 'user_email@test.com',
-                text: messageText,
-                timestamp: timespan,
-                userId: 'current_user_id'
-            });
-            this.updateLocation(location);
-        };
-        DataService.prototype.addMessage = function (messageText) {
-            this.ref.child("messages").push().set({
-                email: 'user_email@test.com',
-                text: messageText,
-                timestamp: 'current_timestamp',
-                userId: 'current_user_id'
-            });
-        };
-        DataService.prototype.updateLocation = function (cur_location) {
-            this.ref.child("members/" + "user_id" + "/currentLocation/latitude").set(cur_location.latitude);
-            this.ref.child("members/" + "user_id" + "/currentLocation/longitude").set(cur_location.longitude);
-        };
-        DataService.$inject = ['$firebaseArray'];
-        return DataService;
-    }());
-    GeoChat.DataService = DataService;
-    GeoChat.geoChatApp.service('DataService', DataService);
-})(GeoChat || (GeoChat = {}));
-/// <reference path="..\..\app.ts" />
-/// <reference path="..\..\..\..\typings\firebase\firebase.d.ts" />
-/// <reference path="..\..\..\..\typings\firebase\firebase.d.ts" />
-/// <reference path="..\..\models\user.ts" />
-/// <reference path="..\..\models\message.ts" />
-/// <reference path="..\..\models\location.ts" />
-var GeoChat;
-(function (GeoChat) {
     var LocationService = (function () {
         function LocationService() {
             var _this = this;
+            this.lat = 36.1749700;
+            this.lon = -115.1372200;
             this.timeoutId = setInterval(function () {
                 _this.updateLocation();
             }, 5000);
@@ -301,14 +353,42 @@ var GeoChat;
             this.DataService = DataService;
             this.IsReady = IsReady;
             this.isMapReady = false;
+            this.icons = [];
             this.map = { center: { latitude: 36.1749700, longitude: -115.1372200 }, zoom: 14, control: {} };
             $scope.memberMarkers = DataService.members;
-            //Need this silliness so the map updates
-            $scope.$watch('DataService.members', function () { });
+            $scope.$watch('memberMarkers', function () {
+                //this.updateIcons();
+            });
             IsReady.promise().then(function (maps) {
                 var GeoMarker = new GeolocationMarker(_this.map.control.getGMap());
             });
         }
+        MapCtrl.prototype.updateIcons = function () {
+            var redCircle = {
+                path: google.maps.SymbolPath.CIRCLE,
+                fillColor: '#BD2031',
+                fillOpacity: 1,
+                scale: 7,
+                strokeColor: 'white',
+                strokeWeight: 1
+            };
+            var icons = [];
+            console.log(this.DataService.members.length);
+            for (var index = 0; index < this.DataService.members.length; index++) {
+                var member = this.DataService.members[index];
+                console.log('!!!!!!!!!!!!!!!!!');
+                console.log(member);
+                icons.push({
+                    latitude: member.currentLocation.latitude,
+                    longitude: member.currentLocation.longitude,
+                    id: member.email,
+                    icon: redCircle
+                });
+            }
+            this.$scope.memberMarkers = icons;
+            console.log(icons);
+            console.log(this.DataService.members);
+        };
         MapCtrl.$inject = ['$scope', 'DataService', 'uiGmapIsReady'];
         return MapCtrl;
     }());
@@ -323,6 +403,17 @@ var GeoChat;
         restrict: "AE",
         templateUrl: "app/components/map/map.tpl.html",
         controller: GeoChat.MapCtrl,
+        controllerAs: "vm"
+    }); });
+})(GeoChat || (GeoChat = {}));
+/// <reference path="..\..\app.ts" />
+/// <reference path="login.controller.ts" />
+var GeoChat;
+(function (GeoChat) {
+    GeoChat.geoChatApp.directive("profile", function () { return ({
+        restrict: "AE",
+        templateUrl: "app/components/profile/profile.tpl.html",
+        controller: GeoChat.ProfileCtrl,
         controllerAs: "vm"
     }); });
 })(GeoChat || (GeoChat = {}));

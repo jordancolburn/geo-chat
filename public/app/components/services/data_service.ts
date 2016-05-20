@@ -17,20 +17,11 @@ module GeoChat {
         
         static $inject = ['$firebaseArray'];
 
-        constructor($firebaseArray){
-            console.log('starting data service constructor');
-            this.changeRoom('room_one_guid');
-            this.members = $firebaseArray(this.ref.child('members'));
-            this.messages = $firebaseArray(this.ref.child('messages'));
-            this.setupMessages();
-            this.setupUsers();
-            this.setupRoomName();
-        }
+        constructor(private $firebaseArray){}
         
         changeRoom(roomId: string){
             this.roomId = roomId;
             this.ref = new Firebase("https://geo-chat-fe90d.firebaseio.com/rooms/" + this.roomId);
-
             this.currentUserId = window.localStorage.getItem('userId');
     
             this.ref.child('members').once("value", (snapshot) => {
@@ -50,7 +41,11 @@ module GeoChat {
                 }
             });
             
-            
+            this.members = this.$firebaseArray(this.ref.child('members'));
+            this.messages = this.$firebaseArray(this.ref);
+            this.setupMessages();
+            this.setupUsers();
+            this.setupRoomName();
         }
  
          setupRoomName(){

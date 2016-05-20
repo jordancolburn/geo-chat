@@ -3,8 +3,8 @@
 <div  ng-repeat="message in vm.messages" class="message message-default">
     <div class='clearfix'>
         <label class='fourfifth'>
-      <strong class='name'>{{ message.email }}</strong>
-      ({{ message.timestamp}}):
+      <strong class='name'>{{ message.email.substr(0, message.email.indexOf('@'))}}</strong>
+      ({{ message.timestamp | date:'short'}}):
     </label>
 
     </div>
@@ -18,7 +18,7 @@
 </div>
 <div class="row">
     <div class="col-sm-11">
-        <textarea id="message-box" ng-model="messageBox" class="form-control" rows="2" placeholder="Enter your message..."></textarea>
+        <textarea id="message-box" maxlength="150" ng-model="messageBox" class="form-control" rows="2" placeholder="Enter your message..."></textarea>
     </div>
     <div class="col-sm-1">
         <button type="button" class="btn btn-success" ng-click="vm.sendMessage(messageBox)">Send</button>
