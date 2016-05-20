@@ -69,7 +69,6 @@ var GeoChat;
         }
         LoginCtrl.prototype.login = function (email, password) {
             firebase.auth().signInWithEmailAndPassword(email, password).then(function (authData) {
-                alert('Logged in!' + authData.uid);
                 window.localStorage.setItem('userId', authData.uid);
                 window.location = '/';
             }).catch(function (error) {
@@ -175,8 +174,7 @@ var GeoChat;
             });
         };
         DataService.prototype.updateLocation = function (cur_location) {
-            this.ref.child("members/" + this.currentUserId + "/currentLocation/latitude").set(cur_location.latitude);
-            this.ref.child("members/" + this.currentUserId + "/currentLocation/longitude").set(cur_location.longitude);
+            this.ref.child("members/" + this.currentUserId + "/currentLocation").update(cur_location);
         };
         DataService.$inject = ['$firebaseArray', 'LocationService'];
         return DataService;
@@ -358,7 +356,10 @@ var GeoChat;
                 navigator.geolocation.getCurrentPosition(function (position) {
                     _this.lat = position.coords.latitude;
                     _this.lon = position.coords.longitude;
-                });
+                }, function (e) {
+                    console.log(e);
+                    clearTimeout(_this.timeoutId);
+                }, { timeout: 3000, maximumAge: 0 });
             }
             else {
                 console.log("Browser doesn't support Geolocation");
