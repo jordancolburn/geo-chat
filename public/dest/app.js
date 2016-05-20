@@ -153,10 +153,37 @@ var GeoChat;
     GeoChat.RoomCtrl = RoomCtrl;
     GeoChat.geoChatApp.controller("RoomCtrl", RoomCtrl);
 })(GeoChat || (GeoChat = {}));
+/// <reference path="..\..\app.ts" />
+/// <reference path="..\..\..\..\typings\firebase\firebase.d.ts" />
+/// <reference path="..\..\..\..\typings\firebase\firebase.d.ts" />
+/// <reference path="..\..\models\user.ts" />
+/// <reference path="..\..\models\message.ts" />
+/// <reference path="..\..\models\location.ts" />
+var GeoChat;
+(function (GeoChat) {
+    var ProfileCtrl = (function () {
+        function ProfileCtrl() {
+            var config = {
+                apiKey: "AIzaSyDrcYVv2z1J8txJ0NSUJ3tbG3YQ172gf-c",
+                authDomain: "geo-chat-fe90d.firebaseapp.com",
+                databaseURL: "https://geo-chat-fe90d.firebaseio.com",
+                storageBucket: "geo-chat-fe90d.appspot.com",
+            };
+            firebase.initializeApp(config);
+            alert(firebase.auth().currentUser.uid);
+        }
+        ProfileCtrl.prototype.load = function () {
+        };
+        return ProfileCtrl;
+    }());
+    GeoChat.ProfileCtrl = ProfileCtrl;
+    GeoChat.geoChatApp.controller("ProfileCtrl", ProfileCtrl);
+})(GeoChat || (GeoChat = {}));
 /// <reference path="..\..\node_modules\angular-typescript\ts\definitely-typed\angularjs\angular.d.ts" />
 /// <reference path="app.ts" />
 /// <reference path="components\login\login.controller.ts" />
 /// <reference path="components\room\room.controller.ts" />
+/// <reference path="components\profile\profile.controller.ts" />
 var GeoChat;
 (function (GeoChat) {
     GeoChat.geoChatApp.config(["$routeProvider", "$locationProvider",
@@ -175,6 +202,12 @@ var GeoChat;
                 when("/room/:roomId", {
                 templateUrl: "app/components/room/room.tpl.html",
                 controller: GeoChat.RoomCtrl,
+                caseInsensitiveMatch: true
+            }).
+                when("/profile", {
+                templateUrl: "app/components/profile/profile.tpl.html",
+                controller: GeoChat.ProfileCtrl,
+                controllerAs: "vm",
                 caseInsensitiveMatch: true
             }).
                 otherwise({
@@ -202,6 +235,47 @@ var GeoChat;
         restrict: "AE",
         templateUrl: "app/components/login/login.tpl.html",
         controller: GeoChat.LoginCtrl,
+        controllerAs: "vm"
+    }); });
+})(GeoChat || (GeoChat = {}));
+/// <reference path="..\..\app.ts" />
+var GeoChat;
+(function (GeoChat) {
+    var ChatCtrl = (function () {
+        function ChatCtrl(DataService, LocationService) {
+            var _this = this;
+            this.messages = DataService.messages;
+            this.dataService = DataService;
+            this.locationService = LocationService;
+            this.fixChatScroll(1000);
+            $('#gen-chat').on('newMessageAdded', function () {
+                _this.fixChatScroll(1000);
+            });
+        }
+        ChatCtrl.prototype.sendMessage = function (text) {
+            this.dataService.addMessageAndTime(text, (new Date()).toISOString(), this.locationService.getLocation());
+            $('#message-box').val('');
+            this.fixChatScroll(1);
+        };
+        ChatCtrl.prototype.fixChatScroll = function (delay) {
+            setTimeout(function () {
+                $("#gen-chat").scrollTop($("#gen-chat")[0].scrollHeight);
+            }, delay);
+        };
+        ChatCtrl.$inject = ['DataService', 'LocationService'];
+        return ChatCtrl;
+    }());
+    GeoChat.ChatCtrl = ChatCtrl;
+    GeoChat.geoChatApp.controller("ChatCtrl", ChatCtrl);
+})(GeoChat || (GeoChat = {}));
+/// <reference path="..\..\app.ts" />
+/// <reference path="chat.controller.ts" />
+var GeoChat;
+(function (GeoChat) {
+    GeoChat.geoChatApp.directive("chat", function () { return ({
+        restrict: "AE",
+        templateUrl: "app/components/chat/chat.tpl.html",
+        controller: GeoChat.ChatCtrl,
         controllerAs: "vm"
     }); });
 })(GeoChat || (GeoChat = {}));
@@ -314,43 +388,13 @@ var GeoChat;
     }); });
 })(GeoChat || (GeoChat = {}));
 /// <reference path="..\..\app.ts" />
+/// <reference path="login.controller.ts" />
 var GeoChat;
 (function (GeoChat) {
-    var ChatCtrl = (function () {
-        function ChatCtrl(DataService, LocationService) {
-            var _this = this;
-            this.messages = DataService.messages;
-            this.dataService = DataService;
-            this.locationService = LocationService;
-            this.fixChatScroll(1000);
-            $('#gen-chat').on('newMessageAdded', function () {
-                _this.fixChatScroll(1000);
-            });
-        }
-        ChatCtrl.prototype.sendMessage = function (text) {
-            this.dataService.addMessageAndTime(text, (new Date()).toISOString(), this.locationService.getLocation());
-            $('#message-box').val('');
-            this.fixChatScroll(1);
-        };
-        ChatCtrl.prototype.fixChatScroll = function (delay) {
-            setTimeout(function () {
-                $("#gen-chat").scrollTop($("#gen-chat")[0].scrollHeight);
-            }, delay);
-        };
-        ChatCtrl.$inject = ['DataService', 'LocationService'];
-        return ChatCtrl;
-    }());
-    GeoChat.ChatCtrl = ChatCtrl;
-    GeoChat.geoChatApp.controller("ChatCtrl", ChatCtrl);
-})(GeoChat || (GeoChat = {}));
-/// <reference path="..\..\app.ts" />
-/// <reference path="chat.controller.ts" />
-var GeoChat;
-(function (GeoChat) {
-    GeoChat.geoChatApp.directive("chat", function () { return ({
+    GeoChat.geoChatApp.directive("profile", function () { return ({
         restrict: "AE",
-        templateUrl: "app/components/chat/chat.tpl.html",
-        controller: GeoChat.ChatCtrl,
+        templateUrl: "app/components/profile/profile.tpl.html",
+        controller: GeoChat.ProfileCtrl,
         controllerAs: "vm"
     }); });
 })(GeoChat || (GeoChat = {}));
