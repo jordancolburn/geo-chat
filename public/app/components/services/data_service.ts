@@ -20,7 +20,7 @@ module GeoChat {
             console.log('starting data service constructor');
             this.changeRoom('room_one_guid');
             this.members = $firebaseArray(this.ref.child('members'));
-            this.messages = $firebaseArray(this.ref);
+            this.messages = $firebaseArray(this.ref.child('messages'));
             this.setupMessages();
             this.setupUsers();
             this.setupRoomName();
