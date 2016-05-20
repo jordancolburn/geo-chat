@@ -164,7 +164,7 @@ var GeoChat;
         function DataService($firebaseArray) {
             console.log('starting data service constructor');
             this.changeRoom('room_one_guid');
-            this.members = $firebaseArray(this.ref);
+            this.members = $firebaseArray(this.ref.child('members'));
             this.messages = $firebaseArray(this.ref);
             this.setupMessages();
             this.setupUsers();
@@ -286,19 +286,21 @@ var GeoChat;
 var GeoChat;
 (function (GeoChat) {
     var MapCtrl = (function () {
-        function MapCtrl($scope, DataService, LocationService) {
+        function MapCtrl($scope, DataService, IsReady) {
+            var _this = this;
             this.$scope = $scope;
             this.DataService = DataService;
-            this.LocationService = LocationService;
+            this.IsReady = IsReady;
             this.isMapReady = false;
-            this.members = [];
-            this.map = { center: { latitude: 36.1749700, longitude: -115.1372200 }, zoom: 14 };
-            this.members = DataService.members;
+            this.map = { center: { latitude: 36.1749700, longitude: -115.1372200 }, zoom: 14, control: {} };
             $scope.memberMarkers = DataService.members;
             //Need this silliness so the map updates
             $scope.$watch('DataService.members', function () { });
+            IsReady.promise().then(function (maps) {
+                var GeoMarker = new GeolocationMarker(_this.map.control.getGMap());
+            });
         }
-        MapCtrl.$inject = ['$scope', 'DataService', 'LocationService'];
+        MapCtrl.$inject = ['$scope', 'DataService', 'uiGmapIsReady'];
         return MapCtrl;
     }());
     GeoChat.MapCtrl = MapCtrl;

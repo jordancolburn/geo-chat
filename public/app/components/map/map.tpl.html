@@ -1,3 +1,5 @@
-<ui-gmap-google-map center='vm.map.center' zoom='vm.map.zoom' class="full-height">
+<ui-gmap-google-map center='vm.map.center' zoom='vm.map.zoom' class="full-height" control="vm.map.control">>
     <ui-gmap-markers models="memberMarkers" coords="'currentLocation'" idKey="'email'" fit="true"></ui-gmap-markers>
+	<ui-gmap-marker coords="locationMarker.coords" options="locationMarker.options" idkey="locationMarker.id"></ui-gmap-marker>
+    <ui-gmap-circle center="locationCircle.center" stroke="locationCircle.stroke" fill="locationCircle.fill" radius="locationCircle.radius" clickable="locationCircle.clickable"></ui-gmap-circle>	
 </ui-gmap-google-map>

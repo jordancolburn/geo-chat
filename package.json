@@ -33,6 +33,7 @@
     "angularfire": "^1.2.0",
     "bootstrap": "^3.3.6",
     "firebase": "^3.0.1",
+    "geolocation-marker": "^2.0.4",
     "gulp-typescript": "^2.13.4",
     "jquery": "^2.2.3",
     "lodash": "^4.12.0",
