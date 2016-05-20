@@ -424,12 +424,13 @@ var GeoChat;
                         position: { lat: member.currentLocation.latitude, lng: member.currentLocation.longitude },
                         map: this.googleMap,
                         title: name,
+                        infoData: member.firstName + ' ' + member.lastName + '</br>' + member.group + '</br>' + member.textLocation,
                         icon: circle
                     });
                     this.icons[member.id] = marker;
                     google.maps.event.addListener(marker, 'click', (function (marker, infowindow, map) {
                         return function () {
-                            infowindow.setContent(marker.title);
+                            infowindow.setContent(marker.infoData);
                             infowindow.open(map, marker);
                         };
                     })(marker, this.infowindow, this.googleMap));
