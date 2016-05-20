@@ -23,7 +23,7 @@ module GeoChat {
             this.roomId = roomId;
             this.ref = new Firebase("https://geo-chat-fe90d.firebaseio.com/rooms/" + this.roomId);
             this.members = this.$firebaseArray(this.ref.child('members'));
-            this.messages = this.$firebaseArray(this.ref);
+            this.messages = this.$firebaseArray(this.ref.child('messages'));
             this.setupMessages();
             this.setupUsers();
             this.setupRoomName();
@@ -45,7 +45,7 @@ module GeoChat {
         }
         
         setupUsers(){
-            this.ref.child("members").on("child_added", (snapshot) => {
+            this.ref.child("members").limitToLast(50).on("child_added", (snapshot) => {
                 this.members.push(snapshot.val());
                 console.log(snapshot.val());
             });
