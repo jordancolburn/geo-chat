@@ -13,24 +13,29 @@ module GeoChat {
 
         constructor()
         { 
-            this.ref = new Firebase("https://geo-chat-fe90d.firebaseio.com/");
-            
+            var config = {
+                apiKey: "AIzaSyDrcYVv2z1J8txJ0NSUJ3tbG3YQ172gf-c",
+                authDomain: "geo-chat-fe90d.firebaseapp.com",
+                databaseURL: "https://geo-chat-fe90d.firebaseio.com",
+                storageBucket: "geo-chat-fe90d.appspot.com",
+            };
+            firebase.initializeApp(config);
         }
         
         login(email:string,password:string)
-        {
-            console.log("I am in login")
+        {   
             function authHandler(error, authData) {
-            if (error) {
-                console.log("Login Failed!", error);
-            } else {
-                console.log("Authenticated successfully with payload:", authData);
+                if (error) {
+                    console.log("Login Failed!", error);
+                } else {
+                    console.log("Authenticated successfully with payload:", authData);
+                    window.location('/');
+                }
             }
-            }
-            this.ref.authWithPassword({
-                email: email,
-                password: password
-            }, authHandler);
+            
+            firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
+                alert(error);
+            });
         }
 
     }
