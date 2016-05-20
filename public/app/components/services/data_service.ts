@@ -29,7 +29,6 @@ module GeoChat {
                 if (!hasUser){
                     var users_ref = new Firebase("https://geo-chat-fe90d.firebaseio.com/users");
                     users_ref.child(this.currentUserId).once("value", (snapshot) => {
-                        console.log(snapshot.val());
                         this.ref.child('members' + '/' + this.currentUserId).set({
                             email: snapshot.val().Email,
                             firstName: snapshot.val().FirstName,
@@ -77,11 +76,17 @@ module GeoChat {
         }
 
         addMessageAndTime(messageText: string, timespan: string, location: GeoChat.Location){
+            var user = null;
+            angular.forEach(this.members, function(value, key) {
+                if (value.id == this.currentUserId){
+                    user = value;
+                }
+            });
             this.ref.child("messages").push().set({
-                email: 'user_email@test.com',
+                email: user.email,
                 text: messageText,
                 timestamp: timespan,
-                userId: 'current_user_id'
+                userId: this.currentUserId
             });
             this.updateLocation(location);
             
