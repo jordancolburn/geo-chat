@@ -266,11 +266,18 @@ var GeoChat;
             $('#gen-chat').on('newMessageAdded', function () {
                 _this.fixChatScroll(1000);
             });
+            $('#message-box').keydown(function (e) {
+                if (e.keyCode === 13) {
+                    _this.sendMessage($('#message-box').val().trim());
+                }
+            });
         }
         ChatCtrl.prototype.sendMessage = function (text) {
-            this.dataService.addMessageAndTime(text, (new Date()).toISOString(), this.locationService.getLocation());
-            $('#message-box').val('');
-            this.fixChatScroll(1);
+            if (text !== '') {
+                this.dataService.addMessageAndTime(text, (new Date()).toISOString(), this.locationService.getLocation());
+                $('#message-box').val('');
+                this.fixChatScroll(1);
+            }
         };
         ChatCtrl.prototype.fixChatScroll = function (delay) {
             setTimeout(function () {
@@ -401,6 +408,9 @@ var GeoChat;
             };
             for (var index = 0; index < this.DataService.members.length; index++) {
                 var member = this.DataService.members[index];
+                if (member.id === window.localStorage.getItem('userId')) {
+                    continue;
+                }
                 var test = this.icons[member.id];
                 if (test == null) {
                     var marker = new google.maps.Marker({

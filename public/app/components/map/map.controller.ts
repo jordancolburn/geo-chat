@@ -49,6 +49,9 @@ module GeoChat {
             
             for (var index = 0; index < this.DataService.members.length; index++) {
                 var member = this.DataService.members[index];
+                if (member.id === window.localStorage.getItem('userId')) {
+                    continue;
+                }
                 var test = this.icons[member.id];
                 if (test == null) {
                     var marker = new google.maps.Marker({
