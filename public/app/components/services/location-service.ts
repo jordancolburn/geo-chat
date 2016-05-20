@@ -8,25 +8,28 @@
 module GeoChat {
 
     export class LocationService {
-        private lat: number;
-        private lon: number;
+        private lat: number = 36.1749700;
+        private lon: number = -115.1372200;
+        private timeoutId: number;
 
         constructor() {
-            setInterval(() => {
+            this.timeoutId = setInterval(() => {
                 this.updateLocation();
-             }, 5000);
+            }, 5000);
         }
-        
+
         getLocation(): GeoChat.Location {
             return {
                 latitude: this.lat,
                 longitude: this.lon
             }
         }
-        updateLocation() : void {
+        updateLocation(): void {
             // Try HTML5 geolocation.
             if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition( (position) => {
+                navigator.geolocation.getCurrentPosition((position) => {
+                    clearTimeout(this.timeoutId);
+
                     this.lat = position.coords.latitude;
                     this.lon = position.coords.longitude;
                 });
@@ -35,7 +38,7 @@ module GeoChat {
                 return null;
             }
         }
-        
+
     }
 
     geoChatApp.service('LocationService', LocationService);
