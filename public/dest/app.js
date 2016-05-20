@@ -357,10 +357,7 @@ var GeoChat;
                 navigator.geolocation.getCurrentPosition(function (position) {
                     _this.lat = position.coords.latitude;
                     _this.lon = position.coords.longitude;
-                }, function (e) {
-                    console.log(e);
-                    clearTimeout(_this.timeoutId);
-                }, { timeout: 3000, maximumAge: 0 });
+                });
             }
             else {
                 console.log("Browser doesn't support Geolocation");
