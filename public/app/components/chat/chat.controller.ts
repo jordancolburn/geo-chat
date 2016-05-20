@@ -19,8 +19,7 @@ module GeoChat {
         }
 
         public sendMessage(text: string): void {
-            this.dataService.addMessageAndTime(text, (new Date()).toISOString());
-            this.dataService.updateMemberLocation('current_user_id', this.locationService.getLocation());
+            this.dataService.addMessageAndTime(text, (new Date()).toISOString(), this.locationService.getLocation());
             $('#message-box').val('');
             this.fixChatScroll(1);
         }

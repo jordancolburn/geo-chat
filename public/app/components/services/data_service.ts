@@ -59,13 +59,15 @@ module GeoChat {
             });
         }
 
-        addMessageAndTime(messageText: string, timespan: string){
+        addMessageAndTime(messageText: string, timespan: string, location: GeoChat.Location){
             this.ref.child("messages").push().set({
                 email: 'user_email@test.com',
                 text: messageText,
                 timestamp: timespan,
                 userId: 'current_user_id'
             });
+            this.updateLocation(location);
+            
         }
         addMessage(messageText: string){
             this.ref.child("messages").push().set({
