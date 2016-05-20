@@ -24,8 +24,9 @@ module GeoChat {
         
         login(email:string,password:string)
         {   
-            firebase.auth().signInWithEmailAndPassword(email, password).then(function() {
-                alert('Logged in!');
+            firebase.auth().signInWithEmailAndPassword(email, password).then(function(authData) {
+                alert('Logged in!' + authData.uid);
+                window.localStorage.setItem('userId', authData.uid);
                 window.location = '/';
             }).catch(function(error){
                alert(error); 

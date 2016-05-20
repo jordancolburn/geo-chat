@@ -49,8 +49,9 @@ var GeoChat;
             firebase.initializeApp(config);
         }
         LoginCtrl.prototype.login = function (email, password) {
-            firebase.auth().signInWithEmailAndPassword(email, password).then(function () {
-                alert('Logged in!');
+            firebase.auth().signInWithEmailAndPassword(email, password).then(function (authData) {
+                alert('Logged in!' + authData.uid);
+                window.localStorage.setItem('userId', authData.uid);
                 window.location = '/';
             }).catch(function (error) {
                 alert(error);
@@ -142,6 +143,17 @@ var GeoChat;
     }); });
 })(GeoChat || (GeoChat = {}));
 /// <reference path="..\..\app.ts" />
+/// <reference path="login.controller.ts" />
+var GeoChat;
+(function (GeoChat) {
+    GeoChat.geoChatApp.directive("login", function () { return ({
+        restrict: "AE",
+        templateUrl: "app/components/login/login.tpl.html",
+        controller: GeoChat.LoginCtrl,
+        controllerAs: "vm"
+    }); });
+})(GeoChat || (GeoChat = {}));
+/// <reference path="..\..\app.ts" />
 /// <reference path="..\..\..\..\typings\firebase\firebase.d.ts" />
 /// <reference path="..\..\..\..\typings\firebase\firebase.d.ts" />
 /// <reference path="..\..\models\user.ts" />
@@ -154,7 +166,7 @@ var GeoChat;
             console.log('starting data service constructor');
             this.changeRoom('room_one_guid');
             this.members = $firebaseArray(this.ref.child('members'));
-            this.messages = $firebaseArray(this.ref);
+            this.messages = $firebaseArray(this.ref.child('messages'));
             this.setupMessages();
             this.setupUsers();
             this.setupRoomName();
@@ -163,14 +175,20 @@ var GeoChat;
             var _this = this;
             this.roomId = roomId;
             this.ref = new Firebase("https://geo-chat-fe90d.firebaseio.com/rooms/" + this.roomId);
-            var newRef = new Firebase("https://geo-chat-fe90d.firebaseio.com/");
-            var authData = newRef.getAuth();
-            this.currentUserId = 'new_user_id';
+            this.currentUserId = window.localStorage.getItem('userId');
             this.ref.child('members').once("value", function (snapshot) {
                 var hasUser = snapshot.hasChild(_this.currentUserId);
                 if (!hasUser) {
-                    _this.ref.child('members' + '/' + _this.currentUserId).set({
-                        email: 'test_email@email.com'
+                    var users_ref = new Firebase("https://geo-chat-fe90d.firebaseio.com/users");
+                    users_ref.child(_this.currentUserId).once("value", function (snapshot) {
+                        console.log(snapshot.val());
+                        _this.ref.child('members' + '/' + _this.currentUserId).set({
+                            email: snapshot.val().Email,
+                            firstName: snapshot.val().FirstName,
+                            lastName: snapshot.val().LastName,
+                            group: snapshot.val().Group,
+                            textLocation: snapshot.val().Location
+                        });
                     });
                 }
             });
@@ -241,7 +259,7 @@ var GeoChat;
     var LocationService = (function () {
         function LocationService() {
             var _this = this;
-            setInterval(function () {
+            this.timeoutId = setInterval(function () {
                 _this.updateLocation();
             }, 5000);
         }
@@ -256,6 +274,7 @@ var GeoChat;
             // Try HTML5 geolocation.
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(function (position) {
+                    clearTimeout(_this.timeoutId);
                     _this.lat = position.coords.latitude;
                     _this.lon = position.coords.longitude;
                 });
@@ -304,17 +323,6 @@ var GeoChat;
         restrict: "AE",
         templateUrl: "app/components/map/map.tpl.html",
         controller: GeoChat.MapCtrl,
-        controllerAs: "vm"
-    }); });
-})(GeoChat || (GeoChat = {}));
-/// <reference path="..\..\app.ts" />
-/// <reference path="login.controller.ts" />
-var GeoChat;
-(function (GeoChat) {
-    GeoChat.geoChatApp.directive("login", function () { return ({
-        restrict: "AE",
-        templateUrl: "app/components/login/login.tpl.html",
-        controller: GeoChat.LoginCtrl,
         controllerAs: "vm"
     }); });
 })(GeoChat || (GeoChat = {}));

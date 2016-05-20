@@ -30,14 +30,22 @@ module GeoChat {
         changeRoom(roomId: string){
             this.roomId = roomId;
             this.ref = new Firebase("https://geo-chat-fe90d.firebaseio.com/rooms/" + this.roomId);
-            var newRef = new Firebase("https://geo-chat-fe90d.firebaseio.com/");
-            var authData = newRef.getAuth();
-            this.currentUserId = 'new_user_id';
+
+            this.currentUserId = window.localStorage.getItem('userId');
+    
             this.ref.child('members').once("value", (snapshot) => {
                 var hasUser = snapshot.hasChild(this.currentUserId);
                 if (!hasUser){
-                    this.ref.child('members' + '/' + this.currentUserId).set({
-                        email: 'test_email@email.com'
+                    var users_ref = new Firebase("https://geo-chat-fe90d.firebaseio.com/users");
+                    users_ref.child(this.currentUserId).once("value", (snapshot) => {
+                        console.log(snapshot.val());
+                        this.ref.child('members' + '/' + this.currentUserId).set({
+                            email: snapshot.val().Email,
+                            firstName: snapshot.val().FirstName,
+                            lastName: snapshot.val().LastName,
+                            group: snapshot.val().Group,
+                            textLocation: snapshot.val().Location
+                        });           
                     });
                 }
             });
