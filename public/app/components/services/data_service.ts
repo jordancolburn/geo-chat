@@ -68,16 +68,7 @@ module GeoChat {
         }
         
         setupUsers(){
-            this.ref.child("members").limitToLast(50).on("child_added", (snapshot) => {
-                this.members.push(snapshot.val());
-                //console.log(snapshot.val());
-            });
-            this.ref.child("members").on("child_changed", (snapshot) => {
-                //console.log(snapshot.val());
-            });
-            this.ref.child("members").on("child_removed", (snapshot) => {
-                //console.log(snapshot.val());
-            });
+
         }
 
         addMessageAndTime(messageText: string, timespan: string, location: GeoChat.Location){

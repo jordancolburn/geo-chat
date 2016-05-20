@@ -131,17 +131,6 @@ var GeoChat;
             });
         };
         DataService.prototype.setupUsers = function () {
-            var _this = this;
-            this.ref.child("members").limitToLast(50).on("child_added", function (snapshot) {
-                _this.members.push(snapshot.val());
-                //console.log(snapshot.val());
-            });
-            this.ref.child("members").on("child_changed", function (snapshot) {
-                //console.log(snapshot.val());
-            });
-            this.ref.child("members").on("child_removed", function (snapshot) {
-                //console.log(snapshot.val());
-            });
         };
         DataService.prototype.addMessageAndTime = function (messageText, timespan, location) {
             var user = null;
@@ -184,7 +173,7 @@ var GeoChat;
         function RoomCtrl(DataService, $routeParams) {
             this.DataService = DataService;
             this.$routeParams = $routeParams;
-            this.DataService.changeRoom($routeParams["roomId"]);
+            this.DataService.changeRoom('room_one_guid');
         }
         RoomCtrl.$inject = ['DataService', '$routeParams'];
         return RoomCtrl;
@@ -228,19 +217,15 @@ var GeoChat;
     GeoChat.geoChatApp.config(["$routeProvider", "$locationProvider",
         function ($routeProvider, $locationProvider) {
             $routeProvider.
-                /*when("/", {
-                    templateUrl: "app/components/room/room.tpl.html",
-                    caseInsensitiveMatch: true
-                }).*/
+                when("/", {
+                templateUrl: "app/components/room/room.tpl.html",
+                controller: GeoChat.RoomCtrl,
+                caseInsensitiveMatch: true
+            }).
                 when("/login", {
                 templateUrl: "app/components/login/login.tpl.html",
                 controller: GeoChat.LoginCtrl,
                 controllerAs: "vm",
-                caseInsensitiveMatch: true
-            }).
-                when("/room/:roomId", {
-                templateUrl: "app/components/room/room.tpl.html",
-                controller: GeoChat.RoomCtrl,
                 caseInsensitiveMatch: true
             }).
                 when("/profile", {
@@ -250,7 +235,7 @@ var GeoChat;
                 caseInsensitiveMatch: true
             }).
                 otherwise({
-                redirectTo: "/room/room_one_guid"
+                redirectTo: "/"
             });
             $locationProvider.html5Mode(true);
         }]);
@@ -380,14 +365,13 @@ var GeoChat;
             this.LocationService = LocationService;
             this.$rootScope = $rootScope;
             this.isMapReady = false;
-            this.icons = [];
+            this.icons = {};
             this.map = { center: { latitude: 36.103, longitude: -115.1745 }, zoom: 18, control: {} };
-            $scope.memberMarkers = DataService.members;
-            $scope.$watch('memberMarkers', function () { });
-            console.log(DataService.members);
+            //$scope.memberMarkers = DataService.members;
+            //console.log(DataService.members);
             IsReady.promise().then(function (maps) {
-                var map = _this.map.control.getGMap();
-                var GeoMarker = new GeolocationMarker(map);
+                _this.googleMap = _this.map.control.getGMap();
+                var GeoMarker = new GeolocationMarker(_this.googleMap);
                 if (navigator.geolocation) {
                     navigator.geolocation.getCurrentPosition(function (position) {
                         _this.map.center.latitude = position.coords.latitude;
@@ -395,13 +379,15 @@ var GeoChat;
                     });
                 }
                 _this.$rootScope.$on("members-updated", function () {
-                    console.log('members-updated');
-                    $scope.memberMarkers = [];
-                    $scope.memberMarkers = DataService.members;
+                    _this.updateIcons();
+                    //console.log('members-updated');
+                    //$scope.memberMarkers = [];
+                    //$scope.memberMarkers = DataService.members;
                 });
                 setInterval(function () {
                     DataService.updateLocation(LocationService.getLocation());
                 }, 15000);
+                _this.updateIcons();
             });
         }
         MapCtrl.prototype.updateIcons = function () {
@@ -413,22 +399,22 @@ var GeoChat;
                 strokeColor: 'white',
                 strokeWeight: 1
             };
-            var icons = [];
-            console.log(this.DataService.members.length);
             for (var index = 0; index < this.DataService.members.length; index++) {
                 var member = this.DataService.members[index];
-                console.log('!!!!!!!!!!!!!!!!!');
-                console.log(member);
-                icons.push({
-                    latitude: member.currentLocation.latitude,
-                    longitude: member.currentLocation.longitude,
-                    id: member.email,
-                    icon: redCircle
-                });
+                var test = this.icons[member.id];
+                if (test == null) {
+                    var marker = new google.maps.Marker({
+                        position: { lat: member.currentLocation.latitude, lng: member.currentLocation.longitude },
+                        map: this.googleMap,
+                        title: member.firstName + ' ' + member.lastName,
+                        icon: redCircle
+                    });
+                    this.icons[member.id] = marker;
+                }
+                else {
+                    test.setPosition({ lat: member.currentLocation.latitude, lng: member.currentLocation.longitude });
+                }
             }
-            this.$scope.memberMarkers = icons;
-            console.log(icons);
-            console.log(this.DataService.members);
         };
         MapCtrl.$inject = ['$scope', 'DataService', 'uiGmapIsReady', 'LocationService', '$rootScope'];
         return MapCtrl;

@@ -10,29 +10,25 @@ module GeoChat {
     geoChatApp.config(["$routeProvider", "$locationProvider",
         ($routeProvider, $locationProvider) => {
             $routeProvider.
-                /*when("/", {
+                when("/", {
                     templateUrl: "app/components/room/room.tpl.html",
+                    controller: RoomCtrl,
                     caseInsensitiveMatch: true
-                }).*/
+                }).
                   when("/login", {
                     templateUrl: "app/components/login/login.tpl.html",
                     controller: LoginCtrl,
                     controllerAs: "vm",
                     caseInsensitiveMatch: true
-                }).
-                when("/room/:roomId", {
-                     templateUrl: "app/components/room/room.tpl.html",
-                    controller: RoomCtrl,
-                    caseInsensitiveMatch: true
-                }).               
-                  when("/profile", {
+                }).              
+                when("/profile", {
                     templateUrl: "app/components/profile/profile.tpl.html",
                     controller: ProfileCtrl,
                     controllerAs: "vm",
                     caseInsensitiveMatch: true
                 }).
                 otherwise({
-                    redirectTo: "/room/room_one_guid"
+                    redirectTo: "/"
                 });
             $locationProvider.html5Mode(true);
         }]);
