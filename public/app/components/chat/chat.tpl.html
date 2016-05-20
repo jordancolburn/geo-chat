@@ -13,21 +13,16 @@
     </div>
 </div>
 </div>
-<div class="row">
+<div>
     <label> Message: </label>
 </div>
-<div class="row">
-    <div class = "input-group">
+<div class="col-sm-12">
         <textarea id="message-box" maxlength="150" ng-model="messageBox" class="form-control" rows="3" placeholder="Enter your message..."></textarea>
-
-        <span class = "input-group-btn">
-        <button type="button" class="btn btn-default" ng-click="vm.sendMessage(messageBox)">Send</button>
-        </span>
-    </div><!-- /input-group -->
     </div>
     
-    <div class="row">
-        <button type="button" class="btn btn-error" ng-click="vm.logout()">Logout</button>
+    <div class="col-sm-12">
+        <button type="button" class="btn btn-error pull-right" ng-click="vm.logout()">Logout</button>
+        <button type="button" class="btn btn-default" ng-click="vm.sendMessage(messageBox)">Send</button>
     </div>
 </div>
 </div>
