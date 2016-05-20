@@ -88,18 +88,10 @@ module GeoChat {
                 email: user.email,
                 text: messageText,
                 timestamp: timespan,
-                userId: this.currentUserId
+                userId: this.currentUserId,
+                color: user.color
             });
             this.updateLocation(location);
-            
-        }
-        addMessage(messageText: string){
-            this.ref.child("messages").push().set({
-                email: 'user_email@test.com',
-                text: messageText,
-                timestamp: 'current_timestamp',
-                userId: 'current_user_id'
-            });
         }
 
         updateLocation(cur_location: GeoChat.Location){

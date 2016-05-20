@@ -149,17 +149,10 @@ var GeoChat;
                 email: user.email,
                 text: messageText,
                 timestamp: timespan,
-                userId: this.currentUserId
+                userId: this.currentUserId,
+                color: user.color
             });
             this.updateLocation(location);
-        };
-        DataService.prototype.addMessage = function (messageText) {
-            this.ref.child("messages").push().set({
-                email: 'user_email@test.com',
-                text: messageText,
-                timestamp: 'current_timestamp',
-                userId: 'current_user_id'
-            });
         };
         DataService.prototype.updateLocation = function (cur_location) {
             this.ref.child("members/" + this.currentUserId + "/currentLocation").update(cur_location);
