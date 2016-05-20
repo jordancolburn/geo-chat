@@ -13,6 +13,7 @@ module GeoChat {
         public members: User[];
         public messages: Message[];
         public roomName: string;
+        public currentUserId: string;
         
         static $inject = ['$firebaseArray'];
 

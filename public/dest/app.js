@@ -145,7 +145,6 @@ var GeoChat;
         function RoomCtrl(DataService, $routeParams) {
             this.DataService = DataService;
             this.$routeParams = $routeParams;
-            alert($routeParams["roomId"]);
             this.DataService.changeRoom($routeParams["roomId"]);
         }
         RoomCtrl.$inject = ['DataService', '$routeParams'];
@@ -258,7 +257,7 @@ var GeoChat;
     var LocationService = (function () {
         function LocationService() {
             var _this = this;
-            setInterval(function () {
+            this.timeoutId = setInterval(function () {
                 _this.updateLocation();
             }, 5000);
         }
@@ -273,6 +272,7 @@ var GeoChat;
             // Try HTML5 geolocation.
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(function (position) {
+                    clearTimeout(_this.timeoutId);
                     _this.lat = position.coords.latitude;
                     _this.lon = position.coords.longitude;
                 });
