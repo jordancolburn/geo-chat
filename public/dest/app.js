@@ -257,6 +257,8 @@ var GeoChat;
     var LocationService = (function () {
         function LocationService() {
             var _this = this;
+            this.lat = 36.1749700;
+            this.lon = -115.1372200;
             this.timeoutId = setInterval(function () {
                 _this.updateLocation();
             }, 5000);
