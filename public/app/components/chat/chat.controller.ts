@@ -6,12 +6,14 @@ module GeoChat {
         private messages: [any];
         private dataService: any;
         private locationService: any;
-        public static $inject = ['$scope', 'DataService', 'LocationService'];
+        private authService: any;
+        public static $inject = ['$scope', 'DataService', 'LocationService', 'AuthService'];
 
-        constructor($scope, DataService, LocationService) {
+        constructor($scope, DataService, LocationService, AuthService) {
             this.messages = DataService.messages;
             this.dataService = DataService;
             this.locationService = LocationService;
+            this.authService = AuthService;
             $scope.$watch('DataService.messages',() => {});
             this.fixChatScroll(1000);
             $('#gen-chat').on('newMessageAdded', () => {
@@ -30,8 +32,13 @@ module GeoChat {
                 $("#gen-chat").scrollTop($("#gen-chat")[0].scrollHeight);
             }, delay)
         }
+        
+        public logout(): void
+        {
+            this.authService.logout();
+        }
     }
-
+    
     geoChatApp.controller("ChatCtrl", ChatCtrl);
 
 }
