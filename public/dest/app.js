@@ -49,16 +49,10 @@ var GeoChat;
             firebase.initializeApp(config);
         }
         LoginCtrl.prototype.login = function (email, password) {
-            function authHandler(error, authData) {
-                if (error) {
-                    console.log("Login Failed!", error);
-                }
-                else {
-                    console.log("Authenticated successfully with payload:", authData);
-                    window.location('/');
-                }
-            }
-            firebase.auth().signInWithEmailAndPassword(email, password).catch(function (error) {
+            firebase.auth().signInWithEmailAndPassword(email, password).then(function () {
+                alert('Logged in!');
+                window.location = '/';
+            }).catch(function (error) {
                 alert(error);
             });
         };
