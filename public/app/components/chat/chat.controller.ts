@@ -13,15 +13,24 @@ module GeoChat {
             this.dataService = DataService;
             this.locationService = LocationService;
             this.fixChatScroll(1000);
+            
             $('#gen-chat').on('newMessageAdded', () => {
                 this.fixChatScroll(1000);
-             });
+            });
+
+            $('#message-box').keydown((e) => {
+                if (e.keyCode === 13) {
+                    this.sendMessage($('#message-box').val().trim());
+                }
+            });
         }
 
         public sendMessage(text: string): void {
-            this.dataService.addMessageAndTime(text, (new Date()).toISOString(), this.locationService.getLocation());
-            $('#message-box').val('');
-            this.fixChatScroll(1);
+            if (text !== '') {
+                this.dataService.addMessageAndTime(text, (new Date()).toISOString(), this.locationService.getLocation());
+                $('#message-box').val('');
+                this.fixChatScroll(1);
+            }
         }
 
         private fixChatScroll(delay: number): void {
