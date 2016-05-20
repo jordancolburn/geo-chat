@@ -9,3 +9,7 @@
 .angular-google-map-container { height: 100%; }
 
 .angular-google-map { height: 100%; };
+
+.buffer-top {
+    padding-top: 20px;
+}

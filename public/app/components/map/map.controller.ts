@@ -13,6 +13,7 @@ module GeoChat {
         
         constructor(private $scope: any, private DataService: DataService, private IsReady: any) {
             $scope.memberMarkers = DataService.members;
+            console.log(DataService.members);
             $scope.$watch('memberMarkers',() => {
                 //this.updateIcons();
             });

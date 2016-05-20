@@ -103,7 +103,7 @@ var GeoChat;
                 if (!hasUser) {
                     var users_ref = new Firebase("https://geo-chat-fe90d.firebaseio.com/users");
                     users_ref.child(_this.currentUserId).once("value", function (snapshot) {
-                        console.log(snapshot.val());
+                        //console.log(snapshot.val());
                         _this.ref.child('members' + '/' + _this.currentUserId).set({
                             email: snapshot.val().Email,
                             firstName: snapshot.val().FirstName,
@@ -124,7 +124,7 @@ var GeoChat;
             var _this = this;
             this.ref.child("name").on("child_added", function (snapshot) {
                 _this.roomName = snapshot.val();
-                console.log(snapshot.val());
+                //console.log(snapshot.val());
             });
         };
         DataService.prototype.setupMessages = function () {
@@ -132,20 +132,20 @@ var GeoChat;
             this.ref.child("messages").on("child_added", function (snapshot) {
                 _this.messages.push(snapshot.val());
                 $('#gen-chat').trigger('newMessageAdded');
-                console.log(snapshot.val());
+                //console.log(snapshot.val());
             });
         };
         DataService.prototype.setupUsers = function () {
             var _this = this;
             this.ref.child("members").on("child_added", function (snapshot) {
                 _this.members.push(snapshot.val());
-                console.log(snapshot.val());
+                //console.log(snapshot.val());
             });
             this.ref.child("members").on("child_changed", function (snapshot) {
-                console.log(snapshot.val());
+                //console.log(snapshot.val());
             });
             this.ref.child("members").on("child_removed", function (snapshot) {
-                console.log(snapshot.val());
+                //console.log(snapshot.val());
             });
         };
         DataService.prototype.addMessageAndTime = function (messageText, timespan, location) {
@@ -375,6 +375,7 @@ var GeoChat;
             this.icons = [];
             this.map = { center: { latitude: 36.1749700, longitude: -115.1372200 }, zoom: 14, control: {} };
             $scope.memberMarkers = DataService.members;
+            console.log(DataService.members);
             $scope.$watch('memberMarkers', function () {
                 //this.updateIcons();
             });

@@ -29,7 +29,7 @@ module GeoChat {
                 if (!hasUser){
                     var users_ref = new Firebase("https://geo-chat-fe90d.firebaseio.com/users");
                     users_ref.child(this.currentUserId).once("value", (snapshot) => {
-                        console.log(snapshot.val());
+                        //console.log(snapshot.val());
                         this.ref.child('members' + '/' + this.currentUserId).set({
                             email: snapshot.val().Email,
                             firstName: snapshot.val().FirstName,
@@ -51,7 +51,7 @@ module GeoChat {
          setupRoomName(){
             this.ref.child("name").on("child_added", (snapshot) => {
                 this.roomName = snapshot.val();
-                console.log(snapshot.val());
+                //console.log(snapshot.val());
             });
         }
         
@@ -59,20 +59,20 @@ module GeoChat {
             this.ref.child("messages").on("child_added", (snapshot) => {
                 this.messages.push(snapshot.val());
                 $('#gen-chat').trigger('newMessageAdded');
-                console.log(snapshot.val());
+                //console.log(snapshot.val());
             });
         }
         
         setupUsers(){
             this.ref.child("members").on("child_added", (snapshot) => {
                 this.members.push(snapshot.val());
-                console.log(snapshot.val());
+                //console.log(snapshot.val());
             });
             this.ref.child("members").on("child_changed", (snapshot) => {
-                console.log(snapshot.val());
+                //console.log(snapshot.val());
             });
             this.ref.child("members").on("child_removed", (snapshot) => {
-                console.log(snapshot.val());
+                //console.log(snapshot.val());
             });
         }
 
