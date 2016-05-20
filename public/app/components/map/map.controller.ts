@@ -7,18 +7,18 @@ module GeoChat {
     export class MapCtrl {
         private isMapReady = false;
         private icons = [];
-        private map = { center: { latitude: 36.1749700, longitude: -115.1372200 }, zoom: 14, control: {} };
+        private map = { center: { latitude: 36.1749700, longitude: -115.1372200 }, zoom: 17, control: {} };
 
-        public static $inject = ['$scope', 'DataService', 'uiGmapIsReady'];
+        public static $inject = ['$scope', 'DataService', 'uiGmapIsReady', 'LocationService'];
         
-        constructor(private $scope: any, private DataService: DataService, private IsReady: any) {
+        constructor(private $scope: any, private DataService: DataService, private IsReady: any, private LocationService: LocationService) {
             $scope.memberMarkers = DataService.members;
-            console.log(DataService.members);
             $scope.$watch('memberMarkers',() => {
-                //this.updateIcons();
             });
             IsReady.promise().then((maps) => {
-                var GeoMarker = new GeolocationMarker(this.map.control.getGMap());
+                var map = this.map.control.getGMap();
+                var GeoMarker = new GeolocationMarker(map);
+                this.map.center = LocationService.getLocation();
             });
         }      
         

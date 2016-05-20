@@ -316,6 +316,17 @@ var GeoChat;
     }); });
 })(GeoChat || (GeoChat = {}));
 /// <reference path="..\..\app.ts" />
+/// <reference path="login.controller.ts" />
+var GeoChat;
+(function (GeoChat) {
+    GeoChat.geoChatApp.directive("login", function () { return ({
+        restrict: "AE",
+        templateUrl: "app/components/login/login.tpl.html",
+        controller: GeoChat.LoginCtrl,
+        controllerAs: "vm"
+    }); });
+})(GeoChat || (GeoChat = {}));
+/// <reference path="..\..\app.ts" />
 /// <reference path="..\..\..\..\typings\firebase\firebase.d.ts" />
 /// <reference path="..\..\..\..\typings\firebase\firebase.d.ts" />
 /// <reference path="..\..\models\user.ts" />
@@ -328,9 +339,10 @@ var GeoChat;
             var _this = this;
             this.lat = 36.1749700;
             this.lon = -115.1372200;
+            this.updateLocation();
             this.timeoutId = setInterval(function () {
                 _this.updateLocation();
-            }, 5000);
+            }, 2000);
         }
         LocationService.prototype.getLocation = function () {
             return {
@@ -343,7 +355,6 @@ var GeoChat;
             // Try HTML5 geolocation.
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(function (position) {
-                    clearTimeout(_this.timeoutId);
                     _this.lat = position.coords.latitude;
                     _this.lon = position.coords.longitude;
                 });
@@ -364,21 +375,22 @@ var GeoChat;
 var GeoChat;
 (function (GeoChat) {
     var MapCtrl = (function () {
-        function MapCtrl($scope, DataService, IsReady) {
+        function MapCtrl($scope, DataService, IsReady, LocationService) {
             var _this = this;
             this.$scope = $scope;
             this.DataService = DataService;
             this.IsReady = IsReady;
+            this.LocationService = LocationService;
             this.isMapReady = false;
             this.icons = [];
-            this.map = { center: { latitude: 36.1749700, longitude: -115.1372200 }, zoom: 14, control: {} };
+            this.map = { center: { latitude: 36.1749700, longitude: -115.1372200 }, zoom: 17, control: {} };
             $scope.memberMarkers = DataService.members;
-            console.log(DataService.members);
             $scope.$watch('memberMarkers', function () {
-                //this.updateIcons();
             });
             IsReady.promise().then(function (maps) {
-                var GeoMarker = new GeolocationMarker(_this.map.control.getGMap());
+                var map = _this.map.control.getGMap();
+                var GeoMarker = new GeolocationMarker(map);
+                _this.map.center = LocationService.getLocation();
             });
         }
         MapCtrl.prototype.updateIcons = function () {
@@ -407,7 +419,7 @@ var GeoChat;
             console.log(icons);
             console.log(this.DataService.members);
         };
-        MapCtrl.$inject = ['$scope', 'DataService', 'uiGmapIsReady'];
+        MapCtrl.$inject = ['$scope', 'DataService', 'uiGmapIsReady', 'LocationService'];
         return MapCtrl;
     }());
     GeoChat.MapCtrl = MapCtrl;
@@ -432,17 +444,6 @@ var GeoChat;
         restrict: "AE",
         templateUrl: "app/components/profile/profile.tpl.html",
         controller: GeoChat.ProfileCtrl,
-        controllerAs: "vm"
-    }); });
-})(GeoChat || (GeoChat = {}));
-/// <reference path="..\..\app.ts" />
-/// <reference path="login.controller.ts" />
-var GeoChat;
-(function (GeoChat) {
-    GeoChat.geoChatApp.directive("login", function () { return ({
-        restrict: "AE",
-        templateUrl: "app/components/login/login.tpl.html",
-        controller: GeoChat.LoginCtrl,
         controllerAs: "vm"
     }); });
 })(GeoChat || (GeoChat = {}));

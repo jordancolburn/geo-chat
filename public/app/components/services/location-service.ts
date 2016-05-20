@@ -13,9 +13,10 @@ module GeoChat {
         private timeoutId: number;
 
         constructor() {
+            this.updateLocation();
             this.timeoutId = setInterval(() => {
                 this.updateLocation();
-            }, 5000);
+            }, 2000);
         }
 
         getLocation(): GeoChat.Location {
@@ -28,8 +29,6 @@ module GeoChat {
             // Try HTML5 geolocation.
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition((position) => {
-                    clearTimeout(this.timeoutId);
-
                     this.lat = position.coords.latitude;
                     this.lon = position.coords.longitude;
                 });
