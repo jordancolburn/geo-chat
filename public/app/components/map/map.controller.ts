@@ -8,6 +8,8 @@ module GeoChat {
         private isMapReady = false;
         private googleMap: any;
         private icons = {};
+        private infowindow = new google.maps.InfoWindow();
+        
         private map = { center: { latitude: 36.103, longitude: -115.1745 }, zoom: 18, control: {} };
 
         public static $inject = ['$scope', 'DataService', 'uiGmapIsReady', 'LocationService', '$rootScope'];
@@ -38,29 +40,40 @@ module GeoChat {
         }      
         
         updateIcons() {
-            var redCircle = {
-                path: google.maps.SymbolPath.CIRCLE,
-                fillColor: '#BD2031',
-                fillOpacity: 1,
-                scale: 7,
-                strokeColor: 'white',
-                strokeWeight: 1
-            };
-            
+           
             for (var index = 0; index < this.DataService.members.length; index++) {
                 var member = this.DataService.members[index];
                 if (member.id === window.localStorage.getItem('userId')) {
                     continue;
                 }
+                var color = 'black';
+                if (member.color) {
+                    color = member.color;
+                }
+                var circle = {
+                    path: google.maps.SymbolPath.CIRCLE,
+                    fillColor: color,
+                    fillOpacity: 1,
+                    scale: 7,
+                    strokeColor: 'white',
+                    strokeWeight: 1
+                };
                 var test = this.icons[member.id];
                 if (test == null) {
+                    var name = member.firstName + ' ' + member.lastName;
                     var marker = new google.maps.Marker({
                         position: {lat: member.currentLocation.latitude, lng: member.currentLocation.longitude},
                         map: this.googleMap,
-                        title: member.firstName + ' ' + member.lastName,
-                        icon: redCircle
+                        title: name,
+                        icon: circle
                     });       
-                    this.icons[member.id] = marker;             
+                    this.icons[member.id] = marker; 
+                    google.maps.event.addListener(marker, 'click', ((marker, infowindow, map) => {
+                        return () => {
+                            infowindow.setContent(name);
+                            infowindow.open(map, marker);
+                        }
+                    })(marker, this.infowindow, this.googleMap));            
                 } else {
                     test.setPosition({lat: member.currentLocation.latitude, lng: member.currentLocation.longitude});    
                 }

@@ -1,12 +1,12 @@
 <div class="container">
     <div id="gen-chat" class="gen-chat-height">
 <div  ng-repeat="message in vm.messages" class="message message-default">
-    <div class='clearfix'>
+    <div class='clearfix' ng-style="{'color': message.color}">
         <label class='fourfifth'>
       <strong class='name'>{{ message.email.substr(0, message.email.indexOf('@'))}}</strong>
       ({{ message.timestamp | date:'short'}}):
     </label>
-
+{{vm.message | json}}
     </div>
     <div class='clearfix message-content'>
         {{ message.text }}
