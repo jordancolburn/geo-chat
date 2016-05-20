@@ -28,6 +28,10 @@ module GeoChat {
                 var hasUser = snapshot.hasChild(this.currentUserId);
                 if (!hasUser){
                     var users_ref = new Firebase("https://geo-chat-fe90d.firebaseio.com/users");
+                    var colors = ['red', 'green', 'blue', 'orange', 'DarkBlue', 'Navy',
+                                  'Indigo', 'OliveDrab', 'DarkRed', 'Sienna', 'Chocolate',
+                                  'Orchid' 
+                                  ];
                     users_ref.child(this.currentUserId).once("value", (snapshot) => {
                         this.ref.child('members' + '/' + this.currentUserId).set({
                             id: this.currentUserId,
@@ -36,7 +40,8 @@ module GeoChat {
                             lastName: snapshot.val().LastName,
                             group: snapshot.val().Group,
                             textLocation: snapshot.val().Location,
-                            currentLocation: this.LocationService.getLocation()
+                            currentLocation: this.LocationService.getLocation(),
+                            color: colors[Math.floor(Math.random() * colors.length)]
                         });           
                     });
                 }
@@ -83,18 +88,10 @@ module GeoChat {
                 email: user.email,
                 text: messageText,
                 timestamp: timespan,
-                userId: this.currentUserId
+                userId: this.currentUserId,
+                color: user.color
             });
             this.updateLocation(location);
-            
-        }
-        addMessage(messageText: string){
-            this.ref.child("messages").push().set({
-                email: 'user_email@test.com',
-                text: messageText,
-                timestamp: 'current_timestamp',
-                userId: 'current_user_id'
-            });
         }
 
         updateLocation(cur_location: GeoChat.Location){

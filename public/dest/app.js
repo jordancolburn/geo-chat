@@ -93,6 +93,10 @@ var GeoChat;
                 var hasUser = snapshot.hasChild(_this.currentUserId);
                 if (!hasUser) {
                     var users_ref = new Firebase("https://geo-chat-fe90d.firebaseio.com/users");
+                    var colors = ['red', 'green', 'blue', 'orange', 'DarkBlue', 'Navy',
+                        'Indigo', 'OliveDrab', 'DarkRed', 'Sienna', 'Chocolate',
+                        'Orchid'
+                    ];
                     users_ref.child(_this.currentUserId).once("value", function (snapshot) {
                         _this.ref.child('members' + '/' + _this.currentUserId).set({
                             id: _this.currentUserId,
@@ -101,7 +105,8 @@ var GeoChat;
                             lastName: snapshot.val().LastName,
                             group: snapshot.val().Group,
                             textLocation: snapshot.val().Location,
-                            currentLocation: _this.LocationService.getLocation()
+                            currentLocation: _this.LocationService.getLocation(),
+                            color: colors[Math.floor(Math.random() * colors.length)]
                         });
                     });
                 }
@@ -144,17 +149,10 @@ var GeoChat;
                 email: user.email,
                 text: messageText,
                 timestamp: timespan,
-                userId: this.currentUserId
+                userId: this.currentUserId,
+                color: user.color
             });
             this.updateLocation(location);
-        };
-        DataService.prototype.addMessage = function (messageText) {
-            this.ref.child("messages").push().set({
-                email: 'user_email@test.com',
-                text: messageText,
-                timestamp: 'current_timestamp',
-                userId: 'current_user_id'
-            });
         };
         DataService.prototype.updateLocation = function (cur_location) {
             this.ref.child("members/" + this.currentUserId + "/currentLocation").update(cur_location);
