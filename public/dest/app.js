@@ -200,13 +200,49 @@ var GeoChat;
     GeoChat.geoChatApp.service('DataService', DataService);
 })(GeoChat || (GeoChat = {}));
 /// <reference path="..\..\app.ts" />
+/// <reference path="..\..\..\..\typings\firebase\firebase.d.ts" />
+/// <reference path="..\..\..\..\typings\firebase\firebase.d.ts" />
+/// <reference path="..\..\models\user.ts" />
+/// <reference path="..\..\models\message.ts" />
+/// <reference path="..\..\models\location.ts" />
+var GeoChat;
+(function (GeoChat) {
+    var LocationService = (function () {
+        function LocationService() {
+        }
+        LocationService.prototype.getLocation = function () {
+            // Try HTML5 geolocation.
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function (position) {
+                    console.log('test');
+                    var loc = new GeoChat.Location();
+                    loc.latitude = position.coords.latitude;
+                    loc.longitude = position.coords.longitude;
+                    console.log('!!!!!!!!!!!!!!!!!!!!!!!!!');
+                    console.log(loc);
+                    return loc;
+                });
+            }
+            else {
+                console.log("Browser doesn't support Geolocation");
+                return null;
+            }
+        };
+        return LocationService;
+    }());
+    GeoChat.LocationService = LocationService;
+    GeoChat.geoChatApp.service('LocationService', LocationService);
+})(GeoChat || (GeoChat = {}));
+/// <reference path="..\..\app.ts" />
 /// <reference path="..\services\data_service.ts" />
+/// <reference path="..\services\location-service.ts" />
 var GeoChat;
 (function (GeoChat) {
     var MapCtrl = (function () {
-        function MapCtrl($scope, DataService) {
+        function MapCtrl($scope, DataService, LocationService) {
             this.$scope = $scope;
             this.DataService = DataService;
+            this.LocationService = LocationService;
             this.isMapReady = false;
             this.members = [];
             this.map = { center: { latitude: 36.1749700, longitude: -115.1372200 }, zoom: 14 };
@@ -214,8 +250,10 @@ var GeoChat;
             $scope.memberMarkers = DataService.members;
             //Need this silliness so the map updates
             $scope.$watch('DataService.members', function () { });
+            var test = LocationService.getLocation();
+            console.log(test);
         }
-        MapCtrl.$inject = ['$scope', 'DataService'];
+        MapCtrl.$inject = ['$scope', 'DataService', 'LocationService'];
         return MapCtrl;
     }());
     GeoChat.MapCtrl = MapCtrl;
