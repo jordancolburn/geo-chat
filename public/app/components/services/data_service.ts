@@ -36,7 +36,9 @@ module GeoChat {
             this.ref.child('members').once("value", (snapshot) => {
                 var hasUser = snapshot.hasChild(this.currentUserId);
                 if (!hasUser){
-                    this.ref.child('members' + '/' + this.currentUserId).set('USER IS ADDED');
+                    this.ref.child('members' + '/' + this.currentUserId).set({
+                        email: 'test_email@email.com'
+                    });
                 }
             });
             

@@ -142,17 +142,6 @@ var GeoChat;
     }); });
 })(GeoChat || (GeoChat = {}));
 /// <reference path="..\..\app.ts" />
-/// <reference path="login.controller.ts" />
-var GeoChat;
-(function (GeoChat) {
-    GeoChat.geoChatApp.directive("login", function () { return ({
-        restrict: "AE",
-        templateUrl: "app/components/login/login.tpl.html",
-        controller: GeoChat.LoginCtrl,
-        controllerAs: "vm"
-    }); });
-})(GeoChat || (GeoChat = {}));
-/// <reference path="..\..\app.ts" />
 /// <reference path="..\..\..\..\typings\firebase\firebase.d.ts" />
 /// <reference path="..\..\..\..\typings\firebase\firebase.d.ts" />
 /// <reference path="..\..\models\user.ts" />
@@ -180,7 +169,9 @@ var GeoChat;
             this.ref.child('members').once("value", function (snapshot) {
                 var hasUser = snapshot.hasChild(_this.currentUserId);
                 if (!hasUser) {
-                    _this.ref.child('members' + '/' + _this.currentUserId).set('USER IS ADDED');
+                    _this.ref.child('members' + '/' + _this.currentUserId).set({
+                        email: 'test_email@email.com'
+                    });
                 }
             });
         };
@@ -313,6 +304,17 @@ var GeoChat;
         restrict: "AE",
         templateUrl: "app/components/map/map.tpl.html",
         controller: GeoChat.MapCtrl,
+        controllerAs: "vm"
+    }); });
+})(GeoChat || (GeoChat = {}));
+/// <reference path="..\..\app.ts" />
+/// <reference path="login.controller.ts" />
+var GeoChat;
+(function (GeoChat) {
+    GeoChat.geoChatApp.directive("login", function () { return ({
+        restrict: "AE",
+        templateUrl: "app/components/login/login.tpl.html",
+        controller: GeoChat.LoginCtrl,
         controllerAs: "vm"
     }); });
 })(GeoChat || (GeoChat = {}));
