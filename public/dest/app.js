@@ -67,8 +67,24 @@ var GeoChat;
 (function (GeoChat) {
     var ChatCtrl = (function () {
         function ChatCtrl(DataService) {
+            var _this = this;
             this.messages = DataService.messages;
+            this.dataService = DataService;
+            this.fixChatScroll(1000);
+            $('#gen-chat').on('newMessageAdded', function () {
+                _this.fixChatScroll(1000);
+            });
         }
+        ChatCtrl.prototype.sendMessage = function (text) {
+            this.dataService.addMessageAndTime(text, (new Date()).toISOString());
+            $('#message-box').val('');
+            this.fixChatScroll(1);
+        };
+        ChatCtrl.prototype.fixChatScroll = function (delay) {
+            setTimeout(function () {
+                $("#gen-chat").scrollTop($("#gen-chat")[0].scrollHeight);
+            }, delay);
+        };
         ChatCtrl.$inject = ['DataService'];
         return ChatCtrl;
     }());
@@ -95,11 +111,11 @@ var GeoChat;
 var GeoChat;
 (function (GeoChat) {
     var DataService = (function () {
-        function DataService() {
+        function DataService($firebaseArray) {
             console.log('starting data service constructor');
             this.changeRoom('room_one_guid');
-            this.members = [];
-            this.messages = [];
+            this.members = $firebaseArray(this.ref);
+            this.messages = $firebaseArray(this.ref);
             this.setupMessages();
             this.setupUsers();
             this.setupRoomName();
@@ -119,6 +135,7 @@ var GeoChat;
             var _this = this;
             this.ref.child("messages").on("child_added", function (snapshot) {
                 _this.messages.push(snapshot.val());
+                $('#gen-chat').trigger('newMessageAdded');
                 console.log(snapshot.val());
             });
         };
@@ -133,6 +150,14 @@ var GeoChat;
             });
             this.ref.child("members").on("child_removed", function (snapshot) {
                 console.log(snapshot.val());
+            });
+        };
+        DataService.prototype.addMessageAndTime = function (messageText, timespan) {
+            this.ref.child("messages").push().set({
+                email: 'user_email@test.com',
+                text: messageText,
+                timestamp: timespan,
+                userId: 'current_user_id'
             });
         };
         DataService.prototype.addMessage = function (messageText) {
@@ -174,6 +199,7 @@ var GeoChat;
                     "email": "email4@email.com"
                 }];
         };
+        DataService.$inject = ['$firebaseArray'];
         return DataService;
     }());
     GeoChat.DataService = DataService;
@@ -192,8 +218,8 @@ var GeoChat;
             this.map = { center: { latitude: 36.1749700, longitude: -115.1372200 }, zoom: 14 };
             this.members = DataService.members;
             $scope.memberMarkers = DataService.members;
-            $scope.$watch('DataService.members', function () {
-            });
+            //Need this silliness so the map updates
+            $scope.$watch('DataService.members', function () { });
         }
         MapCtrl.$inject = ['$scope', 'DataService'];
         return MapCtrl;

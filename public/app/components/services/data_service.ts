@@ -14,12 +14,13 @@ module GeoChat {
         public messages: Message[];
         public roomName: string;
         
-        
-        constructor(){
+        static $inject = ['$firebaseArray'];
+
+        constructor($firebaseArray){
             console.log('starting data service constructor');
             this.changeRoom('room_one_guid');
-            this.members = [];
-            this.messages = [];
+            this.members = $firebaseArray(this.ref);
+            this.messages = $firebaseArray(this.ref);
             this.setupMessages();
             this.setupUsers();
             this.setupRoomName();
@@ -40,6 +41,7 @@ module GeoChat {
         setupMessages(){
             this.ref.child("messages").on("child_added", (snapshot) => {
                 this.messages.push(snapshot.val());
+                $('#gen-chat').trigger('newMessageAdded');
                 console.log(snapshot.val());
             });
         }

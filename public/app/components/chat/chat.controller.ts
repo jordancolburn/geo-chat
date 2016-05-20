@@ -11,6 +11,9 @@ module GeoChat {
             this.messages = DataService.messages;
             this.dataService = DataService;
             this.fixChatScroll(1000);
+            $('#gen-chat').on('newMessageAdded', () => {
+                this.fixChatScroll(1000);
+             });
         }
 
         public sendMessage(text: string): void {
@@ -19,10 +22,10 @@ module GeoChat {
             this.fixChatScroll(1);
         }
 
-        private fixChatScroll(deplay: number): void {
+        private fixChatScroll(delay: number): void {
             setTimeout(() => {
                 $("#gen-chat").scrollTop($("#gen-chat")[0].scrollHeight);
-            }, deplay)
+            }, delay)
         }
     }
 
