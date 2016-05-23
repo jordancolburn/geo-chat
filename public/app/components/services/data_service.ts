@@ -61,8 +61,6 @@ module GeoChat {
                 this.$rootScope.$broadcast("members-updated");
             }); 
             this.messages = this.$firebaseArray(this.ref.child('messages'));
-            this.setupMessages();
-            this.setupUsers();
             this.setupRoomName();
         }
  
@@ -71,18 +69,6 @@ module GeoChat {
                 this.roomName = snapshot.val();
                 //console.log(snapshot.val());
             });
-        }
-        
-        setupMessages(){
-            this.ref.child("messages").on("child_added", (snapshot) => {
-                this.messages.push(snapshot.val());
-                $('#gen-chat').trigger('newMessageAdded');
-                //console.log(snapshot.val());
-            });
-        }
-        
-        setupUsers(){
-
         }
 
         addMessageAndTime(messageText: string, timespan: string, location: GeoChat.Location){

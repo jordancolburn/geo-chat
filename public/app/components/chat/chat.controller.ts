@@ -11,7 +11,6 @@ module GeoChat {
 
         constructor($scope, DataService, LocationService, AuthService) {
             this.messages = DataService.messages;
-            console.log(DataService.messages);
             this.dataService = DataService;
             this.locationService = LocationService;
             this.authService = AuthService;
