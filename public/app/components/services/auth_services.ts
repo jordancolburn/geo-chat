@@ -32,8 +32,24 @@ module GeoChat {
             firebase.auth().signOut();
             window.localStorage.clear();
             window.location = '/';
-            
         }
+        
+        create(email:string, password:string, firstName: string, lastName: string, group: string, location: string){
+            var ref = new Firebase("https://geo-chat-fe90d.firebaseio.com/");
+                firebase.auth().createUserWithEmailAndPassword(email, password).then((userData) => {
+                    console.log("Successfully created user account with uid:", userData.uid);
+                    ref.child('users/' + userData.uid).set({
+                        Email: email,
+                        FirstName: firstName,
+                        LastName: lastName,
+                        Group: group,
+                        Location: location
+                    }).then(() => {
+                        this.login(email, password); 
+                });
+                    
+                }).catch(function(error){ alert(error); });
+            }
         
     }
         geoChatApp.service('AuthService', AuthService);
