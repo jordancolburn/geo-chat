@@ -19,6 +19,15 @@ module GeoChat {
 
         constructor(private $firebaseArray, private LocationService, private $rootScope){}
         
+        addRoom(roomName: string){
+            var rooms = new Firebase("https://geo-chat-fe90d.firebaseio.com/rooms/");
+            var room = rooms.push();
+            var roomId = room.key();
+            room.set({name: roomName}).then(function(){
+                window.location = '/rooms/' + roomId;
+            });
+        }
+        
         changeRoom(roomId: string){
             this.roomId = roomId;
             this.ref = new Firebase("https://geo-chat-fe90d.firebaseio.com/rooms/" + this.roomId);

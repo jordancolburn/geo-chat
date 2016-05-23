@@ -8,8 +8,14 @@ module GeoChat {
         public static $inject = ['DataService','$routeParams'];
         
         constructor(private DataService: DataService, private $routeParams: any) {
-            this.DataService.changeRoom('room_one_guid');
-        }      
+            if ($routeParams['roomId']){
+                this.DataService.changeRoom($routeParams['roomId']);
+            }
+        }
+              
+        addRoom(roomName: string){
+            this.DataService.addRoom(roomName);
+        }
     }
 
     geoChatApp.controller("RoomCtrl", RoomCtrl);
