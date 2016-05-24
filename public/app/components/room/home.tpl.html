@@ -12,4 +12,10 @@
             <button type="submit" class="btn btn-primary">Add Room</button>      
         </div>
     </form>
+    <br/>
+    <ul  class="list-group">
+       <a class="list-group-item" ng-repeat="room in vm.DataService.rooms" href="/rooms/{{room.$id}}">
+           {{room.name}}
+        </a>
+    </ul>
 </div>

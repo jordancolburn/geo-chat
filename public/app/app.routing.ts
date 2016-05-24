@@ -19,6 +19,7 @@ module GeoChat {
                 when("/rooms/:roomId", {
                     templateUrl: "app/components/room/room.tpl.html",
                     controller: RoomCtrl,
+                    controllerAs: "vm",
                     caseInsensitiveMatch: true
                 }).
                   when("/login", {

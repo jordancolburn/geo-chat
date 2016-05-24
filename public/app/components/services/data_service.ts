@@ -9,6 +9,8 @@ module GeoChat {
 
     export class DataService {
         private ref: any;
+        private rooms: [];
+        public base_url: string;
         public roomId: string;
         public members: User[];
         public messages: Message[];
@@ -17,10 +19,14 @@ module GeoChat {
         
         static $inject = ['$firebaseArray','LocationService','$rootScope'];
 
-        constructor(private $firebaseArray, private LocationService, private $rootScope){}
+        constructor(private $firebaseArray, private LocationService, private $rootScope){
+            this.base_url = "https://geo-chat-fe90d.firebaseio.com/"
+            var ref = new Firebase(this.base_url);
+            this.rooms = this.$firebaseArray(ref.child('rooms'));
+        }
         
         addRoom(roomName: string){
-            var rooms = new Firebase("https://geo-chat-fe90d.firebaseio.com/rooms/");
+            var rooms = new Firebase(this.base_url+ "rooms/");
             var room = rooms.push();
             var roomId = room.key();
             room.set({name: roomName}).then(function(){
@@ -30,13 +36,13 @@ module GeoChat {
         
         changeRoom(roomId: string){
             this.roomId = roomId;
-            this.ref = new Firebase("https://geo-chat-fe90d.firebaseio.com/rooms/" + this.roomId);
+            this.ref = new Firebase(this.base_url + "rooms/" + this.roomId);
             this.currentUserId = window.localStorage.getItem('userId');
     
             this.ref.child('members').once("value", (snapshot) => {
                 var hasUser = snapshot.hasChild(this.currentUserId + '/color');
                 if (!hasUser){
-                    var users_ref = new Firebase("https://geo-chat-fe90d.firebaseio.com/users");
+                    var users_ref = new Firebase(this.base_url + "users");
                     var colors = ['red', 'green', 'blue', 'orange', 'DarkBlue', 'Navy',
                                   'Indigo', 'OliveDrab', 'DarkRed', 'Sienna', 'Chocolate',
                                   'Orchid' 
@@ -67,7 +73,7 @@ module GeoChat {
          setupRoomName(){
             this.ref.child("name").on("child_added", (snapshot) => {
                 this.roomName = snapshot.val();
-                //console.log(snapshot.val());
+                console.log(snapshot.val());
             });
         }
 

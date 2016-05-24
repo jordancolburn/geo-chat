@@ -4,12 +4,12 @@
 module GeoChat {
 
     export class RoomCtrl {
-
+        public roomName: string;
         public static $inject = ['DataService','$routeParams'];
         
-        constructor(private DataService: DataService, private $routeParams: any) {
+        constructor(public DataService: DataService, private $routeParams: any) {
             if ($routeParams['roomId']){
-                this.DataService.changeRoom($routeParams['roomId']);
+               this.DataService.changeRoom($routeParams['roomId']);
             }
         }
               
