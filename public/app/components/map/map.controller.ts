@@ -22,8 +22,7 @@ module GeoChat {
                 var GeoMarker = new GeolocationMarker(this.googleMap);                
                 if (navigator.geolocation) {
                     navigator.geolocation.getCurrentPosition((position: any) => {
-                        this.map.center.latitude = position.coords.latitude;
-                        this.map.center.longitude = position.coords.longitude;
+                        this.center_on_location(position.coords);
                     });
                 }
                 this.$rootScope.$on("members-updated", () => {
@@ -80,7 +79,11 @@ module GeoChat {
                 }
             }
         }
-
+        
+        center_on_location(position: Location) {
+            this.map.center.latitude = position.latitude;
+            this.map.center.longitude = position.longitude;       
+        }    
     }
 
     geoChatApp.controller("MapCtrl", MapCtrl);

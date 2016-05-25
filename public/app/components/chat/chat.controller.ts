@@ -44,6 +44,10 @@ module GeoChat {
             }, delay)
         }
         
+        public showUser(email: string){
+            alert(email);
+        }
+        
         public logout(): void
         {
             this.authService.logout();

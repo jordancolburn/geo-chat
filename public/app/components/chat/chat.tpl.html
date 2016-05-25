@@ -3,7 +3,7 @@
 <div  ng-repeat="message in vm.messages" class="message message-default">
     <div class='clearfix' ng-style="{'color': message.color}">
         <label class='fourfifth'>
-      <strong class='name'>{{ message.email.substr(0, message.email.indexOf('@'))}}</strong>
+      <strong class='name'><a ng-click="vm.showUser(message.email)">{{ message.email.substr(0, message.email.indexOf('@'))}}</a></strong>
       ({{ message.timestamp | date:'short'}}):
     </label>
 {{vm.message | json}}
