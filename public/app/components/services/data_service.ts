@@ -66,7 +66,13 @@ module GeoChat {
             this.ref.child('members').on('child_changed', (snapshot) => {
                 this.$rootScope.$broadcast("members-updated");
             }); 
-            this.messages = this.$firebaseArray(this.ref.child('messages'));
+            //this.messages = this.$firebaseArray(this.ref.child('messages'));
+            //this.ref.child('messages').on('value', (snapshot) => {
+            //    console.log(this.messages);
+            //    console.log(JSON.stringify(this.messages))
+            //});  
+            var query = this.ref.child('messages').orderByChild("timestamp").limitToLast(100); 
+            this.messages = this.$firebaseArray(query);
             this.setupRoomName();
         }
  

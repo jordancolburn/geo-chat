@@ -11,7 +11,7 @@ module GeoChat {
         ($routeProvider, $locationProvider) => {
             $routeProvider.
                 when("/", {
-                    templateUrl: "app/components/room/home.tpl.html",
+                    templateUrl: "app/components/home/home.tpl.html",
                     controllerAs: "vm",
                     controller: RoomCtrl,
                     caseInsensitiveMatch: true

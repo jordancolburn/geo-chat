@@ -28,7 +28,7 @@ gulp.task('copy-libs', function () {
             './node_modules/angularfire/dist/angularfire.min.js',
             './node_modules/lodash/lodash.min.js',
             './node_modules/angular-simple-logger/dist/angular-simple-logger.min.js',
-            './node_modules/geolocation-marker/geolocation-marker.js'
+            './node_modules/geolocation-marker/geolocation-marker.js',
         ]
     )
         .pipe(copy('./public/scripts', { prefix: 2 }));
@@ -48,7 +48,7 @@ gulp.task('copy-fonts', function () {
             './node_modules/bootstrap/dist/fonts/**/'
         ]
     )
-        .pipe(copy('./public/fonts', { prefix: 2 }));
+        .pipe(copy('./public/styles', { prefix: 2 }));
 });
 
 gulp.task('build', ['copy-libs', 'copy-styles', 'copy-fonts'], function () {

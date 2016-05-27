@@ -7,6 +7,8 @@ module GeoChat {
         private dataService: any;
         private locationService: any;
         private authService: any;
+        private message: string;
+        
         public static $inject = ['$scope', 'DataService', 'LocationService', 'AuthService'];
 
         constructor($scope, DataService, LocationService, AuthService) {
@@ -14,33 +16,39 @@ module GeoChat {
             this.dataService = DataService;
             this.locationService = LocationService;
             this.authService = AuthService;
-            $scope.$watch('DataService.messages',() => {
-                this.messages = DataService.messages;
-            });
-            this.fixChatScroll(1000);
             
-            $('#gen-chat').on('newMessageAdded', () => {
-                this.fixChatScroll(1000);
+            $('#chatMessages').on('newMessageAdded', () => {
+                this.fixChatScroll(0);
             });
 
-            $('#message-box').keydown((e) => {
-                if (e.keyCode === 13) {
-                    this.sendMessage($('#message-box').val().trim());
-                }
+            //var do$( document ).ready(() => {
+            //    this.resizePage();
+            //    this.fixChatScroll(0);
+            //});
+            $( window ).on("resize.chatResize", () => {
+                this.resizePage();
+                this.fixChatScroll(0);
+            });            
+            this.resizePage();
+            this.fixChatScroll(0);
+            
+            $scope.$on("$destroy", () => {
+                $(window).off("resize.chatResize");
             });
+            
         }
 
-        public sendMessage(text: string): void {
-            if (text !== '') {
-                this.dataService.addMessageAndTime(text, (new Date()).toISOString(), this.locationService.getLocation());
-                $('#message-box').val('');
-                this.fixChatScroll(1);
+        public sendMessage(): void {
+            if (this.message && this.message !== '') {
+                this.dataService.addMessageAndTime(this.message, (new Date()).toISOString(), this.locationService.getLocation());
+                this.message = null;
+                //this.fixChatScroll(1);
             }
         }
 
         private fixChatScroll(delay: number): void {
             setTimeout(() => {
-                $("#gen-chat").scrollTop($("#gen-chat")[0].scrollHeight);
+                $("#chatMessages").scrollTop($("#chatMessages")[0].scrollHeight);
             }, delay)
         }
         
@@ -48,10 +56,12 @@ module GeoChat {
             alert(email);
         }
         
-        public logout(): void
+        resizePage(): void 
         {
-            this.authService.logout();
+            var containerHeight = $('#chatContainer').height();
+            $('#chatMessages').height(containerHeight-40);
         }
+        
     }
     
     geoChatApp.controller("ChatCtrl", ChatCtrl);
