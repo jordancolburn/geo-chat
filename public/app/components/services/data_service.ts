@@ -11,75 +11,91 @@ module GeoChat {
         private ref: any;
         private rooms: [];
         public base_url: string;
+        public base_ref: any;
         public roomId: string;
         public members: User[];
         public messages: Message[];
         public roomName: string;
         public currentUserId: string;
+        public colors: string[];
         
         static $inject = ['$firebaseArray','LocationService','$rootScope'];
 
         constructor(private $firebaseArray, private LocationService, private $rootScope){
             this.base_url = "https://geo-chat-fe90d.firebaseio.com/"
+            this.base_ref = new Firebase(this.base_url);
             var ref = new Firebase(this.base_url);
-            this.rooms = this.$firebaseArray(ref.child('rooms'));
+            this.currentUserId = window.localStorage.getItem('userId');
+            this.rooms = this.$firebaseArray(ref.child('users/'+ this.currentUserId + '/rooms'));
+            this.colors = ['red', 'green', 'blue', 'orange', 'DarkBlue', 'Navy',
+                            'Indigo', 'OliveDrab', 'DarkRed', 'Sienna', 'Chocolate',
+                            'Orchid' 
+                            ];
         }
         
         addRoom(roomName: string){
             var rooms = new Firebase(this.base_url+ "rooms/");
             var room = rooms.push();
             var roomId = room.key();
-            room.set({name: roomName}).then(function(){
-                window.location = '/rooms/' + roomId;
-            });
+            room.update({name: roomName});
+            this.roomName = roomName;
+            this.changeRoom(roomId);
         }
         
         changeRoom(roomId: string){
             this.roomId = roomId;
             this.ref = new Firebase(this.base_url + "rooms/" + this.roomId);
-            this.currentUserId = window.localStorage.getItem('userId');
-    
-            this.ref.child('members').once("value", (snapshot) => {
-                var hasUser = snapshot.hasChild(this.currentUserId + '/color');
-                if (!hasUser){
-                    var users_ref = new Firebase(this.base_url + "users");
-                    var colors = ['red', 'green', 'blue', 'orange', 'DarkBlue', 'Navy',
-                                  'Indigo', 'OliveDrab', 'DarkRed', 'Sienna', 'Chocolate',
-                                  'Orchid' 
-                                  ];
-                    users_ref.child(this.currentUserId).once("value", (snapshot) => {
-                        this.ref.child('members' + '/' + this.currentUserId).set({
-                            id: this.currentUserId,
-                            email: snapshot.val().Email,
-                            firstName: snapshot.val().FirstName,
-                            lastName: snapshot.val().LastName,
-                            group: snapshot.val().Group,
-                            textLocation: snapshot.val().Location,
-                            currentLocation: this.LocationService.getLocation(),
-                            color: colors[Math.floor(Math.random() * colors.length)]
-                        });           
-                    });
-                }
-            });
-            
+            this.addUserToRoom(this.currentUserId, null);            
             this.members = this.$firebaseArray(this.ref.child('members'));
             this.ref.child('members').on('child_changed', (snapshot) => {
                 this.$rootScope.$broadcast("members-updated");
-            }); 
-            //this.messages = this.$firebaseArray(this.ref.child('messages'));
-            //this.ref.child('messages').on('value', (snapshot) => {
-            //    console.log(this.messages);
-            //    console.log(JSON.stringify(this.messages))
-            //});  
+            });  
             var query = this.ref.child('messages').orderByChild("timestamp").limitToLast(100); 
             this.messages = this.$firebaseArray(query);
             this.setupRoomName();
         }
+
+        removeUserFromRoom(userEmail){
+            this.base_ref.child('users').orderByChild('Email').equalTo(userEmail).on("child_added", (data) => {
+                var room_ref = new Firebase(this.base_url + "rooms/" + this.roomId);
+                room_ref.child('members/' +  data.key()).remove();
+                this.base_ref.child('users' + '/' +  data.key()).child('/rooms/' + this.roomId).remove();
+            });    
+        }
+        addUserToRoom(userId, userEmail){
+            if(!userId && userEmail){
+                this.base_ref.child('users').orderByChild('Email').equalTo(userEmail).on("child_added", (data) => {
+                    this.addUserToRoom(data.key(), null)
+                });
+            }
+            else{
+                this.base_ref.child('users/' + userId).on("value", (data) => {
+                    var room_ref = new Firebase(this.base_url + "rooms/" + this.roomId);
+                    var colors = this.colors;
+                    room_ref.child('members' + '/' + userId).set({
+                                id: userId,
+                                email: data.val().Email,
+                                firstName: data.val().FirstName,
+                                lastName: data.val().LastName,
+                                group: data.val().Group,
+                                textLocation: data.val().Location,
+                                currentLocation: {latitude: 0, longitude: 0},
+                                color: colors[Math.floor(Math.random() * colors.length)]
+                    });
+                    var roomName = this.roomName;
+                    if (roomName){
+                        this.base_ref.child('users' + '/' + userId).child('/rooms/' + this.roomId).set({
+                            Name: roomName
+                        }); 
+                    }
+                });
+            }
+        }
  
          setupRoomName(){
+            this.ref = new Firebase(this.base_url + "rooms/" + this.roomId);
             this.ref.child("name").on("child_added", (snapshot) => {
                 this.roomName = snapshot.val();
-                console.log(snapshot.val());
             });
         }
 

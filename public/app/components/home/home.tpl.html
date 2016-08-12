@@ -11,9 +11,12 @@
         </div>
     </form>
     <br/>
-    <ul  class="list-group">
-       <a class="list-group-item" ng-repeat="room in vm.DataService.rooms" href="/rooms/{{room.$id}}">
-           {{room.name}}
-        </a>
-    </ul>
+       <div display="block">
+            <div class="btn-group" style="width:100%" ng-repeat="room in vm.DataService.rooms">
+                    <a type="button" class="btn btn-default" style="width:85%" href="/rooms/{{room.$id}}">{{room.Name}}</a>
+                    <a type="button" class="btn btn-default" style="width:15%" href="/rooms/edit/{{room.$id}}">
+                        <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+                    </a>
+            </div>
+       </div>
 </div>

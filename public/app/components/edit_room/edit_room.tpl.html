@@ -1,0 +1,10 @@
+<div class="container-fluid full-height">
+    <br />
+    <input type="text" id="email" placeholder="email" ng-model="userEmail"></input><button ng-click="vm.addUserToRoom(userEmail)">+</button>
+    <br />
+    <div id="users">
+        <div ng-repeat="member in vm.members" class="message message-default">
+            <button ng-click="vm.removeUserFromRoom(member.email)">x</button> - {{member.email}}
+        </div>
+    </div>
+</div>

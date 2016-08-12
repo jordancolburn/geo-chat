@@ -16,6 +16,12 @@ module GeoChat {
                     controller: RoomCtrl,
                     caseInsensitiveMatch: true
                 }).
+                when("/rooms/edit/:roomId", {
+                    templateUrl: "app/components/edit_room/edit_room.tpl.html",
+                    controller: RoomCtrl,
+                    controllerAs: "vm",
+                    caseInsensitiveMatch: true
+                }).
                 when("/rooms/:roomId", {
                     templateUrl: "app/components/room/room.tpl.html",
                     controller: RoomCtrl,
@@ -25,12 +31,6 @@ module GeoChat {
                   when("/login", {
                     templateUrl: "app/components/login/login.tpl.html",
                     controller: LoginCtrl,
-                    controllerAs: "vm",
-                    caseInsensitiveMatch: true
-                }).              
-                when("/profile", {
-                    templateUrl: "app/components/profile/profile.tpl.html",
-                    controller: ProfileCtrl,
                     controllerAs: "vm",
                     caseInsensitiveMatch: true
                 }).
