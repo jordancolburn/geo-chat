@@ -38,13 +38,13 @@ module GeoChat {
             var roomId = room.key;
             room.update({name: roomName});
             this.roomName = roomName;
-            this.changeRoom(roomId);
+            this.addUserToRoom(this.currentUserId, null);
+            this.changeRoom(roomId);   
         }
         
         changeRoom(roomId: string){
             this.roomId = roomId;
-            this.ref = this.base_ref.child("rooms/" + this.roomId);
-            this.addUserToRoom(this.currentUserId, null);            
+            this.ref = this.base_ref.child("rooms/" + this.roomId);         
             this.members = this.$firebaseArray(this.ref.child('members'));
             this.ref.child('members').on('child_changed', (snapshot) => {
                 this.$rootScope.$broadcast("members-updated");
@@ -62,6 +62,7 @@ module GeoChat {
             });    
         }
         addUserToRoom(userId, userEmail){
+            var roomName = this.roomName;
             if(!userId && userEmail){
                 this.base_ref.child('users').orderByChild('Email').equalTo(userEmail).on("child_added", (data) => {
                     this.addUserToRoom(data.key, null)
@@ -81,9 +82,8 @@ module GeoChat {
                                 currentLocation: {latitude: 0, longitude: 0},
                                 color: colors[Math.floor(Math.random() * colors.length)]
                     });
-                    var roomName = this.roomName;
                     if (roomName){
-                        this.base_ref.child('users' + '/' + userId).child('/rooms/' + this.roomId).set({
+                        this.base_ref.child('users' + '/' + userId + '/rooms/' + this.roomId).set({
                             Name: roomName
                         }); 
                     }
@@ -92,9 +92,10 @@ module GeoChat {
         }
  
          setupRoomName(){
-            this.ref = this.base_ref.child("rooms/" + this.roomId);
-            this.ref.child("name").on("child_added", (snapshot) => {
+            var room_ref = this.base_ref.child("rooms/" + this.roomId);
+            room_ref.child("name").on("value", (snapshot) => {
                 this.roomName = snapshot.val();
+                console.log(snapshot);
             });
         }
 
