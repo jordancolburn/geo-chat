@@ -13,9 +13,21 @@
     <script src="\scripts\dist\jquery.min.js"></script>
     <script src="\scripts\dist\js\bootstrap.min.js"></script>
     <script src="\dest/app.js"></script>
-    <script src="https://cdn.firebase.com/js/client/2.4.2/firebase.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/live/3.0/firebase.js"></script>
-    <script src="\scripts\dist\angularfire.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/3.2.1/firebase.js"></script>
+    <script>
+      // Initialize Firebase
+      var config = {
+        apiKey: "AIzaSyDrcYVv2z1J8txJ0NSUJ3tbG3YQ172gf-c",
+        authDomain: "geo-chat-fe90d.firebaseapp.com",
+        databaseURL: "https://geo-chat-fe90d.firebaseio.com",
+        storageBucket: "geo-chat-fe90d.appspot.com",
+      };
+      firebase.initializeApp(config);
+    </script>
+    <!--<script src="https://cdn.firebase.com/js/client/2.4.2/firebase.js"></script>-->
+    <!--<script src="https://www.gstatic.com/firebasejs/live/3.0/firebase.js"></script>-->
+    <script src="https://cdn.firebase.com/libs/angularfire/2.0.1/angularfire.min.js"></script>
+    <!--<script src="\scripts\dist\angularfire.min.js"></script>-->
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDvas2OfO5H3ixFdcvOfrVoRxwTg98sh4k"></script>
     <script src="\scripts\geolocation-marker.js"></script>
     <base href="/" />

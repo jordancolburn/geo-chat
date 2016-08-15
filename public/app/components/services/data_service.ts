@@ -23,10 +23,9 @@ module GeoChat {
 
         constructor(private $firebaseArray, private LocationService, private $rootScope){
             this.base_url = "https://geo-chat-fe90d.firebaseio.com/"
-            this.base_ref = new Firebase(this.base_url);
-            var ref = new Firebase(this.base_url);
+            this.base_ref = firebase.database().ref();
             this.currentUserId = window.localStorage.getItem('userId');
-            this.rooms = this.$firebaseArray(ref.child('users/'+ this.currentUserId + '/rooms'));
+            this.rooms = this.$firebaseArray(this.base_ref.child('users/'+ this.currentUserId + '/rooms'));
             this.colors = ['red', 'green', 'blue', 'orange', 'DarkBlue', 'Navy',
                             'Indigo', 'OliveDrab', 'DarkRed', 'Sienna', 'Chocolate',
                             'Orchid' 
@@ -34,9 +33,9 @@ module GeoChat {
         }
         
         addRoom(roomName: string){
-            var rooms = new Firebase(this.base_url+ "rooms/");
+            var rooms = this.base_ref.child("rooms/");
             var room = rooms.push();
-            var roomId = room.key();
+            var roomId = room.key;
             room.update({name: roomName});
             this.roomName = roomName;
             this.changeRoom(roomId);
@@ -44,7 +43,7 @@ module GeoChat {
         
         changeRoom(roomId: string){
             this.roomId = roomId;
-            this.ref = new Firebase(this.base_url + "rooms/" + this.roomId);
+            this.ref = this.base_ref.child("rooms/" + this.roomId);
             this.addUserToRoom(this.currentUserId, null);            
             this.members = this.$firebaseArray(this.ref.child('members'));
             this.ref.child('members').on('child_changed', (snapshot) => {
@@ -57,20 +56,20 @@ module GeoChat {
 
         removeUserFromRoom(userEmail){
             this.base_ref.child('users').orderByChild('Email').equalTo(userEmail).on("child_added", (data) => {
-                var room_ref = new Firebase(this.base_url + "rooms/" + this.roomId);
-                room_ref.child('members/' +  data.key()).remove();
-                this.base_ref.child('users' + '/' +  data.key()).child('/rooms/' + this.roomId).remove();
+                var room_ref = this.base_ref.child("rooms/" + this.roomId);
+                room_ref.child('members/' +  data.key).remove();
+                this.base_ref.child('users' + '/' +  data.key).child('/rooms/' + this.roomId).remove();
             });    
         }
         addUserToRoom(userId, userEmail){
             if(!userId && userEmail){
                 this.base_ref.child('users').orderByChild('Email').equalTo(userEmail).on("child_added", (data) => {
-                    this.addUserToRoom(data.key(), null)
+                    this.addUserToRoom(data.key, null)
                 });
             }
             else{
                 this.base_ref.child('users/' + userId).on("value", (data) => {
-                    var room_ref = new Firebase(this.base_url + "rooms/" + this.roomId);
+                    var room_ref =this.base_ref.child("rooms/" + this.roomId);
                     var colors = this.colors;
                     room_ref.child('members' + '/' + userId).set({
                                 id: userId,
@@ -93,7 +92,7 @@ module GeoChat {
         }
  
          setupRoomName(){
-            this.ref = new Firebase(this.base_url + "rooms/" + this.roomId);
+            this.ref = this.base_ref.child("rooms/" + this.roomId);
             this.ref.child("name").on("child_added", (snapshot) => {
                 this.roomName = snapshot.val();
             });

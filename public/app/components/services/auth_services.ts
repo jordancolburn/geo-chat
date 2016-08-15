@@ -10,13 +10,6 @@ module GeoChat {
     export class AuthService {
         constructor()
         {
-                var config = {
-                apiKey: "AIzaSyDrcYVv2z1J8txJ0NSUJ3tbG3YQ172gf-c",
-                authDomain: "geo-chat-fe90d.firebaseapp.com",
-                databaseURL: "https://geo-chat-fe90d.firebaseio.com",
-                storageBucket: "geo-chat-fe90d.appspot.com",
-            };
-            firebase.initializeApp(config);
         }
         login(email:string,password:string)
         {   
