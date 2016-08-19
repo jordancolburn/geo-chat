@@ -42,7 +42,7 @@ module GeoChat {
             if (this.message && this.message !== '') {
                 this.dataService.addMessageAndTime(this.message, (new Date()).toISOString(), this.locationService.getLocation());
                 this.message = null;
-                //this.fixChatScroll(1);
+                this.fixChatScroll(300);
             }
         }
 

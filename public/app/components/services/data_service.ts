@@ -51,6 +51,11 @@ module GeoChat {
             });  
             var query = this.ref.child('messages').orderByChild("timestamp").limitToLast(100); 
             this.messages = this.$firebaseArray(query);
+            this.ref.child('messages').on("child_added" function(){
+                setTimeout(() => {
+                    $("#chatMessages").scrollTop($("#chatMessages")[0].scrollHeight);
+                }, 100)
+            });
             this.setupRoomName();
         }
 
