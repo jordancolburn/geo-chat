@@ -1,4 +1,19 @@
-{
-  ".read": true,
-  ".write": true
+{"rules":{
+  "users":{
+    "$user":{
+    	".read": "$user === auth.uid",
+    	".write": true,
+      ".indexOn": ["Email"]
+    }
+  },
+  "rooms":{
+    	"$room": {
+      	".read": "data.child('members').val() == null || data.child('members/' + auth.uid).exists()",
+      	".write": "data.child('members').val() == null || data.child('members/' + auth.uid).exists()",
+        "messages":{          
+      		".indexOn": ["timestamp"]
+        }
+      }
+  }
+	}
 }
