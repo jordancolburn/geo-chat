@@ -18,8 +18,8 @@ module GeoChat {
         
         loadMap() {
             this.map = new google.maps.Map(document.getElementById('map'), {
-                center: {lat: 36.102844, lng: -115.173756},
-                zoom: 19
+                center: {lat: 0, lng: 0},
+                zoom: 17
             });
             google.maps.event.addListenerOnce(this.map, 'idle', () => {
                 this.mapLoaded();
@@ -27,12 +27,27 @@ module GeoChat {
         } 
         
         mapLoaded() {
+            this.DataService.updateLocation(this.LocationService.getLocation());
             var GeoMarker = new GeolocationMarker(this.map);
+            var loc = this.LocationService.getLocation();
             if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition((position: any) => {
-                    this.setMapCenter(position.coords);
-                });
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    var pos = {
+                        lat: position.coords.latitude,
+                        lng: position.coords.longitude
+                    };
+                }, function() {
+                    handleLocationError(true, infoWindow, map.getCenter());
+            });
+            } else {
+                // Browser doesn't support Geolocation
+                handleLocationError(false, infoWindow, map.getCenter());
             }
+            this.setMapCenter(this.LocationService.getLocation());
+            this.$rootScope.$on("room-changed", () => {
+                this.mapLoaded();
+                navigator.geolocation.getCurrentPosition({'coords': this.LocationService.getLocation()});
+            });        
             this.$rootScope.$on("members-updated", () => {
                 this.updateIcons();
             });                

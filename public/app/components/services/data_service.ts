@@ -44,14 +44,15 @@ module GeoChat {
         
         changeRoom(roomId: string){
             this.roomId = roomId;
-            this.ref = this.base_ref.child("rooms/" + this.roomId);         
+            this.ref = this.base_ref.child("rooms/" + this.roomId);        
             this.members = this.$firebaseArray(this.ref.child('members'));
+            this.$rootScope.$broadcast("room-changed");
             this.ref.child('members').on('child_changed', (snapshot) => {
                 this.$rootScope.$broadcast("members-updated");
             });  
             var query = this.ref.child('messages').orderByChild("timestamp").limitToLast(100); 
             this.messages = this.$firebaseArray(query);
-            this.ref.child('messages').on("child_added" function(){
+            this.ref.child('messages').on("child_added", function(){
                 setTimeout(() => {
                     $("#chatMessages").scrollTop($("#chatMessages")[0].scrollHeight);
                 }, 100)
