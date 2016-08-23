@@ -52,12 +52,14 @@ module GeoChat {
             });  
             var query = this.ref.child('messages').orderByChild("timestamp").limitToLast(100); 
             this.messages = this.$firebaseArray(query);
+            this.setupRoomName();
             this.ref.child('messages').on("child_added", function(){
                 setTimeout(() => {
-                    $("#chatMessages").scrollTop($("#chatMessages")[0].scrollHeight);
+                    if($("#chatMessages")[0]){
+                        $("#chatMessages").scrollTop($("#chatMessages")[0].scrollHeight);
+                    }
                 }, 100)
             });
-            this.setupRoomName();
         }
 
         removeUserFromRoom(userEmail){
@@ -71,7 +73,7 @@ module GeoChat {
             var roomName = this.roomName;
             if(!userId && userEmail){
                 this.base_ref.child('users').orderByChild('Email').equalTo(userEmail).on("child_added", (data) => {
-                    this.addUserToRoom(data.key, null)
+                    this.addUserToRoom(data.key, null);
                 });
             }
             else{
